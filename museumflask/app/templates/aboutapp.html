@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Mapping Museums Database{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+    
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/databaseaboutbanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>Mechanical Music Museum, Suffolk</figcaption>
+</figure>
+
+    <div class="row">
+<h1>Database Browse, Search and Visualisation</h1>
+   <p>
+     You can search, browse, or visualise the museums data collected by the project. Please choose the appropriate tab from the Database drop-down menu.
+     </p>
+	 <p>
+	 <a href="/browseproperties">Browse</a> allows you to explore the museums data in a structured way according to various categories. You can view the information as a list, on a map, or via the details of individual museums.</p>
+     <p>
+	 <a href="/search">Search</a> allows you to choose your own search terms and to filter museums using any combination of categories.
+	 </p>
+	 <p>
+	 <a href="/visualisations">Visualise</a> allows you to generate graphs showing numbers of museums, growth and closure patterns, and  inter-relationships between pairs of categories.
+	 </p>
+	 <p>
+	 There is a Help section for each of Browse, Search and Visualise that gives more information. Our <a href='/static/pdf/Guide to Using the Mapping Museums Database 2020_05_04.pdf' download>online guide</a> gives an introduction to using these facilities. This <a href='https://youtu.be/5KzLmeTXlAQ' target="_blank">short video</a> also shows how to use the Browse, Search and Visualise facilities. </p>
+	 <p><a href='/allmus'>All Museums</a> allows you to scroll through the full list of museums and view the data held about each one.</p>
+     <p>The data about an individual museum can be viewed directly by typing <a>http://museweb.dcs.bbk.ac.uk/Museum/<i>id</i></a> into a web browser, where <i>id</i> is the museum's unique ID within our KB, e.g. <a href='/Museum/mm.domus.WM014'>http://museweb.dcs.bbk.ac.uk/Museum/mm.domus.WM014</a> for the Bilston Craft Gallery museum.</p></br>
+     <p>Note: The tabbed content in the Browse, Search and Visualise pages cannot be navigated by pressing the Back button as they are part of the same web page. Please use the tabs near the top of these pages instead.</p>
+     
+     
+     
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

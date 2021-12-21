@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Data Collection{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+   
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/datacolbanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>Blackboard showing flight log, Glenn Miller Museum, Bedford</figcaption>
+</figure>
+    <div class="row">
+ <h1>Data Collection</h1>
+     
+    <p>
+	<a href="#primary">Primary sources of data</a><br>
+	<a href="#complination">Data compilation and cleaning</a><br>
+	<a href="#checking">Data checking</a><br>
+	<a href="#validating">Externally validating data</a><br>
+	</p></br>
+	<a name = "primary" style="color:black; text-decoration: none"><p><b>Primary sources of data</b></p>
+	<ul>
+<li>Arts Council England list of accredited museum, 2017</li>
+
+<li>Association of Independent Museums members list, 2016</li>
+
+<li>Association of Independent Museums members list, 1982</li>
+
+<li>Association of Independent Museums non-members list, 1982</li>
+
+<li>AMOT Guide to Military Museums in the UK, 2010/2011</li>
+
+<li>Digest of Museum Statistics, 1998</li>
+
+<li>Historic Houses Association Friends Pocket Guide, 2016</li>
+
+<li>Historic Houses & Castles in Great Britain and Northern Ireland, London: Index Publishers 1959</li>
+
+<li>Kenneth Hudson and Ann Nicholls, The Directory of Museums and Living Displays, London: Macmillan 1985</li>
+
+<li>Micromuseums Archive, Bishopsgate Institute, London</li>
+
+<li>Museum and Libraries Division, Wales. Raw data from ‘Spotlight’ reports, 2002, and published data 2007, 2013, 2015</li>
+
+<li>Museums and Galleries Scotland museums list, 2016</li>
+
+<li>Northern Ireland Museums Council, museum list, 2012, 2016</li>
+
+<li>Museum Association ‘Find a Museum’ website, 2017</li>
+
+<li>Museums Association’s Museums Calendar, 1970</li>
+
+<li>Scottish Museums Council, A Collective Insight: Scotland’s National Audit; full findings report, 2002. </li>
+
+<li>Standing Commission on Museums and Galleries, Survey of Provincial Museums, 1963</li>
+
+<li>Wikipedia lists of museum by country/county</li>
+
+ 
+</ul>
+	<a name = "complination" style="color:black; text-decoration: none"><p><b>Data compilation and cleaning</b></p>
+	<p>In order to analyse the development of the UK museum sector, we first needed to compile a dataset of all the museums that had been open at any 
+	point between 1960 and 2020, and a list of their main attributes: accreditation status, location (both postal address and administrative location), 
+	governance, size, subject matter, year of opening and year of closing (if applicable). We drew on a wide range of sources to do so.</p>
+	<p>In the first instance, the team focused on the Digest of Museum Statistics (DOMUS), a major survey of accredited museums that was conducted between
+	1994 and 1999. Unfortunately, the data needed considerable work before it could be used. The archived survey consists of hundreds of encoded 
+	spreadsheets that all contain information about the museums in question, but addresses are on one sheet, the names of the museum on another, 
+	visitor numbers on a third and so on. In addition, all the information is in code. We translated the numerical codes into words and reassembled the DOMUS 
+	data from its constituent parts. We then removed entities that did not refer to a single museum (e.g. references to overarching bodies such as the Science 
+	Museum Group), dummy entries, and redundant information such as fax numbers and company numbers.</p>
+	<p>Having manually reassembled and cleaned the DOMUS data, we then began to add data from the other contemporary and historical datasets. 
+	In the first instance we used data from official government surveys, such as the 1963 Standing Commission Survey of Provincial Museums, and the current 
+	ACE accreditation data, and then we began to add membership data from the Association of Independent Museums and the Museum Association. 
+	Thereafter we used a range of sources, adding information from historic and specialist guidebooks and gazetteers, from tourist boards, and from web 
+	searches. Digital resources such as the BBC’s 1986 Domesday project, were useful and the discovery of an unpublished survey of members and 
+	non-members conducted by the Association of Independent Museums in 1983 was particularly important in developing a substantial body of information on 
+	small independent museums of that period.</p>
+	<p>As we collected new data, we added new museums to the dataset and new information on the museums we had already listed. 
+	For example, we might have a record of the Museum of X from DOMUS. However, the record of the Museum of X in the Museums Association 
+	Find-A-Museum Service would have more recent information on visitor numbers, which we would then enter into our database.</p>
+	<p>In many instances, it was extremely difficult to find detailed information about specific museums. We might know that a museum had been open at some 
+	point in the 1980s but not know exactly when it opened or closed, or what subject it had covered. Appeals for information were repeatedly put out on 
+	social media but personal contact proved the most effective means of finding missing information. In the last few months of the data collection, the team made 
+	hundreds of telephone calls and sent hundreds of emails to museum staff, local history societies, tourist boards, town clerks, and other relevant organisations
+	to find and establish the missing details. We continue to update the dataset with new information, as it becomes known</p>
+	
+	
+	</a></br>
+     
+	 <a name = "checking" style="color:black; text-decoration: none"><p><b>Data checking</b></p>
+	 <p>The gradual accumulation of information in our database helped us check the validity of the source material. 
+	 As various museum databases were incorporated into our main datasheet, the existing data was either corroborated or contested. 
+	 For example, if the Museum Y was listed in DOMUS as existing at 1 High Street, Anytown, and then the Arts Council England accreditation data also 
+	 showed the same address, etc., then we had a high degree of confidence that:</p>
+     <p>a) The DOMUS museum is a legitimate museum (understood to be a museum by more than one survey)</p>
+	 <p>b) That between 1999 and 2017 the conditions of the museum stayed the same.</p>
+	 <p>Where the opposite is true – if the ACE accreditation data listed Museum Y as existing at 10 Nonsense Avenue, then we knew that within those 18 years 
+	 something substantial has happened to the museum and that this warranted further investigation. 
+	 Where we found disjuncture in the data, we contacted the museums or cross checked with other sources as was required.</p>
+	 <p>When our data source was old or where the date of the source was uncertain we checked if the museum was still open. In some cases museums 
+	 that have closed still have an extant website so we looked to see if news and events pages had been updated. TripAdvisor was also useful as it records 
+	 when visitors went to particular sites, and hence indicates whether it is open or has possibly closed. 
+	 This approach was also used, to a lesser extent, with smaller, specialised web-forums where contributors occasionally posted questions or reminiscences 
+	 about particular museums.</p>
+	</a></br>
+	
+	 <a name = "validating" style="color:black; text-decoration: none"><p><b>Externally validating data</b></p>
+	 <p>The Museum Development Network provided the most robust external review of our data. We took regional data to each of the nine Museum 
+	 Development groups in England, and they conducted a line-by-line scrutiny of our database. They were able to provide a local knowledge of both recent 
+	 developments in their area (openings or closure) and to check our classifications. Staff at the national offices for museums in Northern Ireland, Scotland, 
+	 and Wales similarly scrutinised the data, as did some specialist and subject groups. We provided our full dataset on regimental museums to the Regimental 
+	 Museums liaison officers at the National Army Museums who provided comparative information, which allowed us to re-check that sector, and our dataset 
+	 on transport museums to the Transport Museums Trust who further edited and refined data on museums from that category.</p>
+	 <p>Further reading:</p>
+<p>	 <a href="http://blogs.bbk.ac.uk/mapping-museums/2017/10/16/picking-brains-museum-development-network/" target="_blank">Mapping Museums blog: 'Picking the brains of the Museum Development Network'</a></p>
+	</a></br>
+	 
+     
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>
+
+
+

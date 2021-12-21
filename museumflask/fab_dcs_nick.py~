@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+from fabric.api import local, env, run,sudo,hosts,show
+
+env.host_string = '193.61.36.71'
+env.user = 'nick'
+
+
+def deploymus():
+    with show('debug'):
+        run('cd /var/www && ls -lrt') 
+        sudo('service apache2 stop',user="nick") 
+        sudo('rm -fvr /var/www/museumflask_nick',user="nick")
+        sudo('cd /var/www/tmp && git clone git+ssh://nlarsson@193.61.44.11/home/nlarsson/bbk/python/webdev/museumflask',user="nick")
+        sudo('cd /var/www/tmp && mv -v museumflask /var/www/museumflask_nick',user="nick")
+	
+	sudo('cd /var/www && chown -R nick:nick museumflask_nick',user="nick") 
+	sudo('cd /var/www/museumflask_nick && mv -v apache/museumflask_nick.wsgi .',user="nick") 
+	sudo('chmod  -R 777  /var/www/museumflask_nick/json',user="nick") 
+        sudo('service apache2 start',user="nick") 
+
+
+deploymus()
+
+## Check that searchconfig has changed the rewriteurl for server (do it from script !)
+## do the scp from fab and also change the permissions.
+
+

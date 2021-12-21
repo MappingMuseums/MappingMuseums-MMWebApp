@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>Bubble</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+  <script src="/static/g2/g2.js"></script>
+  <script src="/static/g2/assets/data-set.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery_min_1_11_1.js"></script>
+
+
+
+<script>
+
+///-- DATA ------------------------------------------------
+{% if plotdata  %}
+  {% for data in plotdata%}
+    {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+
+
+
+  const { Global } = G2;
+
+{% if categdata  %}
+  {% for data in categdata%}
+    {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+
+    const chart = new G2.Chart({
+      container: 'mountNode',
+      forceFit: true,
+      height: window.innerHeight
+    });
+
+
+    chart.source(data);
+
+    chart.scale({
+      OpeningYear: {
+        alias: 'OpeningYear'
+      },
+      VisitorNumbers: {
+        alias: 'VisitorNumbers'
+      },
+      MuseumName: {
+        alias: 'MuseumName'
+      }
+    });
+
+    chart.axis('VisitorNumbers', {
+      label: {
+        formatter: function (value) {
+          return (value / 1000).toFixed(0) + 'k';
+        //  return (value);
+        } 
+      }
+    });
+
+    chart.tooltip({
+      showTitle: false 
+    });
+
+
+    chart.point().position('VisitorNumbers*OpeningYear')
+      .size('VisitorNumbers', [ 4, 65 ])
+      .color('Subject', val => 
+     {
+        return colorMap[val];
+      })
+      .shape('circle')
+      .tooltip('MuseumName*VisitorNumbers*OpeningYear*Subject')
+      .style('Subject', 
+        {
+          lineWidth: 1,
+          strokeOpacity: 1,
+          fillOpacity: 0.3,
+          opacity: 0.65,
+          stroke: val => 
+          {
+            return colorMap[val];
+          }
+        });
+    chart.render();
+
+</script>
+</body>
+</html>

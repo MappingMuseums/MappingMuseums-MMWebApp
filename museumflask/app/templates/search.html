@@ -1,0 +1,1118 @@
+<!--
+#   $$Author1$:Nick Larsson, Researcher, Dep. of Computer Science and Information Systems at Birkbeck University, London, England, email:nick@dcs.bbk.ac.uk, License:GNU GPLv3
+#   $$Author2$:Valeri Katerinchuk, Researcher, Dep. of Computer Science and Information Systems at Birkbeck University, London, England, email:valeri@dcs.bbk.ac.uk, License:GNU GPLv3
+#
+#we acknowledge the use of the following software under the terms of the specified licences:
+#
+#Openstreetmap © OpenStreetMap contributors - https://www.openstreetmap.org/copyright
+#
+#Python Flask - https://flask.palletsprojects.com/en/0.12.x/license/
+#
+#Bootstrap - https://getbootstrap.com/docs/4.0/about/license/
+#
+#Leaflet - https://github.com/Leaflet/Leaflet/blob/master/LICENSE
+#
+#MarkerCluster - https://github.com/Leaflet/Leaflet.markercluster/blob/master/MIT-LICENCE.txt
+#
+#Awesomplete - https://github.com/LeaVerou/awesomplete/blob/gh-pages/LICENSE
+#
+#Instant Street View and Google Street View - https://www.google.com/permissions/geoguidelines/
+-->
+
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+
+<script src="{{ url_for('static', filename='js/awesomplete.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/awesomplete.css') }}" />
+
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+<style>
+
+#btn-add-tab{ padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;  }
+#form-group{min-height: 50px;}
+
+
+</style>
+
+      {% block title %}Search{% endblock %}
+
+
+
+
+      {% block content %}
+      {% block page_content %}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <div id="sidebar">
+	<div class="col-md-12">
+
+	  <div class="selectattrs"  >
+      <div class='quicksrch' style="  height: 35px; margin-top: 40px;">
+      <form id="quicksearchform" name="quicksearchform" class="form-horizontal" method="POST" action="/search"  target="restable" >
+<div ><span  class=searchtitle>Quick search:</span><button type="submit" onclick="tabSelected(1);" style=" float:right; height:30px;"><i class="fa fa-search"></i>
+</button><input type="text" style="width:50%; float:right; margin-right: -2px; height:30px;" name="freesearch" class="input1" placeholder="Text Input"  /></div>
+	    </form>
+         </div>
+       
+       
+       
+        <form class="form-horizontal" method="POST" action="/search" style="margin-top: 40px;" onsubmit="return validateForm()" target="restable">
+
+<span  class=searchtitle>Search query:</span>
+	    <div class="col-md-12" style="padding-top: 10px; padding-right: 0px;">
+	      
+	      
+            
+	      <!-- Nav tabs -->
+	      <ul id="tab-list" class="nav nav-tabs" role="tablist" style="padding-top: 10px;">
+                <li class="active"><a href="#tab1" role="tab" data-toggle="tab" onclick="tabSelected(1);">Filter 1</a></li>
+	      </ul>
+
+	      <!-- Tab panes -->
+	      <div id="tab-content" class="tab-content">
+                <div class="tab-pane fade in active" id="tab1">
+
+		  <!-- ++++++++++++++++++++++++++ -->
+               <div class="form-group">
+                    <input type="hidden" name="orderby"   id="orderby" value="museum" />
+		    <label class="col-sm-4 control-label">Select attribute:</label>
+		    <div class="col-sm-6" style="padding-top: 10px;">
+		      <select id="example-singlecolumn-1" name="coltomatch" class="coltomatch" onchange='columnchanged("example-singlecolumn-1",1);' >
+			{% for result,result_view in attributes %}
+			<option value="{{result|safe }}">{{result_view|safe }}</option>
+		      {% endfor %}
+		    </select>	    
+
+		    </div>
+		  </div>
+		  <!-- ++++++++++++++++++++++++++ -->
+
+		  <div class="form-group">
+		    <label class="col-sm-4 control-label">Comparison criterion: </label>
+		    <div class="col-sm-6">
+		      <select id="example-singlecondition-1" name="condition" onchange='conditionchanged("example-singlecondition-1",1,"example-singlecolumn-1");' >
+			<option value="match">Matches</option>
+			<option value="notmatch">Not Matching</option>
+		      </select>
+		    </div>
+		  </div>
+
+		  <!-- ++++++++++++++++++++++++++ -->
+
+		  <div class="form-group">
+		    <label class="col-sm-4 control-label">Value:</label>
+		    <div class="col-sm-6" id="input-group-1" >
+		      <input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-1" />
+		    </div>
+		  </div>
+
+		</div>
+	      </div>
+	    </div>
+
+	    <!-- ++++++++++++++++++++++++++ -->
+
+            <div class="form-group">
+	      <label class="col-sm-4 control-label">Select output attributes:</label>
+	      <div class="col-sm-6">
+                <select id="example-post" name="multiselect[]" multiple="multiple">
+		  <option value="All attributes">All attributes</option>
+		  <option value="Default" selected="true">Default output attributes</option>
+		{% for result,view_result in attributes %}
+		<option value="{{result|safe }}">{{view_result|safe }}</option>
+		{% endfor %}
+	      </select>
+	      </div>
+	    </div>
+
+	    <!-- ++++++++++++++++++++++++++ -->
+
+
+	    <div class="col-md-12">
+	      <!-- Filter list show -->
+	      <ul id="display-filter-list" class="showfilter">
+	      </ul>
+	    </div>
+
+	    <div class="form-group">
+	      <div class="col-sm-offset-1 col-sm-10" style="padding-right: 30px; padding-left: 0px;">
+				<button id="btn-add-tab" type="button" class="btn btn-default" >Add Filter</button>
+                <button type="submit" class="btn btn-primary "  onclick="tabSelected(1);" style="padding-right: 28px;">Submit</button></br></br>
+				<button class="btn btn-default " onclick="window.location.href=window.location.href" style="float:left">Clear All</button>
+	      </div>
+	    </div>
+	  </form>
+
+
+	  </div>
+	  </div>
+</div>
+
+<ul class="nav nav-tabs" id="nav" >
+         
+        
+
+       
+		
+
+    </ul>
+<div id="main">
+
+<div class="second-row">
+
+  <iframe name="restable" id="restable"></iframe>
+
+        <div class="tab-pane fade in" id="itab5" style="  margin-top: 1%; margin-bottom: 1%; margin-left: 1%; margin-right: 1%">
+<style>
+#detail-results{ width: 100%;position: relative; float: left; }
+</style>
+
+<p>For a <b>quick search</b> over the main museum attributes, type a search term into the box on the left and press Enter or the Q button. 
+You can see the results as a list, on a map, or by each museum’s details: use the tabs at the top of the results page to switch between views.</p>
+
+<p>For a more precise search, you can define your own <b>search query</b>:</p>
+<ul>
+    <li>choose a search category from the Select attribute drop-down list</li>
+    <li>select the Comparison criterion</li>
+    <li>enter a Value</li>
+    <li>press Submit</li></ul>
+<p>Again, you can see the results as a list, on a map, or by each museum’s details: use the tabs at the top of the results page to switch between views. If required:</p><ul>
+    <li>use the Add Filter button to narrow your search</li>
+    <li>use Select output attributes to change the information displayed for each museum in the List view.</li></ul>
+<p>Note: Search queries return records on all museums. To search for museums that are currently open use the filter
+ ‘Year exists’, use the drop down menu to select ‘in’, and add the current year to the box marked value.</p> 
+
+<p>To create a new search query, press the Clear All button. For more information and for examples of setting up search queries please see:</p><ul>
+    <li><button onclick="tabResSelected(6);" class="link-button">Explanation of Search Terms</button></li>
+<li><button  target="popup" onClick="window.open('/searchhelp','browse help','width=800,height=600')"class="link-button">Search Help</button></li></ul>
+   
+   
+
+	   </div>
+	 
+
+ <div class="tab-pane fade in" id="itab6" >
+<style>
+#detail-results{ width: 100%;position: relative; float: left; }
+</style>
+
+
+See <a href="/glossary">Glossary</a> for more detailed information about these terms. 
+<p><div id=par0><b>Village, Town or City: </b>Search for museums within a particular town, city or village. Note that the search will match all names containing the search term e.g. a search for Hull will produce museums in Hull, Kingston-upon Hull and Solihull.</div><p>
+<p><div id=par01><b>Postcode: </b>Search for museums within a post-code area.</div><p>
+<p><div id=par1><b>Admin Area: </b>Search for museums by their administrative area: e.g. a country, English region, unitary authority, or county council.</div></p>
+<p><div id=par11><b>Accreditation: </b>Search for museums that are unaccredited or accredited; that is have been recognised as reaching professional benchmarks. See ‘Glossary’ for more information on accreditation.  </div></p>
+<p><div id=par2><b>Governance: </b>Search for museums according to their organisational structure. See ‘Glossary’ for more information on governance. </div></p>
+<p><div id=par3><b>Size: </b>Search of museums on the basis of annual visitor numbers. Huge (1million+), Large (100,000 – 1million), Medium (10,000-100,000), Small (0-10,000). See ‘Glossary’ for more information on how size is calculated. </div></p>
+<p><div id=par31><b>Subject Matter: </b>Search for museums according to their overarching topic. See ‘Glossary’ for more information on subject matter classification. </div></p>
+<p><div id=par1><b>Visitor Numbers Data: </b>Search for museums according to their numbers of annual visitors. N. B. each record is returned as a separate result i.e. search may return multiple records for individual museums. </div></p>
+<p><div id=par33><b>Year opened: </b>Search for museums that opened in, after or before a particular year. Date ranges are used when the precise year cannot be established. See ‘Glossary’ for more information on opening dates and ranges.</div></p>
+<p><div id=par34><b>Year closed: </b>Search for museums that closed in, after or before a particular year. Date ranges are used when the precise year cannot be established. See ‘Glossary’ for more information on closing dates and ranges. </div></p>
+<p><div id=par32><b>Year exists: </b>Search for all the museums that were open in a particular year. For precise information choose the ‘definitely’ option in the drop down menu. To include museums that have a date range for their years of opening choose the ‘possibly’ option. See ‘Glossary’ for more information on date ranges. </div></p>
+<p><div id=par1><b>Notes: </b>Additional information on individual museums is logged in Notes. Use key terms to search the researcher’s notes.  </div></p>
+<p><div id=par1><b>Primary Provenance of Data: </b>Search according to the original source of information on each museum. See ‘Glossary’ for more information.</div></p>
+<p><div id=par1><b>Deprivation index: </b>Search for museums according to the relative deprivation of their location with 1 being the most deprived and 10 being the least deprived. See ‘Glossary’ for more information on the Deprivation index.  </div></p>
+<p><div id=par1><b>Geodemographic group: </b>Search for the museums in locations that have been categorised according to the characteristics of their population. See ‘Glossary’ for more information on Geo-demographic groups.  </div></p>
+<p><div id=par1><b>Geodemographic subgroup: </b>Search for the museums in locations that have been categorised according to the characteristics of their population. (‘Sub-groups’ are categorised in more detail than ‘groups’). See ‘Glossary’ for more information on Geo-demographic groups.</div></p>
+<p><div id=par1><b>ACE size designation: </b>Search according to Art Council England categories for museum size. Only museums for which ACE holds records are included in the search.  </div></p>
+<p><div id=par1><b>AIM size designation: </b>Search according to the Association of Independent Museums’ categories for museum size. Only museums for which AIM holds records are included in the search. </div></p>
+<p><div id=par1><b>DOMUS Subject Matter: </b>Search according to Digest of Museum Statistics categories for museum subject matter. These only relate to entries where the provenance is DOMUS.  </div></p>
+
+
+<div>More help with using Search is available <button  target="popup" onClick="window.open('/searchhelp','browse help','width=800,height=600')"class="link-button">here</button></div>
+	   </div>	 
+	   
+	
+	   
+	   
+</div>
+
+</div>
+	      
+
+
+	{% endblock %}
+	{% endblock %}
+
+	{% block scripts %}
+	<script type="text/javascript">
+//document.body.style.overflow = 'hidden';
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+var x = document.getElementById('example-post');
+x.remove(13);
+
+
+
+
+
+
+function tabResSelected(id)
+{
+  
+  if (id == 2)
+   {
+	// Now leaflet
+      
+	   $("#itab5").hide();
+		$("#restable").show();
+     //  L.Util.requestAnimFrame(Window.mymap.invalidateSize,Window.mymap,!1,Window.mymap._container);
+        //$("#tab2").show(); 
+   }
+  
+  else if (id == 5)
+  {
+       // $("#tab2").hide();        
+	$("#restable").hide();
+	
+        $("#itab5").show(); 
+	
+  }  
+  else if(id==6){
+  $("#itab5").hide();
+   //$("#tab7").hide();
+  $("#itab6").show();
+  }
+    else if(id==7){
+  $("#itab5").hide();
+  $("#itab6").hide();
+  //$("#tab7").show();
+  }
+}
+function resetForm(){
+	  $('#example-reset-form').on('reset', function() {
+	    $('#example-reset option:selected').each(function() {
+	      $(this).prop('selected', false);
+	    })
+
+	    $('#example-reset').multiselect('refresh');
+	  });
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+function validateFieldInput(field,inputtext,tab) 
+{
+
+  var thisfield=field.replace(/ /g,'_');
+  var thisdtype=primitivevaluetypes[thisfield];
+  
+
+
+  if (thisdtype == 'integer' || thisdtype == 'positiveInteger' || thisdtype == 'decimal' )
+      {
+	// If x is Not a Number or less than one or greater than 10
+	if (isNaN(inputtext) ) 
+	{
+	  alert(inputtext +" is not a number. \n"+"Please put a number as filter criteria in textfield in Filter:"+tab+" before submitting.");
+	  return false;
+	}
+	else if(inputtext<0){
+	alert(inputtext +" is a negative numebr. \n"+"Please put a positive number as filter criteria in textfield in Filter:"+tab+" before submitting.");
+	  return false;
+	}
+	else 
+	{
+	$("#tab2tab").hide();
+  //$("#tab5tab").hide();
+	  return true
+	}
+      }
+    else if (thisdtype == 'date')
+      {
+      }
+	  $("#tab2tab").hide();
+  //$("#tab5tab").hide();
+  return true;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function validateForm() 
+{
+  // Loop over tabs and check textfield for input
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+	
+      var info=getTabInfo(i,true);
+	  var infoarr=info.split(":");
+      var criteria=infoarr[3];
+      
+      if (criteria.length < 1)
+	{
+	  alert("Please input a Value for Filter "+infoarr[0]);
+	  return false;
+	}
+      else
+	{
+	  if(validateFieldInput(infoarr[1].trim(),criteria,infoarr[0])==false){
+	  return false
+	  }
+	}
+    
+    
+    }
+  
+	
+    return true;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+var button='<button class="close" type="button" title="Remove this tab">×</button>';
+var tabID = 1;
+
+function resetTab(id){
+  var tabs=$("#tab-list li:not(:first)");
+  var len=1
+    $(tabs).each(function(k,v){
+      len++;
+    })
+    len++;
+    var displayedchildren = document.getElementById("display-filter-list").childElementCount;
+    if (id <= len && displayedchildren >= id)
+      {
+	//console.log("Calling delfilter"+id);
+	delFilterInfo(id);
+      }
+
+    len=1
+      $(tabs).each(function(k,v){
+	len++;
+	$(this).find('a').html('Filter ' + len + button);
+      })
+      tabID--;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+$(document).ready(function() {
+  $('#example-dataprovider').multiselect();
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+$(document).ready(function() {
+  $('#example-single').multiselect();
+  $('#example-post').multiselect(
+				 { 
+				  
+				   numberDisplayed: 5,
+						      enableFiltering: false,
+						      onChange: function(option, checked, select) {
+				     if (checked === true)
+				       {
+					 console.log('checked');
+					 if (option.val() == 'All attributes')
+					   {
+					     // Deselect all others
+					     $('#example-post').multiselect('deselectAll');
+					     $('#example-post').multiselect('select', ['All attributes']);
+					     $('#example-post').multiselect('refresh');
+					     conditionoptions = [];
+					     conditionoptions.push(
+								   {label:'All attributes', title: 'All attributes', value: 'allcolumns', selected: true}
+								   );
+					   }
+					 else if (option.val() == 'Default')
+					   {
+					     // Deselect all others
+					     $('#example-post').multiselect('deselectAll');
+					     $('#example-post').multiselect('select', ['Default']);
+					     $('#example-post').multiselect('refresh');
+					     conditionoptions = [];
+					     conditionoptions.push(
+								   {label:'Default', title: 'Default', value: 'default', selected: true}
+								   );
+
+					   }
+					 else
+					   {
+					     conditionoptions.push(
+								   {label:$(option).val(), title: $(option).val(), value: $(option).val(), selected: false}
+								   );
+					     $('#example-post').multiselect('deselect', ['All attributes','Default']);
+					     $('#example-post').multiselect('refresh');
+					   }
+
+				       }
+				     else
+				       {
+					 var tag;
+					 for (var i = 0; i < conditionoptions.length; i++) 
+					   {
+					     tag=conditionoptions[i];
+					     //     console.log(conditionoptions[i]);
+					     //console.log(tag['label']);
+					     if (tag['label'] === $(option).val())
+					       {
+						 conditionoptions.splice(i,1);
+						 break;
+					       }
+					   }
+				       }
+				     $('#example-dataprovider').multiselect('dataprovider', conditionoptions);
+				     $('#example-dataprovider').multiselect('rebuild');
+
+				   },
+
+												    buttonWidth: '250px'
+													});
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+  $('#example-reset-form').on('reset', function() {
+    $('#example-reset option:selected').each(function() {
+      $(this).prop('selected', false);
+    })
+	  
+      $('#example-reset').multiselect();
+  });
+
+  $('#example-reset-button').on('click', function() {
+    resetForm();
+  });
+});
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+var conditionoptions = [];
+
+var primitivevaluetypes={};
+{% for result in attritypes %}
+primitivevaluetypes["{{result[0]|safe }}"]="{{result[1]|safe }}"
+{% endfor %}
+
+var datagroups={};
+{% for result in datagroups %}
+datagroups["{{result[0]|safe }}"]=datagroups["{{result[0]|safe }}"]+"{{result[1]|safe }}";
+{% endfor %}
+
+var datadict={};
+{% for key, value in datadict.iteritems() %}
+    datadict["{{key}}"]="{{ value}}";
+{% endfor %}
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function tabSelected(id)
+{
+  // Remove all displays
+  
+  $('#restable').show();
+   $("#itab5").hide();
+  $("#itab6").hide();
+  //$("#tab7").hide();
+  
+  var ul = document.getElementById("display-filter-list");
+  while (ul.firstChild) 
+    {
+      ul.removeChild(ul.firstChild);
+    }
+
+
+  // Loop over tabs and add info to display
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+      var info=getTabInfo(i);
+      addFilterInfo(tabID,info)
+	}
+
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getAttribute(element,name,value)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log ("comparing:"+element.attributes[i].value + "="+ value);
+	  if (element.attributes[i].value == value)
+	    {
+	      //console.log("true");
+	      return element.attributes[i].value;
+	    }
+	}
+    }
+  return undefined;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getElementByNameHelper(srcnode,name,value)
+{
+  if (srcnode)
+    {
+      if(!srcnode.nodeName || !(/#text/i.test(srcnode.nodeName)))
+	{
+	  //    console.log(srcnode.attributes);
+	  if (srcnode.attributes && srcnode.attributes.length> 0)
+	    {   
+	      if (getAttribute(srcnode,name,value))
+		{
+		  //console.log("Helper true");
+		  return srcnode;
+		}
+	    }
+	  
+	  if (srcnode.firstChild)
+	    {
+	      var result = getElementByNameHelper(srcnode.firstChild,name,value);
+	      if (result)
+		{
+		  return result;
+		}
+	    }
+	}
+      if (srcnode.nextSibling)
+	{
+	  var result = getElementByNameHelper(srcnode.nextSibling,name,value);
+	  if (result)
+	    {
+	      return result;
+	    }
+	}
+    }
+  return false;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// Tab info is the list of filters above the submit button
+function getTabInfo(tabno,raw)
+{
+  // Find id tab-content
+  // Loop over all children tab-pane
+  // Find name coltomatch
+  // Find name condition
+  // Find name matchstring
+
+
+
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+      //console.log(tabpanes[i]);
+
+      if (tabno == i)
+	{
+	  var coltomatchnode  = getElementByNameHelper(tabpanes[i],"name","coltomatch");
+	  var coltomatchstring=coltomatchnode.options[coltomatchnode.selectedIndex].text
+
+	    var conditionnode   = getElementByNameHelper(tabpanes[i],"name","condition");
+	  var conditionstring=conditionnode.options[conditionnode.selectedIndex].text
+
+	    var matchstringnode = getElementByNameHelper(tabpanes[i],"name","matchstring");
+	  var matchstring="";
+	  if (matchstringnode.tagName == "INPUT")
+	    {
+	      matchstring=matchstringnode.value;
+	    }
+	  else
+	    {
+	      matchstring=matchstringnode.options[matchstringnode.selectedIndex].text
+	    }
+	  if (raw)
+	    {
+	      return (i+1)+" : "+coltomatchstring.replaceAll("_"," ")+":"+conditionstring+":"+matchstring;
+	    }
+	  else
+	    {
+	      return "Filter "+(i+1)+" : "+coltomatchstring+" "+conditionstring+" "+matchstring;
+	    }
+	}
+    }
+  return false;
+	  
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function addFilterInfo(tabno,info)
+{
+  var ul = document.getElementById("display-filter-list");
+  var li = document.createElement("li");
+  var displayedchildren = ul.childElementCount;
+  var tabs=$("#tab-list li:not(:first)");
+  var len=1
+    $(tabs).each(function(k,v){
+      len++;
+    })
+    len++;
+    // Special case: we have one displayed item and tablist is one as well
+    // Adding a new filter should only reevaluate the existing filter, not add a second.
+    // We delete the existing and add a fresh
+    if (len == 2 && displayedchildren == 1)
+      {
+	ul.removeChild(ul.getElementsByTagName('li')[0]);
+      }
+    li.appendChild(document.createTextNode(info));
+    ul.appendChild(li);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function delFilterInfo(id)
+{
+  var ul = document.getElementById("display-filter-list");
+  var items = ul.getElementsByTagName("li");
+  var count=1
+    for (var i = 0; i < items.length; ++i) 
+      {
+	//console.log("li"+items[i])
+	if (count == id)
+	{
+	  items[i].parentNode.removeChild(items[i]);
+	  return
+	}
+	count+=1
+      }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+$(document).ready(function() {
+  $('#btn-add-tab').click(function() {
+    if(tabID==10){
+	alert("The maximum number of filters is 10");
+	return
+	}
+	tabID++;
+	
+    var conditiondiv='<div class="form-group"><label class="col-sm-4 control-label">Select attribute:</label><div class="col-sm-6" style="padding-top: 10px;"> <select id="example-singlecolumn-' + tabID + '" name="coltomatch" class="coltomatch" onchange=\'columnchanged("example-singlecolumn-' + tabID+'",' + tabID+');\'>{% for result,view_result in attributes %} <option value="{{result|safe }}">{{view_result|safe }}</option> {% endfor %} </select>	</div></div> <div class="form-group"><label class="col-sm-4 control-label">Comparison criterion:</label> <div class="col-sm-6"> <select id="example-singlecondition-' + tabID + '" name="condition" onchange=\'conditionchanged("example-singlecondition-' + tabID + '",' + tabID + ',"example-singlecolumn-' + tabID + '");\'><option value="match">Matches</option> </select> </div> </div>         <div class="form-group"> <label class="col-sm-4 control-label">Value:</label> <div class="col-sm-6" id="input-group-' + tabID + '"><input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-' + tabID + '" /> </div> </div>' ;  
+    $('#tab-list').append($('<li><a href="#tab' + tabID + '" role="tab" data-toggle="tab" onclick="tabSelected(' + tabID + ');">Filter ' + tabID + '<button class="close" type="button" title="Remove this tab">×</button></a></li>'));
+    $('#tab-content').append($('<div class="tab-pane fade" id="tab' + tabID + '">'+ conditiondiv +'</div>'));
+
+    tabSelected(tabID);
+    //show new tab
+    var ul = document.getElementById("tab-list");
+    var items = ul.getElementsByTagName("li");
+    var count=1
+      var thistab=tabID;
+	  
+    for (var i = 0; i < items.length; ++i) 
+      {
+	if (count == thistab)
+	  {
+	    items[i].firstChild.click();
+		
+		//var divs = document.querySelectorAll('div.col-sm-6 option[value=Town_or_City]');
+		//for (i = 0; i < divs.length; ++i) {
+		//divs[i].text ='Village, Town or City';
+		//}
+		//document.getElementById('example-singlecondition-').getElementsByTagName('option')[1].text="Not Matching";
+		
+	    return
+	      }
+	count+=1
+	  }
+  });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+  $('#tab-list').on('click', '.close', function() {
+    var tabID = $(this).parents('a').attr('href');
+    var tabhtmlID = $(this).parents('a').text();
+    var filterid=tabhtmlID.substring(7,(tabhtmlID.length-1));    
+    $(this).parents('li').remove();
+    $(tabID).remove();
+
+    //display first tab
+    var tabFirst = $('#tab-list a:first');
+    resetTab(filterid); 
+    tabFirst.tab('show');
+  });
+
+  var list = document.getElementById("tab-list");
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function setupCriteriaGroup(datatype,tabid)
+{
+  //console.log("dt"+datatype);
+  //console.log("options:"+datagroups[datatype]);
+  //console.log("tabid"+tabid);
+  //console.log("");
+  var div = document.getElementById("input-group-"+tabid);
+
+  var xmldatatypes=['string','integer','positiveInteger','date','boolean','decimal'];
+
+  //-- Supplied by implemented datatypes
+{{widgets|safe}}
+
+{{widgetcodes|safe }}
+
+
+
+  while (div.firstChild) 
+    {	
+      div.removeChild(div.firstChild);
+    }
+
+
+  if (xmldatatypes.includes(datatype))
+    {
+      div.innerHTML=
+	'<input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-' + tabID + '"/>';
+	  
+    }
+  else if (datatype in widgets)
+    { 
+      htmlid='example-singlecriteria-' + tabID ;
+      console.log('in widgets');
+      if (widgetcode[datatype].length > 0)
+        {
+	  console.log('2in widgets');
+          var script = document.createElement("script");
+          script.type = "text/javascript";
+          script.text=widgetcode[datatype].replaceAll("${ID}",htmlid).replaceAll("#","\n");
+         }
+
+      div.innerHTML= widgets[datatype].replaceAll("${ID}",htmlid);
+      console.log(div);
+
+      if (widgetcode[datatype].length > 0)
+        {
+           div.appendChild(script);
+          console.log('script added');
+        }
+    }
+    else if(datatype=='Primary_provenance_of_data'){
+    div.innerHTML=
+	'<select id="example-singlecriteria-' + tabID + '"  name="matchstring">'+
+	datagroups[datatype] +
+	"<option value='New'>New</option></select>";
+    }
+  else
+    {
+      div.innerHTML=
+	'<select id="example-singlecriteria-' + tabID + '"  name="matchstring" style="max-width:90%;">'+
+	datagroups[datatype] +
+	'</select>';
+    }
+    
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function columnchanged(colid,tabid)
+{
+{% for result in conditiontypes %}
+   {{result|safe }}
+{% endfor %}
+
+
+
+  var e = document.getElementById(colid);
+  
+  var f = e.options[e.selectedIndex].value;
+
+  var condid=colid.replace("singlecolumn","singlecondition");
+  var condition = document.getElementById(condid);
+  var thisdtype=primitivevaluetypes[f];
+  var rangetype="defRange"+f;
+  var showtype='other';
+
+
+
+  if (rangetype in datadict)
+     {
+       showtype=datadict[rangetype];
+	   
+     }
+  else if (f in conditiontypes)
+   {
+    showtype=f;
+    
+	
+	
+   }
+  else if (thisdtype in conditiontypes)
+   {
+    showtype=thisdtype;
+	if(f=="Deprivation_index"){
+	showtype="Visitor_Numbers_Data";
+	}
+   }
+//alert(showtype);
+   while (condition.options.length > 0)
+	{
+	  condition.remove(condition.options.length - 1);
+	}
+   
+   var ctypes=conditiontypes[showtype];
+   //alert(ctypes)
+    
+   for (var i = 0; i < ctypes.length; ++i) 
+          {
+         
+            var carr=ctypes[i].split(":");
+             //alert(f);
+             //alert(carr[1]);
+             if(f!='Admin_Area'){
+             condition.appendChild(new Option(carr[0], carr[1]));
+             }
+             else if(carr[0]!='Not Matching'){
+             condition.appendChild(new Option(carr[0], carr[1]));
+             }
+             else{}
+	    
+          }
+
+  // ** This is a List type so we want to set up the criteria field as well
+  // alert('hi');
+  setupCriteriaGroup(thisdtype,tabid);
+  //alert('lo');
+  if(e.value=="Year_opened"||e.value=="Year_closed"||e.value=="Year_exists"){
+  document.getElementById("example-singlecriteria-"+tabid).placeholder="YYYY";}
+   
+if(e.value=="Governance"){
+
+document.getElementById("example-singlecriteria-"+tabid).options[1].innerHTML = "&emsp;"+"Cadw";
+document.getElementById("example-singlecriteria-"+tabid).options[2].innerHTML = "&emsp;"+"Local Authority";
+document.getElementById("example-singlecriteria-"+tabid).options[3].innerHTML = "&emsp;"+"National";
+document.getElementById("example-singlecriteria-"+tabid).options[4].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[6].innerHTML = "&emsp;"+"English Heritage";
+document.getElementById("example-singlecriteria-"+tabid).options[7].innerHTML = "&emsp;"+"Historic Environment Scotland";
+document.getElementById("example-singlecriteria-"+tabid).options[8].innerHTML = "&emsp;"+"National Trust";
+document.getElementById("example-singlecriteria-"+tabid).options[9].innerHTML = "&emsp;"+"National Trust for Scotland";
+document.getElementById("example-singlecriteria-"+tabid).options[10].innerHTML = "&emsp;"+"Not for profit";
+document.getElementById("example-singlecriteria-"+tabid).options[11].innerHTML = "&emsp;"+"Private";
+document.getElementById("example-singlecriteria-"+tabid).options[12].innerHTML = "&emsp;"+"Unknown";
+}   
+if(e.value=="Subject_Matter"){
+
+document.getElementById("example-singlecriteria-"+tabid).options[1].innerHTML = "&emsp;"+"Greek and Egyptian";
+document.getElementById("example-singlecriteria-"+tabid).options[2].innerHTML = "&emsp;"+"Medieval";
+document.getElementById("example-singlecriteria-"+tabid).options[3].innerHTML = "&emsp;"+"Mixed";
+document.getElementById("example-singlecriteria-"+tabid).options[4].value = "Archaeology-Prehistory";
+document.getElementById("example-singlecriteria-"+tabid).options[4].innerHTML = "&emsp;"+"Prehistory";
+document.getElementById("example-singlecriteria-"+tabid).options[5].value = "Archaeology-Roman";
+document.getElementById("example-singlecriteria-"+tabid).options[5].innerHTML = "&emsp;"+"Roman";
+document.getElementById("example-singlecriteria-"+tabid).options[6].value = "Archaeology-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[6].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[8].innerHTML = "&emsp;"+"Ceramics";
+document.getElementById("example-singlecriteria-"+tabid).options[9].innerHTML = "&emsp;"+"Costume and Textiles";
+document.getElementById("example-singlecriteria-"+tabid).options[10].innerHTML = "&emsp;"+"Crafts";
+document.getElementById("example-singlecriteria-"+tabid).options[11].innerHTML = "&emsp;"+"Design";
+document.getElementById("example-singlecriteria-"+tabid).options[12].innerHTML = "&emsp;"+"Fine and decorative arts";
+document.getElementById("example-singlecriteria-"+tabid).options[13].innerHTML = "&emsp;"+"Glass";
+document.getElementById("example-singlecriteria-"+tabid).options[14].innerHTML = "&emsp;"+"Literature";
+document.getElementById("example-singlecriteria-"+tabid).options[15].innerHTML = "&emsp;"+"Music";
+document.getElementById("example-singlecriteria-"+tabid).options[16].value = "Arts-Photography";
+document.getElementById("example-singlecriteria-"+tabid).options[16].innerHTML = "&emsp;"+"Photography";
+document.getElementById("example-singlecriteria-"+tabid).options[17].value = "Arts-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[17].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[19].innerHTML = "&emsp;"+"Church treasuries";
+document.getElementById("example-singlecriteria-"+tabid).options[20].innerHTML = "&emsp;"+"Ethnic group";
+document.getElementById("example-singlecriteria-"+tabid).options[21].innerHTML = "&emsp;"+"Freemasons";
+document.getElementById("example-singlecriteria-"+tabid).options[22].value = "Belief_and_identity-Religion";
+document.getElementById("example-singlecriteria-"+tabid).options[22].innerHTML = "&emsp;"+"Religion";
+document.getElementById("example-singlecriteria-"+tabid).options[23].value = "Belief_and_identity-Religious_Buildings";
+document.getElementById("example-singlecriteria-"+tabid).options[23].innerHTML = "&emsp;"+"Religious Buildings";
+document.getElementById("example-singlecriteria-"+tabid).options[24].value = "Belief_and_identity-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[24].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[26].innerHTML = "&emsp;"+"Civic";
+document.getElementById("example-singlecriteria-"+tabid).options[27].innerHTML = "&emsp;"+"Houses";
+document.getElementById("example-singlecriteria-"+tabid).options[28].innerHTML = "&emsp;"+"&emsp;"+"Large houses";
+document.getElementById("example-singlecriteria-"+tabid).options[29].innerHTML = "&emsp;"+"&emsp;"+"Medium houses";
+document.getElementById("example-singlecriteria-"+tabid).options[30].innerHTML = "&emsp;"+"&emsp;"+"Small houses";
+document.getElementById("example-singlecriteria-"+tabid).options[31].value = "Buildings-Palace";
+document.getElementById("example-singlecriteria-"+tabid).options[31].innerHTML = "&emsp;"+"Palace";
+document.getElementById("example-singlecriteria-"+tabid).options[32].value = "Buildings-Penal";
+document.getElementById("example-singlecriteria-"+tabid).options[32].innerHTML = "&emsp;"+"Penal";
+document.getElementById("example-singlecriteria-"+tabid).options[33].value = "Buildings-School";
+document.getElementById("example-singlecriteria-"+tabid).options[33].innerHTML = "&emsp;"+"School";
+document.getElementById("example-singlecriteria-"+tabid).options[34].value = "Buildings-Shops";
+document.getElementById("example-singlecriteria-"+tabid).options[34].innerHTML = "&emsp;"+"Shops";
+document.getElementById("example-singlecriteria-"+tabid).options[35].value = "Buildings-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[35].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[37].value = "Communications-Post";
+document.getElementById("example-singlecriteria-"+tabid).options[37].innerHTML = "&emsp;"+"Post";
+document.getElementById("example-singlecriteria-"+tabid).options[38].value = "Communications-Radio";
+document.getElementById("example-singlecriteria-"+tabid).options[38].innerHTML = "&emsp;"+"Radio";
+document.getElementById("example-singlecriteria-"+tabid).options[39].value = "Communications-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[39].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[42].innerHTML = "&emsp;"+"Clocks and watches";
+document.getElementById("example-singlecriteria-"+tabid).options[43].innerHTML = "&emsp;"+"Industrial life";
+document.getElementById("example-singlecriteria-"+tabid).options[44].innerHTML = "&emsp;"+"Metals";
+document.getElementById("example-singlecriteria-"+tabid).options[45].innerHTML = "&emsp;"+"Mining and quarrying";
+document.getElementById("example-singlecriteria-"+tabid).options[46].innerHTML = "&emsp;"+"Mixed";
+document.getElementById("example-singlecriteria-"+tabid).options[47].value = "Industry_and_manufacture-Potteries";
+document.getElementById("example-singlecriteria-"+tabid).options[47].innerHTML = "&emsp;"+"Potteries";
+document.getElementById("example-singlecriteria-"+tabid).options[48].value = "Industry_and_manufacture-Print";
+document.getElementById("example-singlecriteria-"+tabid).options[48].innerHTML = "&emsp;"+"Print";
+document.getElementById("example-singlecriteria-"+tabid).options[49].value = "Industry_and_manufacture-Steam_and_engines";
+document.getElementById("example-singlecriteria-"+tabid).options[49].innerHTML = "&emsp;"+"Steam and engines";
+document.getElementById("example-singlecriteria-"+tabid).options[50].value = "Industry_and_manufacture-Textiles";
+document.getElementById("example-singlecriteria-"+tabid).options[50].innerHTML = "&emsp;"+"Textiles";
+document.getElementById("example-singlecriteria-"+tabid).options[51].value = "Industry_and_manufacture-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[51].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[53].innerHTML = "&emsp;"+"Cricket";
+document.getElementById("example-singlecriteria-"+tabid).options[54].innerHTML = "&emsp;"+"Fairgrounds and amusements";
+document.getElementById("example-singlecriteria-"+tabid).options[55].innerHTML = "&emsp;"+"Film, Cinema and TV";
+document.getElementById("example-singlecriteria-"+tabid).options[56].value = "Leisure_and_sport-Rugby_and_football";
+document.getElementById("example-singlecriteria-"+tabid).options[56].innerHTML = "&emsp;"+"Rugby and football";
+document.getElementById("example-singlecriteria-"+tabid).options[57].value = "Leisure_and_sport-Toys_and_models";
+document.getElementById("example-singlecriteria-"+tabid).options[57].innerHTML = "&emsp;"+"Toys and models";
+document.getElementById("example-singlecriteria-"+tabid).options[58].value = "Leisure_and_sport-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[58].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[61].innerHTML = "&emsp;"+"Hospital";
+document.getElementById("example-singlecriteria-"+tabid).options[62].value = "Medicine_and_health-Professional_association";
+document.getElementById("example-singlecriteria-"+tabid).options[62].innerHTML = "&emsp;"+"Professional association";
+document.getElementById("example-singlecriteria-"+tabid).options[63].value = "Medicine_and_health-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[63].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[65].innerHTML = "&emsp;"+"Bygones";
+document.getElementById("example-singlecriteria-"+tabid).options[66].innerHTML = "&emsp;"+"Encyclopaedic";
+document.getElementById("example-singlecriteria-"+tabid).options[67].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[69].innerHTML = "&emsp;"+"Dinosaurs";
+document.getElementById("example-singlecriteria-"+tabid).options[70].innerHTML = "&emsp;"+"Fossils";
+document.getElementById("example-singlecriteria-"+tabid).options[71].innerHTML = "&emsp;"+"Geology";
+document.getElementById("example-singlecriteria-"+tabid).options[72].innerHTML = "&emsp;"+"Herbaria and gardening";
+document.getElementById("example-singlecriteria-"+tabid).options[73].innerHTML = "&emsp;"+"Mixed";
+document.getElementById("example-singlecriteria-"+tabid).options[74].value = "Natural_world-Zoology";
+document.getElementById("example-singlecriteria-"+tabid).options[74].innerHTML = "&emsp;"+"Zoology";
+document.getElementById("example-singlecriteria-"+tabid).options[75].value = "Natural_world-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[75].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[78].innerHTML = "&emsp;"+"Art";
+document.getElementById("example-singlecriteria-"+tabid).options[79].innerHTML = "&emsp;"+"Explorer";
+document.getElementById("example-singlecriteria-"+tabid).options[80].innerHTML = "&emsp;"+"Literary";
+document.getElementById("example-singlecriteria-"+tabid).options[81].innerHTML = "&emsp;"+"Music";
+document.getElementById("example-singlecriteria-"+tabid).options[82].value = "Personality-Political";
+document.getElementById("example-singlecriteria-"+tabid).options[82].innerHTML = "&emsp;"+"Political";
+document.getElementById("example-singlecriteria-"+tabid).options[83].value = "Personality-Religious";
+document.getElementById("example-singlecriteria-"+tabid).options[83].innerHTML = "&emsp;"+"Religious";
+document.getElementById("example-singlecriteria-"+tabid).options[84].value = "Personality-Scientific";
+document.getElementById("example-singlecriteria-"+tabid).options[84].innerHTML = "&emsp;"+"Scientific";
+document.getElementById("example-singlecriteria-"+tabid).options[85].value = "Personality-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[85].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[87].innerHTML = "&emsp;"+"Farming";
+document.getElementById("example-singlecriteria-"+tabid).options[88].innerHTML = "&emsp;"+"Forges";
+document.getElementById("example-singlecriteria-"+tabid).options[89].value = "Rural_Industry-Rural_life";
+document.getElementById("example-singlecriteria-"+tabid).options[89].innerHTML = "&emsp;"+"Rural Life";
+document.getElementById("example-singlecriteria-"+tabid).options[90].value = "Rural_Industry-Textiles";
+document.getElementById("example-singlecriteria-"+tabid).options[90].innerHTML = "&emsp;"+"Textiles";
+document.getElementById("example-singlecriteria-"+tabid).options[91].value = "Rural_Industry-Watermills";
+document.getElementById("example-singlecriteria-"+tabid).options[91].innerHTML = "&emsp;"+"Watermills";
+document.getElementById("example-singlecriteria-"+tabid).options[92].value = "Rural_Industry-Windmills";
+document.getElementById("example-singlecriteria-"+tabid).options[92].innerHTML = "&emsp;"+"Windmills";
+document.getElementById("example-singlecriteria-"+tabid).options[93].value = "Rural_Industry-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[93].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[95].innerHTML = "&emsp;"+"Computing and gaming";
+document.getElementById("example-singlecriteria-"+tabid).options[96].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[98].innerHTML = "&emsp;"+"Boats and ships";
+document.getElementById("example-singlecriteria-"+tabid).options[99].innerHTML = "&emsp;"+"Fishing";
+document.getElementById("example-singlecriteria-"+tabid).options[100].innerHTML = "&emsp;"+"Lighthouses";
+document.getElementById("example-singlecriteria-"+tabid).options[101].innerHTML = "&emsp;"+"Mixed";
+document.getElementById("example-singlecriteria-"+tabid).options[102].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[104].innerHTML = "&emsp;"+"Fire";
+document.getElementById("example-singlecriteria-"+tabid).options[105].value = "Services-Police";
+document.getElementById("example-singlecriteria-"+tabid).options[105].innerHTML = "&emsp;"+"Police";
+document.getElementById("example-singlecriteria-"+tabid).options[106].value = "Services-RNLI";
+document.getElementById("example-singlecriteria-"+tabid).options[106].innerHTML = "&emsp;"+"RNLI";
+document.getElementById("example-singlecriteria-"+tabid).options[107].value = "Services-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[107].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[109].innerHTML = "&emsp;"+"Aviation";
+document.getElementById("example-singlecriteria-"+tabid).options[110].innerHTML = "&emsp;"+"Bicycles";
+document.getElementById("example-singlecriteria-"+tabid).options[111].innerHTML = "&emsp;"+"Busses and Trams";
+document.getElementById("example-singlecriteria-"+tabid).options[112].innerHTML = "&emsp;"+"Canals";
+document.getElementById("example-singlecriteria-"+tabid).options[113].innerHTML = "&emsp;"+"Cars and Motorbikes";
+document.getElementById("example-singlecriteria-"+tabid).options[114].innerHTML = "&emsp;"+"Mixed";
+document.getElementById("example-singlecriteria-"+tabid).options[115].value = "Transport-Trains_and_railways";
+document.getElementById("example-singlecriteria-"+tabid).options[115].innerHTML = "&emsp;"+"Trains and railways";
+document.getElementById("example-singlecriteria-"+tabid).options[116].value = "Transport-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[116].innerHTML = "&emsp;"+"Other";
+
+document.getElementById("example-singlecriteria-"+tabid).options[118].innerHTML = "&emsp;"+"Gas and electricity";
+document.getElementById("example-singlecriteria-"+tabid).options[119].innerHTML = "&emsp;"+"Water and waste";
+
+document.getElementById("example-singlecriteria-"+tabid).options[121].innerHTML = "&emsp;"+"Airforce";
+document.getElementById("example-singlecriteria-"+tabid).options[122].innerHTML = "&emsp;"+"Bunker";
+document.getElementById("example-singlecriteria-"+tabid).options[123].innerHTML = "&emsp;"+"Castles and forts";
+document.getElementById("example-singlecriteria-"+tabid).options[124].innerHTML = "&emsp;"+"Event or site";
+document.getElementById("example-singlecriteria-"+tabid).options[125].innerHTML = "&emsp;"+"Military";
+document.getElementById("example-singlecriteria-"+tabid).options[126].innerHTML = "&emsp;"+"Navy";
+document.getElementById("example-singlecriteria-"+tabid).options[127].value = "War_and_conflict-Regiment";
+document.getElementById("example-singlecriteria-"+tabid).options[127].innerHTML = "&emsp;"+"Regiment";
+document.getElementById("example-singlecriteria-"+tabid).options[128].value = "War_and_conflict-Other";
+document.getElementById("example-singlecriteria-"+tabid).options[128].innerHTML = "&emsp;"+"Other";
+document.getElementById("example-singlecriteria-1").append(document.getElementById("example-singlecriteria-"+tabid).options[76]);
+
+}
+}
+
+function conditionchanged(conid,tabid,colid)
+{
+var e = document.getElementById(conid);
+//alert(e.value);
+var x = document.getElementById(colid);
+ if(x.value=="Year_opened"||x.value=="Year_closed"||x.value=="Year_exists"){
+  if(e.value=="BET"||e.value=="BE"||e.value=="PBET"||e.value=="PBE"){
+  document.getElementById("example-singlecriteria-"+tabid).placeholder="YYYY:YYYY";}
+  else{
+  document.getElementById("example-singlecriteria-"+tabid).placeholder="YYYY";}
+  
+  
+  }
+  
+
+}
+//document.getElementById("tab5tab").classList.add('active'); 
+
+$("#restable").hide();
+$("#itab6").hide();
+///$("#tab7").hide();
+//document.querySelector('div.col-sm-6 option[value=Town_or_City]').text ='Village, Town or City';
+//document.getElementById('example-singlecondition-1').getElementsByTagName('option')[1].text="Not Matching";
+	</script>
+	{% endblock %}
+
+
+      </div>
+
+
+

@@ -1,0 +1,101 @@
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function backFunction()
+{
+window.location.href = "./meetings.html";
+}
+
+</script>
+
+<style>
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+#myBackBtn {
+  display: block;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+</style>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="backFunction()" id="myBackBtn" title="Go to index">Back</button>
+
+<div class="page-header">
+    <h1>Minutes Sep 12 2017</h1>
+</div>
+
+<p/>
+
+<h2>Actions</h2>
+<pre>
+Columns to be merged:
+1. Year of foundation and year of opening.
+Where there is no year in ~year open~ column the date for foundation year should be copied over and an ~f~ put in the~ year open source~ column. 
+2. The subject matter and collections tags column so that it reads 
+Main subject / sub category e.g. Transport / planes
+3. Governance. So it reads Independent / English heritage etc. 
+Nick to consolidate columns, and pass back to Jamie prior to major upload of new data. 
+
+</pre>
+
+<h2>Things to be considered at future date:</h2>
+<pre>
+Making the use of visualisation tools on map more consistent. So markers and heat maps are available on all sections as appropriate. 
+Possible deletion of clusters. 
+Having an add function where instead of filtering down, two searches could be added together e.g. Independent / English Heritage 
+added to Independent / National trust; or Transport / Aviation added to Military/AirForce
+</pre>
+
+<h2>Decisions make (with Stef Dickers)</h2>
+<pre>
+Birkbeck to host website
+Bishopsgate to keep all material ephemera including hard copies of spread
+ sheets, to digitise, archive and catalogue. 
+Website to have a link through to Bishopsgate catalogue - but for them to remain 
+separate sites.
+BBK website to have snippets of interviews etc with full transcripts available 
+online via Bishopsgate. 
+Web development to be split so that we have a workable website that is 
+password protected and then towards end of project all links to B~gate material
+and additional features finished, ready for launch. 
+</pre>

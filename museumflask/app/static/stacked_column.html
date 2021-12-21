@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="geometry" content="line">
+  <link rel="stylesheet" href="/static/g2/assets/common.css">
+  <title>Line Plot</title>
+   <style type="text/css">
+    #canvas .g2-tooltip {
+      background: none!important;
+      padding: 0!important;
+    }
+  </style>
+</head>
+
+<body>
+<div id="mountNode"></div>
+
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+
+  <script src="/static/g2/g2.js"></script>
+  <script src="/static/g2/assets/data-set.min.js"></script>
+  <script>
+
+ const data = [
+    { country: 'Europe', year: '1750', value: 163 },
+    { country: 'Europe', year: '1800', value: 203 },
+    { country: 'Europe', year: '1850', value: 276 },
+    { country: 'Europe', year: '1900', value: 408 },
+    { country: 'Europe', year: '1950', value: 547 },
+    { country: 'Europe', year: '1999', value: 729 },
+    { country: 'Europe', year: '2050', value: 628 },
+    { country: 'Europe', year: '2100', value: 828 },
+    { country: 'Asia', year: '1750', value: 502 },
+    { country: 'Asia', year: '1800', value: 635 },
+    { country: 'Asia', year: '1850', value: 809 },
+    { country: 'Asia', year: '1900', value: 947 },
+    { country: 'Asia', year: '1950', value: 1402 },
+    { country: 'Asia', year: '1999', value: 3634 },
+    { country: 'Asia', year: '2050', value: 5268 },
+    { country: 'Asia', year: '2100', value: 7268 },
+    { country: 'Americs', year: '1750', value: 02 },
+    { country: 'Americs', year: '1800', value: 35 },
+    { country: 'Americs', year: '1850', value: 09 },
+    { country: 'Americs', year: '1900', value: 47 },
+    { country: 'Americs', year: '1950', value: 402 },
+    { country: 'Americs', year: '1999', value: 634 },
+    { country: 'Americs', year: '2050', value: 268 },
+    { country: 'Americs', year: '2100', value: 268 }
+  ];
+  const ds = new DataSet();
+  const dv = ds.createView()
+    .source(data)
+    .transform({
+      type: 'percent',
+      field: 'value',      
+      dimension: 'country', 
+      groupBy: [ 'year' ], 
+      as: 'percent'
+    });
+
+  const chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: window.innerHeight
+  });
+  chart.source(dv, {
+    percent: {
+      min: 0,
+      formatter(val) {
+        return (val * 100).toFixed(2) + '%';
+      }
+    }
+  });
+  chart.intervalStack()
+    .position('year*percent')
+    .color('country');
+  chart.render();
+
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function backFunction()
+{
+window.location.href = "./meetings.html";
+}
+
+</script>
+
+<style>
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+#myBackBtn {
+  display: block;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+</style>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="backFunction()" id="myBackBtn" title="Go to index">Back</button>
+
+<div class="page-header">
+    <h1>Minutes May 16</h1>
+</div>
+
+<p/>
+<h2>Review</h2>
+<ul>
+<li>Nick has been busy automating the creation of a conceptual model from the spreadsheet (done).<li/>
+<li>New spreadsheet to be loaded into database after completion of lat/lon and removal off data
+quality issues in columns.</li>
+<li>Nick provided Jamie with data quality issues report.</li>
+</ul>
+
+<h2>Discussion</h2>
+<ul>
+<li>Discuss a what if function e.g. if castles were all considered military what would the data look like? </li>
+<li>Discuss notion of complex models (any overlap between FCs and APs notions of complexity?)</li>
+<li>We reviewed research questions and possible visualisations for answering the questions.</li>
+</ul>
+
+<h2>Agreed</h2>
+Blips in data to be blanked out until correct data is forthcoming
+
+<h2>Actions</h2>
+<ul><li>Nick</li>
+     <ul>
+       <li> Keep list of actions agreed upon, date proposed, date for planned completion, actual completion (and also person to complete action?)</li>
+       <li>Nick to add Northern Ireland postcodes to database (est completion this week) </li>
+       <li>Add earliest known date open column to excel sheet/database (est completion this week) (JL/NL)</li>
+     </ul>
+    <li>Fiona</li>
+     <ul>
+       <li>Provide full list of events (FC /JL)</li>
+     </ul>
+</ul>
+
+<h2>Next meeting</h2>
+<ul>
+<li>Map visualisations</li>
+<li>Historical slider for us on map </li>
+</ul>
+<h3>JL<h3>
+<pre>
+
+Museum events
+
+1). Year museum opened to the public
+
+2). Year museum closed to the public
+
+3). Physical museum changes:
+
+amalgamation: two museums close and one new museum opens 
+merge: one museum joins (merges into) another museum
+group: two (or more) museums are formed into a larger entity
+
+4). Change of museum location (e.g. move from Doncaster to York)
+
+5). Change of museum governance status (e.g. local authority to independent)
+
+</pre>
+
+<h3>FC<h3>
+<pre>
+Research questions re database
+
+Our over-arching questions are: 
+What are the long-term trends in the development of independent museums?
+What factors prompted and facilitated the massive increase in numbers of independent museums? 
+Were the new independent museums symptomatic of wider cultural concerns and, if so, what?
+How has the independent museums sector changed since 1989 and why?
+
+More specifically we will ask:
+Did independent museums open in different regions at different times? 
+[numbers of museums opening in each region /county / nation according to date]
+
+Are there areas where no or very few museums opened or survived? 
+[total numbers of museums in each region] 
+
+What are the most common topics of exhibition and have these changed?
+[numbers according to subject matter at different points in time]
+
+Is there a relationship between the subject of exhibition and when and where the museum opened? 
+[numbers of museums according to subject matter in each region / county / nation at different points in time
+
+Did the museums that closed share in any commonalities of location, date, size, subject matter, or other factors? 
+[numbers of closed museum according to location / date of closure, 
+
+Do patterns in the emergence, location, subject matter, and closure of independent museums correlate to other national and local factors including: transport networks, employment, tourism, property prices, funding, and the presence of public-sector museums? 
+[NB so these all require comparative outputs rather than tables of lists]
+
+Research questions in detail
+
+Numbers
+How many museums are there in 1960? Of what type? Covering which subjects? Where? How does that change?
+
+How many museums of e.g. buses as opposed to cars 
+
+Opening: 
+
+When do private / independent museums start opening in large numbers?
+Are there periods when very few private / independent museums open? 
+What subjects are covered by the first museums?  
+
+Region
+In which nation and region do private / independent museums start opening first? Does that change and if so how? 
+Are there areas where no / few private / independent museums open?
+Are there areas where large numbers of private / independent museums close?
+Are some subjects more or less common in different nations / regions
+Are there higher rates of closure  in some nations / regions 
+
+Subject
+What subjects do the first private / independent museums cover? 
+Which subjects are the most common? Least common? 
+Which subjects are more or less common at different historical junctures? 
+Is there a link between the nation / region / locale and the subject they cover? i.e. are transport museums clustered in the Midlands? Presumably fishing museums will be on the coast. [best done via maps?]
+Are there higher rates of closure among museums of particular subjects?
+[nb we can currently search and generate this information with respect to broad subject matter at the moment eg. Transport, war, rural life, but not yet with respect to fine grain of subject matter eg. Planes, buses, steam trains, tanks, navy, army. That will depend on us tagging everything, but also we need to think about how tags are searched for %G%@ they-Fll be too long for a drop down list %G%@ although that could itself be organised by category e.g. vehicle]-A
+
+Status
+Which museums change status? i.e. they were independent and become local authority or vice-versa? 
+[how do we establish this using database?]
+Is there a period when a number of museums change status? 
+Is there a relationship between the number of public-sector museums in a given area and the number of private / independent museums in that same area?
+IS there any correlation between when public sector and private sector museums open / close?
+Size (equated with visitor numbers)
+How many museums are large, medium, small or very small? 
+Is there a link between size and subject matter?
+Is there a link between size and nation / region?
+Is there a link between size and status?
+Between size and when museums opened? 
+
+Closing 
+Are there periods when numbers of private / independent museums close? 
+ Are there periods when numbers of local authority museums close? 
+Are there correlations between when local authority museums close and the opening or closure of private / independent museums? 
+Are there any correlations between museums closing and their size? 
+Are there any correlations between museums closing and their subject? 
+Are there areas where large numbers of private / independent museums close?
+
+Broader questions: Is there a link between:
+motorways opening and the prevalence of museums? 
+Car ownership and prevalence of museums?
+unemployment and the prevalence / closure of museums?
+tourism and the prevalence / closure of museums?
+unemployment and the subject of museums?
+tourism and the subject of museums?
+Property prices and prevalence of museums?
+Historically different funding regimes and the prevalence / closure of museums 
+National / regional funding regimes and the prevalence / closure of museums 
+National / regional funding regimes and the subject of museums 
+Population and the prevalence / closure of museums
+
+Questions arising in process of data collection / research
+
+How does the breakdown of subject matter compare in terms of numbers if we use the domus subject matter categories rather than our own? How would the over-arching categories used by e.g. Domus break down if we used our system E.g. what types would -Fsocial history fall into?-A
+
+How many museums are open in total? 
+How many museums have been open in our time frame?
+How many stately homes are there as opposed to labourer-Fs cottages (would need to establish this using tags / keywords]-A
+How many museums are there if we exclude / include grey area organisations?
+How many grey areas organisations? Of what types? 
+How many unaccredited museums are there?
+How many unaccredited museums did not appear in any official data (i.e. aren-Ft included in Find a Museum, MGS, or spotlight data?)-A
+Of the unaccredited museums that did not appear in data (i.e. aren-Ft included in Find a Museum, MGS, or spotlight data?), what are their specific types e.g. Historic house with resident, NT, gallery or to put it another way how many Historic houses, NT premises, art galleries, etc. did not previously appear in official lists on museums?-A
+What sources did the information on unaccredited museums derive from? 
+Are there correlations between the founder and the size of the museum? Its sustainability? 
+</pre>

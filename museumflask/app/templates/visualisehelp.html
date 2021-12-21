@@ -1,0 +1,93 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+
+<div class="container">
+
+<style>
+div.row {
+font-family: "Roboto", sans-serif;
+    font-size: 20px;
+}
+</style>
+    <div class="row">
+<div class="page-header">
+    <h1>Database Visualise Help</h1>
+</div>
+<p>Visualise allows you to generate a variety of bar charts and line graphs that show the numbers of museums that are open or closed at a given time, and their growth and closure patterns. These charts and graphs are available under the Number of museums option in the left-hand-side list. The Table option in the left-hand-side list allows you to explore the inter-relationships between a pair of museum categories by generating a heatmap. 
+</p>
+<p>Let us look first at the charts and graphs available under Number of museums, and then at the heatmaps available under Table. 
+</p>
+</br>
+<p><b>1. Number of museums</b></p>
+<p>To explore the openings and closings of museums, select one of the options listed under “Number of museums” in the left-hand-side list. If you click on one of these options, this exposes a number of further options: 
+</p>
+<p>All<br>
+Governance<br>
+Subject Matter<br>
+Size
+</p>
+<p>Governance and Subject Matter are expandable into further sub-categories.   
+</p>
+
+<p><b>Example 1</b></p>
+<p>Select “open at a given time” and then All to see the number of museums open in a given year. Use the slider beneath the chart to change the year being viewed. 
+</p>
+<p>Now select Subject Matter (still under “open at a given time”) to see the number of museums open in a given year, broken down by Subject Matter. Again, use the slider beneath the chart to change the year being viewed.  
+</p>
+<p>Now select Buildings (still under “open at a given time”) to see the number of museums relating to Buildings open in a given year, broken down by different types of buildings.  
+</p><p>Finally select Houses (still under “open at a given time”) to see the number of museums relating to Houses open in a given year, broken down by different types of houses.  
+</p><p>Selecting Governance, Size or Location under “open at a given time” works similarly, allowing the number of museums open in a given year to be broken down according to different categories. 
+</p><p>Note that for any museum whose year of opening is recorded as a date range, the count of 1 museum is divided by the number of years in the range in order to determine its contribution to the total count for each year. For example, a museum recorded as opening during 1980-1989 contributes 0.1 to the total count of museums opening in each of the ten years 1980, 1981, … 1989. 
+</p><p><b>Example 2</b></p>
+<p>Select “that opened up to a given time” and then All to see the number of museums that opened up to a specific year (including museums that may have since closed). 
+</p><p>Select Governance, Subject Matter, Size or Location under “that opened up to a given time” to break down these numbers according to different categories.  
+</p><p>Use the slider beneath the chart to change the year being viewed. 
+</p><p>For any museum whose year of opening is recorded as a date range, the count of 1 museum is divided by the number of years in the range in order to determine its contribution to the total count. For example, a museum recorded as opening during 1980-1989 contributes 0.1 to the total count of museums opening up to 1980, 0.2 to the total count of museums opening up to 1981, and so on, up to a contribution of 1 to the total count of museums opening up to 1989 (or later). 
+</p><p>Select “that closed up to a given time” to explore similarly the number of museums that have closed up to a specific year. Museums whose year of closing is recorded as a date range are handled in the same way as in “that opened up to a given time” for to museums whose year of opening is a date range. 
+</p><p><b>Example 3</b></p>
+<p>Select “open over time” and then All to see a line graph of the number of museums that are open each year since 1960.  
+</p><p>Hover your cursor over the icons in the top right-hand corner to investigate the ways that you can zoom into and explore the graph. More details about these icons and using them are given in <a href="#exp">Exploring a line graph</a>.
+</p><p>Now select Governance (still under “open over time”) to see the number of museums that are open in each year broken down by Governance.   
+</p><p>Now select Independent (still under “open over time”) to see the number of museums that are open in each year broken down by different types Independent museums. 
+</p><p>Selecting Subject Matter, Size or Location under “open over time” works similarly, allowing the number of museums that are open each year to be broken down according to different categories. 
+</p><p><b>Example 4</b></p>
+<p>Select “openings over time” and then All to see a line graph of the number of museums that opened in each year since 1960.  
+</p><p>Select Governance, Subject Matter, Size or Location under “openings over time” to break down these numbers according to different categories.  
+</p><p>Select “closings over time” to explore similarly the number of museums that closed in each year since 1960. 
+</p><p>Select “openings and closings over time” and then All to see on one graph both the numbers of openings and the numbers of closings in each year since 1960. 
+</p><p><a name = "exp" style="color:black; text-decoration: none"><b>Exploring a line graph </b></a></p>
+<p>Hover your cursor over the icons in the top right-hand corner to zoom into and explore the graph. Selecting one of these icons displays a blue vertical line next to it. Click on the icon again to “unselect” it. You can have a combination of icons selected at a time, so as to use concurrently their functionalities.
+
+</p><p>icon 1 <img src="/static/img/icon2.png" alt="about banner" style="max-width: 100%" >  : Selecting this and then clicking on the graph allows you to move the display in any direction. 
+</p><p>icon 2 <img src="/static/img/icon3.png" alt="about banner" style="max-width: 100%" >  : Selecting this, then clicking on the graph and drawing out a box allows you to zoom into the portion of the graph contained within the box.  Press on the Reset icon (icon 3) to reset the display to the default at any time. 
+</p><p>icon 3 <img src="/static/img/icon4.png" alt="about banner" style="max-width: 100%" > :  Press on this icon to reset the display to the default at any time. 
+</p><p>icon 4 <img src="/static/img/icon5.png" alt="about banner" style="max-width: 100%" >  :  Selecting this allows you to hover with a cross over the graph. Positioning the cross over one of the points on the graph displays the information relating to that point. 
+</p><p>icon 5 <img src="/static/img/icon6.png" alt="about banner" style="max-width: 100%" > : Selecting this allows to you move a crosshair over the graph, so as to see the x and y values associated with any given point by looking at where the crosshair meets the x and y axes. 
+</p>
+</br>
+</br>
+<p><b>2. Table</b></p>
+<p>To explore the inter-relationships between different museum categories, select one of the X options and one of the Y options listed under “Table” in the left-hand-side list of options.  You cannot choose the same option for X and for Y, they need to be different. 
+</p><p><b>Example 1</b></p>
+</p><p>Select Size under X and Subject Matter under Y to see the number of museums of different sizes that there are for each subcategory of Subject Matter.  Use the slider beneath the chart to change the year being viewed. 
+</p><p>Now select Buildings (still under Y) to see the number of museums of different sizes that relate to each subcategory of Buildings. 
+</p><p>Finally select Houses (still under Y) to see the number of museums of different sizes that relate to different types of houses. 
+</p><p><b>Example 2</b></p>
+<p>Select Location under X and Deprivation index under Y to see the number of museums in England, Northern Ireland, Scotland and Wales that exist in areas with different deprivation index values. Use the slider beneath the chart to change the year being viewed. Please note that we do not have deprivation index data for the Channel Islands and the Isle of Man. (We also do not have geodemographic group or subgroup data for the Channel Islands and the Isle of Man.)
+</p><p>Select now Wales (still under X) to see the number of museums in each region of Wales that exist in areas with different deprivation index values. You can explore similarly England, Northern Ireland and Scotland.  The England data can be further broken down for each region, and within that for each county. 
+</p>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Technical Development{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+   
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/techdevelopmentbanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>Museum of Lakeland Life & Industry, Cumbria</figcaption>
+</figure>
+    <div class="row">
+ <h1>Technical Development</h1></br>
+     <p>
+     A major part of the Mapping Museums project was the development of a knowledge base (the Database), a web application that enables users to engage with this knowledge base, and the project website. 
+	 This development work was collaborative and involved all members of the research team. It was also iterative, comprising successive cycles wherein we repeatedly identified the humanities researchers’ requirements, and then researched, designed, implemented and tested the evolving system.</p>
+	 
+	 <p>
+	 The database and web application were developed alongside the archival research and data collection. This meant that they had to be flexible enough to encompass new or changed data, and to continue to do so as the sector changes or as new information was established. 
+	 We therefore opted to use semantic technologies to describe and store our data. Semantic databases are also known as ‘Triple Stores’ and they store pieces of information in triplets of the form Subject-Predicate-Object. 
+	 For example, the fact that the Science Museum is located in London would be stored as the triplet Science Museum-hasLocation-London. 
+	 This kind of data storage can easily be extended with new triplets as new data and knowledge accrue, and it allows us to describe in fine detail the different relationships between entities.
+	 </p>
+     <p>
+	 The database is designed so that users can browse in a structured way through categories such as accreditation, governance, location, size, subject classification, year of opening and year of closing, and see the results on a map or in a list view. 
+	 Alternatively, users can submit a detailed search that allows them to filter results by combinations of categories, or they can generate visualisations of how the different types of museums have emerged over time or create tables showing how the various categories inter-relate. 
+	 At any point, it is possible to scrutinise the details of individual venues.
+	 </p>
+	 <h2>Technical Implementation</h2>
+	 <p>The figure below shows the architecture of our system. It is a three-tier architecture comprising a Web Browser-based client served by a Web Server connecting to a Database Server.  </p>
+	 <figure>
+<img src="/static/img/techspec.jpg" alt="about banner" style="max-width: 100%" >
+<figcaption></figcaption>
+</figure>
+</br>
+<p>The web server, Apache/WSGI, uses the <a href="http://flask.pocoo.org/" target="_blank">Python Flask</a> framework with <a href="http://jinja.pocoo.org/" target="_blank">Jinja</a> template views to deliver HTML/Javascript pages to the client. 
+The pages are styled with <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> and CSS. Communication with the database server is through the Python SPARQLWrapper library.</p>
+<p>The Map view supported in Browse and Search has been developed using the <a href="https://leafletjs.com/" target="_blank">Leaflet</a> Javascript library together with the <a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank">MarkerCluster</a> plug-in to create the clusters.  
+The maps themselves are dynamically loaded using the <a href="https://www.openstreetmap.org/" target="_blank">Openstreetmap</a> service.</p>
+<p>For the Visualise facility, the <a href="https://bokeh.pydata.org/en/latest/" target="_blank">Bokeh</a> library is used to produce the line graphs, bar charts and heatmaps for delivery from the server to the client.</p>
+<p>Overall, the web application has been kept simple with a stateless approach free from sessions and cookies. It comprises some 27,000 lines of Python code, as well as additional scripts consisting of some 26,000 lines of javascript, numerous HTML pages and additional source files.</p>
+<p>The database is implemented as a Triple Store and it supports a SPARQL end point for communicating with the Web Server. The database is built using the <a href="https://virtuoso.openlinksw.com/" target="_blank">Virtuoso</a> database engine and managed using the 
+Virtuoso Conductor HTML based Administration Console version <a href="http://vos.openlinksw.com/owiki/wiki/VOS" target="_blank">07.20.3217</a>. </p> 
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>
+
+
+

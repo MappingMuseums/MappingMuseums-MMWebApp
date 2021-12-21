@@ -1,0 +1,818 @@
+{% extends "base.html" %}
+<!-- SIMPLEPLOT.HTML---->
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-basic.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows-dark.css') }}" />
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+
+<script src="{{ url_for('static', filename='js/wNumb.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nouislider.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.css') }}" />
+
+
+
+
+
+
+<style>
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left {	
+width: 380px; /* LC width */ 
+padding: 0 29px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+}
+#nakedtab-content{ visibility:hidden; }
+
+#museumtable{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;  
+}
+#table-heading {
+    font-weight: bold;
+}
+a.blackanchor{color:black;text-decoration:  none;}
+a.blackanchor:link{color:black;text-decoration:  none;}
+a.blackanchor:visited{color:black;text-decoration:  none;}
+a.blackanchor:hover{color:black;text-decoration:  none;}
+a.blackanchor:active{color:black;text-decoration:  none;}
+
+#detail-results{ width: 100%;position: relative; float: left; }
+
+.expand{width: inherit;height: 100%; position: fixed; right: -18%; top: 183px; padding: 0 19px; }
+
+body.modal-open div.modal-backdrop { 
+    z-index: 0; 
+}
+</style>
+
+{% endblock %}
+
+{% block title %}Simpleplot{% endblock %}
+<style>
+#nakedtab-content{ visibility:hidden; }
+
+
+table { 
+    border-spacing: 5;
+    border-collapse: collapse;
+    border:none
+}
+td,th { 
+    padding: 10px;
+    border:none
+
+}
+
+input {
+    margin: 2px;
+    width: 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+imgplay-button {
+      color: #AAA;
+      cursor: pointer;
+      display: inline-block;
+      height: 24px;
+      margin: 4px;
+      width: 24px; }
+imgplay-button.active {
+        color: #8BF; }
+imgplay-button:hover, .imgplay .imgplay-controls .imgplay-button:focus {
+        background: rgba(100, 100, 100, 0.5);
+        color: #FFF; }
+
+</style>
+
+</head>
+{% block page_content %}
+
+SIMPLEPLOT
+
+<div id="left" class="row">
+      <div class="well" id="date-select" style="min-height:90px;">
+         <label class="col-sm-2 control-label">Select plot type</label>
+         <div class="col-sm-10" style="padding-top: 10px;">
+            <select id="plotselect" name="plotselecttype" class="plotselection" onchange='selectionchanged("plotselect","plotselect-label");' >
+             {% for result in plotoptions %}
+               <option value="{{result|safe }}">{{result.replace('_',' ')|safe }}</option>
+             {% endfor %}
+             </select>	    
+
+          </div>
+       </div>
+<p/>
+      <div class="well" id="xaxis-select" style="min-height:90px;">
+         <label class="col-sm-2 control-label">Select X axis</label>
+         <div class="col-sm-10" style="padding-top: 10px;">
+            <select id="xaxisselect" name="xaxisselectname" class="xaxisselection" onchange='selectionchanged("xaxisselect","xaxisselect-label");' >
+             {% for result in xoptions %}
+               <option value="{{result|safe }}">{{result.replace('_',' ')|safe }}</option>
+             {% endfor %}
+             </select>	    
+
+          </div>
+       </div>
+<p/>
+      <div class="well" id="yaxis-select" style="min-height:90px;">
+         <label class="col-sm-2 control-label">Select Y axis</label>
+         <div class="col-sm-10" style="padding-top: 10px;">
+            <select id="yaxisselect" name="yaxisselectname" class="yaxisselection" onchange='selectionchanged("yaxisselect","yaxisselect-label");' >
+             {% for result in yoptions %}
+               <option value="{{result|safe }}">{{result.replace('_',' ')|safe }}</option>
+             {% endfor %}
+             </select>	    
+
+          </div>
+       </div>
+<p/>
+
+               <div id="calcmuseums" class="controls well">
+ 	          <form class="form-horizontal" method="POST" action="/plot" onsubmit="return validateForm()" target="restable">
+	              <input type="hidden" name="plotselect" id="plotselect-label" value="Bar" />
+	              <input type="hidden" name="xaxisselect" id="xaxisselect-label" value="Year_opened" />
+	              <input type="hidden" name="yaxisselect" id="yaxisselect-label" value="Subject_classification_2018" />
+
+                      <input type="hidden" name="plotmode"   id="plotmode" value="simple" />
+
+                      <button type="submit" class="btn-sm btn-primary" id="plot-button"  >Plot</button>
+		  </form>
+              </div>
+
+
+</div>
+
+<div id="main">
+<div class="second-row-fixed-white">
+
+<div class="tabbable">
+    <ul class="nav nav-tabs" id="nav" >
+
+
+        <li><a href="#tab3" role="tab" data-toggle="tab" onclick="alert('not implemented');">List</a>
+        </li>
+
+
+    </ul>
+
+
+<!-- List -->
+        <div class="tab-pane fade in" id="tab3">
+<style>
+#detail-results{ width: 100%;position: relative; float: left; }
+#restable{ width: 100%;  border: none;  height: 600px; overflow-y:auto;}
+
+    </style>
+            <iframe name="restable" id="restable">NOTHING PLOTTED</iframe>
+
+
+        </div> <!-- Tab browselist -->
+    </div>
+</div>
+
+
+
+
+    </div>
+</div>
+
+
+<script>
+function validateForm() 
+{
+   return true;
+}
+function setHTMLContent(id,value)
+{
+  var field = document.getElementById(id);
+  field.innerHTML = value ;
+}
+
+
+function selectionchanged(colid,label)
+{
+  var e = document.getElementById(colid);
+  var selectedvalue = e.options[e.selectedIndex].value;
+  setHTMLContent(label,selectedvalue);
+  setAttributeByNameOnID(label,"value",selectedvalue);
+}
+
+
+function getAttributeByName(element,name)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log("true");
+	      return element.attributes[i].value;
+	}
+    }
+  return undefined;
+}
+
+function getAttributeByNameOnID(id,name)
+{
+  var element = document.getElementById(id);
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log("true");
+	      return element.attributes[i].value;
+	}
+    }
+  return undefined;
+}
+
+function setAttributeByNameOnID(id,name,value)
+{
+  var element = document.getElementById(id);
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log("true");
+	  element.attributes[i].value=value;
+	}
+    }
+}
+function setAttributeByName(element,name,value)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log("true");
+	  element.attributes[i].value=value;
+	}
+    }
+}
+
+	  
+
+// - - - - - 
+
+function a_clicked(href) 
+    {
+      var pager = document.getElementById("pager-information");
+      var rtable = document.getElementById("museumtable");
+      if (rtable)
+	{
+	  var rows=rtable.getElementsByClassName("museumresultrow");
+	  pager.innerHTML=getLastLoaded()+"/"+rows.length;
+	  $("#tab4").show(); 
+	  //console.log(href);
+	  //        alert(href);
+	  if (href)
+	    {
+	      $( "#detail-results" ).load( href );
+	      $('a[href="' +href + '"]').tab('show');
+	    }
+	  else
+	    {
+	      $( "#detail-results" ).load("/Museum/nid/n0/mm.domus.SE118" );
+	      $('a[href="' +href + '"]').tab('show');
+	    }
+	}
+      
+      //console.log("glob1 "+getLastLoaded());
+     }
+function printAttributes(element)
+{
+  var txt = "";
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      txt = txt + element.attributes[i].name + " = " + element.attributes[i].value + "<br>";
+      //console.log(txt);
+    }
+  console.log(txt);
+}
+
+function printElements(earr)
+{
+console.log("len:"+earr.length);
+for (var i=0; i < earr.length;i++)
+  {
+       console.log("array["+i+"]="+earr[i].tagName+":"+earr[i].value);
+       if (earr[i].tagName == "LABEL")
+       {
+         printAttributes(earr[i]);
+         }
+  }
+  
+}
+
+function getPath(node) 
+{
+    //console.log("e:"+node);
+    var path = [];
+    //var node = e.target;
+    while(node != document.body) 
+    {
+       if (node.tagName == "LI")
+	{
+	 var fcarr=node.childNodes;
+         if (fcarr.length == 1)
+           {
+	 	path.push(fcarr[0].innerHTML);
+           }
+           else
+           {
+	 	path.push(fcarr[1].innerHTML);
+
+           }
+        }
+       node = node.parentNode;
+    }
+    //console.log("path:"+path);
+ return path;
+}
+
+function cleanPath(list) 
+{
+ var path=list.reverse();
+ var pathstr="";
+ for (var i=0; i < path.length;i++)
+   {
+      var leftpar=path[i].indexOf("[");
+      if (leftpar > -1)
+        {
+          var temp=path[i].substr(0,leftpar-1);
+          path[i]=temp;
+         }
+          path[i]=path[i].trim();
+    pathstr=pathstr+"/"+path[i]
+   }
+return pathstr;
+}
+
+function calcList()
+ {
+   // Get the ids
+   var dimid=getAttributeByNameOnID("dimension-label","name");
+   var locid=getAttributeByNameOnID("location-label","name");
+   // Get lists
+   var dimlist=museumdict[dimid];
+   var loclist=museumdict[locid];
+   console.log("dim="+dimlist);
+   // Check which IDs in DIM are present in LOC
+   var reslist=[];
+   for (var i=0; i < dimlist.length;i++)
+    {
+      //console.log("dl"+dimlist[i]);
+      var key=dimlist[i][1];
+      //console.log("key:"+key);
+      for (var j=0; j < loclist.length;j++)
+       {
+	      //console.log("dl"+dimlist[i]);
+           var lkey=loclist[j][1];
+	   if (key == lkey)
+               {
+                 reslist.push(loclist[j]);
+                 //console.log(loclist[j]);
+                 break;
+               } 
+           //console.log("key:"+key);
+          
+       }
+   }
+   // Put those in table and show count
+
+      var table=makeTable(reslist,"Results ["+reslist.length+"]");
+      var listtable = document.getElementById('listofmuseums');
+      listtable.innerHTML=table;
+      var pidlist=getPidList(reslist);
+      reslist=[];
+      console.log("res:"+pidlist);
+      setAttributeByNameOnID("plot-list","value",pidlist.toString());
+
+ }
+
+function ShowMuseums(e,id,name)
+{
+  //console.log("e:"+e+" id:"+id+" name:"+name);
+  //var ele=document.getElementById(e);
+  var path=getPath(e);
+  path=cleanPath(path);
+  //console.log("path2:"+path);
+  if (path.startsWith("/Dim"))
+        {
+          setHTMLContent("dimension-label",path);
+	  setAttributeByNameOnID("dimension-label","name",id);
+	  setAttributeByNameOnID("dim-list","value",path);
+        }
+  else
+        {
+          setHTMLContent("location-label",path);
+	  setAttributeByNameOnID("location-label","name",id);
+        }
+
+  var idlist=museumdict[id];
+  if (idlist)
+    {
+      if (name == "")
+	{
+	  // Case for pageload trigger, create the name
+	  name="Museums ["+idlist.length+"]";
+	}
+      else if (name.indexOf("[") < 0)
+	{
+	  // Add size to name
+	  name=name+" ["+idlist.length+"]";
+	}
+      //    console.log( "?#?#? browseproperties.html at line: 93 Dbg-out variable id ["+id+"]" );
+      //console.log( "?#?#? browseproperties.html at line: 94 Dbg-out variable id ["+name+"]" );
+      //console.log( "?#?#? browseproperties.html at line: 143 Dbg-out variable idlist ["+idlist+"]" );
+      //console.log( "?#?#? browseproperties.html at line: 144 Dbg-out variable len idlist ["+idlist.length+"]" );
+      var table=makeTable(idlist,name);
+      //      console.log("-------------------------------------------------------------");
+      //console.log( "?#?#? browseproperties.html at line: 97 Dbg-out variable table ["+table+"]" );
+      //console.log("-------------------------------------------------------------");
+      var listtable = document.getElementById('listofmuseums');
+      //console.log( "?#?#? browseproperties.html at line: 146 Dbg-out variable listtable ["+listtable+"]" );
+      listtable.innerHTML=table;
+      //console.log("SHOW CALLED"+id);
+      //var subarr=idlist[0];
+      //var mkey=subarr[1];
+      //console.log("?#?#? browseproperties.html<2> at line: 413 Dbg-out variable \mkey ["+mkey+"]\n");
+      
+      //setLastLoaded(mkey);
+
+    }
+}
+
+
+
+function makeTable(entries,name)
+{
+  tabletext='<div class="results"  >'+
+    '<h3>'+name+'</h3>'+
+           '<table id="museumtable" class="table table-striped table-bordered" border="2"  >'
+
+  var seq= -1;
+  var ilen=entries.length;
+  for (var row = 0; row < ilen; row++) 
+    {
+      //console.log("entries "+row+" :"+entries[row]);
+      //console.log("subarr "+subarr);
+      var subarr=entries[row];
+      if (subarr[0] > seq)
+	{
+          seq=subarr[0];
+	  var mkey=subarr[1];
+	  //console.log("mkey  "+museums[mkey]);
+          var name=museums[mkey][1];
+          var href=BASE+museums[mkey][0];
+	  var subject=museums[mkey][2];
+	  //console.log("seq "+seq+" :"+name+" :"+href);
+	  tabletext=tabletext+  '<tr id="tr'+seq+'" class="museumresultrow"> \n';
+	  //tabletext=tabletext+'<td id="td1" class="museumresultcolumn"><a href="#myModal" data-toggle="modal" data-target="#myModal" name="'+href+'" onClick="launchModal(\'#myModal\',\''+href+'\','+seq+')"> '+name+'</a> <br>Subject: <i>'+subject+'</i></br></td>';
+	  //tabletext=tabletext+'<td id="td1" class="museumresultcolumn"><a href="browseproperties" onClick="launchDetails(\''+href+'\')"> '+name+'</a> <br>Subject: <i>'+subject+'</i></br></td>';
+	  tabletext=tabletext+'<td id="td1" class="museumresultcolumn"><a href="#tab4" uri="'+href+'"  onClick="setLastLoaded(\''+seq+'\');tabResSelected(4,\''+href+'\');"> '+name+'</a> <br>Subject: <i>'+subject+'</i></br></td>';
+          tabletext=tabletext+'</tr> \n';
+	}
+    }
+
+  tabletext=tabletext+'</table>';
+  return tabletext
+}
+
+function getPidList(entries)
+{
+  var pidlist=[];
+  var ilen=entries.length;
+  for (var row = 0; row < ilen; row++) 
+    {
+          var subarr=entries[row];
+	  var mkey=subarr[1];
+          var href=museums[mkey][0];
+          pidlist.push(href);
+    }
+  return pidlist;
+}
+
+
+
+
+// - - - - - 
+
+function resizeIframe(obj) 
+{
+  obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// M A I N 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+var BASE="/Museum/nid/n0/";
+
+///-- DATA ------------------------------------------------
+{% if mapdata  %}
+  {% for data in mapdata%}
+    {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+{% if dicts  %}
+  {% for data in dicts%}
+     {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+///--------------------------------------------------
+
+
+//-------------------- FROM TIME
+
+// - - - - - controls
+
+
+function postMuseumCount(mcount)
+ {
+  var countfield=document.getElementById('resultset-length');
+  countfield.innerHTML = ''+mcount ;
+ }
+
+
+function showRange() 
+{
+    if (toggleDots =='D')
+      {
+        showDots();
+      }
+    else
+      {
+	mymap.removeLayer(this.markers);
+
+        showClusters();
+      }
+
+}
+
+
+function addClass(element,clazz)
+{
+  var e = document.getElementById(element);
+  if (e != null)
+    {
+    e.classList.add(clazz);
+    }
+else
+  {
+    //console.log ('addClass to element ['+element+'] not found');
+  }
+  
+}
+
+function removeClass(element,clazz)
+{
+  var e = document.getElementById(element);
+  if (e != null)
+    {
+    e.className = e.className.replace( clazz, '' );
+    }
+else
+  {
+    //console.log ('addClass to element ['+element+'] not found');
+  }
+  
+}
+
+
+
+function Play()
+{
+  running = true;
+  console.log("play");
+  var bywindow=document.getElementById("play-bywindow").checked;
+  if (paused == true)
+    {
+      this.stopRange=Number(this.pausedRange);
+    }
+  else
+    {
+      this.stopRange=Number(this.startRange)+Number(this.playinterval);
+    }
+  Advance();
+
+  removeClass('play-button','active');
+  addClass('stop-button','active');
+  addClass('pause-button','active');
+}
+
+
+function Advance() 
+{
+  var bywindow=document.getElementById("play-bywindow").checked;
+  console.log(this.startRange+"  ["+this.stopRange+"]"+"  ["+this.endRange+"]");
+  if (bywindow == true)
+    {
+      if (this.startRange > this.endRange)
+	{
+	  Stop();
+	  return;
+	}
+    }
+  else
+    {
+      if (this.stopRange > this.endRange)
+	{
+	  Stop();
+	  return;
+	}
+    }
+  if(running) 
+    {
+      this.playdelay=document.getElementById('play-delay-value').value * 1000;
+      runTimer = setTimeout(Advance, this.playdelay);
+    }
+
+  if (bywindow == true)
+    {
+      var range=[Number(this.startRange),Number(this.stopRange)];
+      document.getElementById("slider-date").noUiSlider.set(range);
+      showRange();
+      this.playinterval=Number(document.getElementById('play-interval-value').value);
+      this.startRange = Number(this.startRange) + Number(this.playinterval);
+      this.stopRange = Number(this.startRange) + Number(this.playinterval);
+      //console.log(this.startRange+" 2 bywin ["+this.stopRange+"]");
+	}
+  else
+    {
+      var range=[Number(this.startRange),Number(this.stopRange)];
+      document.getElementById("slider-date").noUiSlider.set(range);
+      showRange();
+      this.playinterval=Number(document.getElementById('play-interval-value').value);
+      this.stopRange = Number(this.stopRange) + Number(this.playinterval);
+    }
+}
+
+
+function Stop() 
+{
+  console.log("stop");
+  running = false;
+  paused = false;
+
+  document.getElementById("slider-date").noUiSlider.set(this.beginRange,this.endRange);
+  this.stopRange=this.endRange ;
+  this.startRange=this.beginRange ;
+  removeClass('stop-button','active');
+  removeClass('pause-button','active');
+  addClass('play-button','active');
+  for(var i=0;i<museums.length;i++)
+     {
+       this.hits[i]=0;
+     }
+};
+
+function Pause() 
+{
+  console.log("pause");
+
+  running = false;
+  paused = true;
+  this.pausedRange=this.stopRange;
+  if(runTimer != null) 
+    {
+      clearTimeout(runTimer);
+    }
+  removeClass('stop-button','active');
+  addClass('play-button','active');
+  addClass('pause-button','active');
+};
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// M A I N 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+startRange=Number(1960);
+beginRange=startRange;
+stopRange=2017;
+running=false;
+paused=false;
+runTimer = null;
+timeDict={}
+///-- DATA ------------------------------------------------
+{% if mapdata  %}
+  {% for data in mapdata%}
+     {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+///--------------------------------------------------
+this.hits=[]
+for(var i=0;i<museums.length;i++)
+{
+    this.hits[i]=0;
+}
+
+var playinterval=1;
+var playdelay=2000;
+removeClass('stop-button','active');
+removeClass('pause-button','active');
+addClass('play-button','active');
+
+
+
+
+var dateSlider = document.getElementById('slider-date');
+
+noUiSlider.create(dateSlider);
+
+dateSlider.noUiSlider.on('end', function( values, handle )
+{
+  if(!running)
+    { 
+      if ( handle == 0 ) 
+        {
+          this.startRange = Math.round(Number(values[handle]));
+	  beginRange = Math.round(Number(values[handle]));
+        }
+      else
+        {
+           this.stopRange = Math.round(Number(values[handle]));
+           endRange = Math.round(Number(values[handle]));
+           paused=false;
+        }
+    }
+});
+
+var nodes = [
+	document.getElementById('lower-value'), // 0
+	document.getElementById('upper-value')  // 1
+];
+var nodeText = [
+	'Start year:', // 0
+	'End year:' // 1
+];
+
+// Display the slider value and how far the handle moved
+// from the left edge of the slider.
+dateSlider.noUiSlider.on('update', function ( values, handle, unencoded, isTap, positions ) 
+{
+	nodes[handle].innerHTML = nodeText[handle]+Math.round(values[handle]) ;
+        startRange=Math.round(values[0]);
+        stopRange=Math.round(values[1]);
+
+});
+
+
+this.playdelay=document.getElementById('play-delay-value').value * 1000;
+document.getElementById('play-delay-text').innerHTML='Delay:';
+
+document.getElementById('play-interval-text').innerHTML='Interval:';
+this.playinterval=Number(document.getElementById('play-interval-value').value);
+
+
+document.getElementById('play-bywindow-text').innerHTML='By window:';
+
+
+</script>
+
+
+
+
+        </div> <!-- Tab map-->
+    </div>
+</div>
+
+
+<script>
+
+
+
+
+
+</script>
+
+{% endblock %}
+
+</body>
+</html>

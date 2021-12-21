@@ -1,0 +1,228 @@
+##
+# @param file
+#  
+# This class implements the FLASK Addmuseum view and the functionality needed to 
+# retrieve the searched data. It receives a form with the parameters from the
+# client: Column, comparator, filter and columns  to show. 
+#  
+#  More details.
+#  $$Author$:Nick Larsson, Researcher, Dep. of Computer Science and Information Systems at Birkbeck University, London, England, email:nick@dcs.bbk.ac.uk, License:GNU GPLv3
+#
+# - # - # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+from flask.views import View
+from flask  import Blueprint
+from . import main as main_blueprint
+from flask import render_template, redirect, url_for, abort, flash, request, make_response
+from . import apputils
+from . import listman
+from . import tree
+from . import PTreeNode
+from . import models
+from . import definitions
+from . import model_to_view
+from . import Configuration
+from . import showmuseumtypes
+
+from PTreeNode import PTreeNode as PTreeNode
+
+
+from flask import current_app as app
+import pprint
+import collections
+import copy
+import importlib
+import requests
+from altair import Chart, Color, Scale
+import pandas as pd
+import traceback
+import sys
+import pickle
+import time
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+class Addmuseum():
+    from . import model_to_view
+    modeltoview=model_to_view.Model_To_View()
+
+    conditionslist=None
+##  List of comparators to use for specific datatype
+    widgets=""
+##  The widgets shown in the Addmuseum menu for a datatype
+    widgetcodes=""
+	
+gorpost=""	 
+	
+##  The JS to use
+    view_attributes=None
+    
+    ALL_COLUMNS='All attributes'
+	
+
+    @staticmethod
+## Purpose:Returns list of conditions
+    def getConditionTypes():
+	return Addmuseum.conditionslist
+
+    @staticmethod
+## Purpose:Returns all widgets
+    def getWidgets():
+	return Addmuseum.widgets
+
+    @staticmethod
+## Purpose:returns all JS
+    def getWidgetCodes():
+	return Addmuseum.widgetcodes
+
+    
+    def getViewAttributes(self,list):
+	view_attributes=[]
+	for item in list:
+	    newitem=item.replace('_',' ')
+	    view_attributes.append(newitem)
+	return view_attributes
+	
+    def getConditionTypesList(self):
+
+	## Basic types
+	Addmuseum.conditionslist=[]
+	Addmuseum.conditionslist.append(" var conditiontypes= {")
+	Addmuseum.conditionslist.append(" 'integer':[")
+	Addmuseum.conditionslist.append("	'Before:LT',")
+	Addmuseum.conditionslist.append("	'After:GT',")
+	Addmuseum.conditionslist.append("	'Before and including:LTE',")
+	Addmuseum.conditionslist.append("	'After and including:GTE',")
+	Addmuseum.conditionslist.append("	'Specific year only:EQ',")
+	Addmuseum.conditionslist.append("	'Apart from:NEQ'],")
+	Addmuseum.conditionslist.append("")
+
+	Addmuseum.conditionslist.append(" 'positiveInteger':[")
+	Addmuseum.conditionslist.append("	'Before:LT',")
+	Addmuseum.conditionslist.append("	'After:GT',")
+	Addmuseum.conditionslist.append("	'Before and including:LTE',")
+	Addmuseum.conditionslist.append("	'After and including:GTE',")
+	Addmuseum.conditionslist.append("	'Specific year only:EQ',")
+	Addmuseum.conditionslist.append("	'Apart from:NEQ'],")
+
+	Addmuseum.conditionslist.append(" 'RangeType':[")
+	Addmuseum.conditionslist.append("	'Before:LT',")
+	Addmuseum.conditionslist.append("	'After:GT',")
+	Addmuseum.conditionslist.append("	'Before and including:LTE',")
+	Addmuseum.conditionslist.append("	'After and including:GTE',")
+	Addmuseum.conditionslist.append("	'Specific year only:EQ',")
+	Addmuseum.conditionslist.append("	'Apart from:NEQ',")
+	Addmuseum.conditionslist.append("	'Possibly Before:PLT',")
+	Addmuseum.conditionslist.append("	'Possibly After:PGT',")
+	Addmuseum.conditionslist.append("	'Possibly Before and including:PLTE',")
+	Addmuseum.conditionslist.append("	'Possibly After and including:PGTE',")
+	Addmuseum.conditionslist.append("	'Possibly Specific year only:PEQ',")
+	Addmuseum.conditionslist.append("	'Possibly Apart from:PNEQ'],")
+
+
+	Addmuseum.conditionslist.append("")
+	Addmuseum.conditionslist.append(" 'decimal':[")
+	Addmuseum.conditionslist.append("	'Before:LT',")
+	Addmuseum.conditionslist.append("	'After:GT',")
+	Addmuseum.conditionslist.append("	'Before and including:LTE',")
+	Addmuseum.conditionslist.append("	'After and including:GTE',")
+	Addmuseum.conditionslist.append("	'Specific year only:EQ',")
+	Addmuseum.conditionslist.append("	'Apart from:NEQ'],")
+	Addmuseum.conditionslist.append("")
+	Addmuseum.conditionslist.append(" 'date'   :['Before:DLT','After:DGT',")
+	Addmuseum.conditionslist.append("            'Before and including:DLTE',")
+	Addmuseum.conditionslist.append("	    'After and including:DGTE',")
+	Addmuseum.conditionslist.append("	    'Specific year only:DEQ',")
+	Addmuseum.conditionslist.append("	    'Apart from:DNEQ'],")
+	Addmuseum.conditionslist.append("'boolean':['True:True','False:False'],")
+	Addmuseum.conditionslist.append("")
+	Addmuseum.conditionslist.append("'other':['Matches:match','Not Match:notmatch'],")
+
+	## Ontologytypes
+	for dkey, dval in definitions.DATATYPEDICT.iteritems():
+	    # We have a class
+	    # FIXTHIS check against list,range etc defined types as well
+	    if (apputils.isDataClass(definitions.DATATYPEDICT[dkey])):
+		instance=apputils.getDataClassInstance(definitions.DATATYPEDICT[dkey])
+		clist=instance.getGUIConditions()
+		Addmuseum.conditionslist.append("'"+dkey+"':[")
+		clist=instance.getGUIConditions()
+		for c in clist:
+		    parts=c.split(":")
+		    Addmuseum.conditionslist.append("'"+parts[0]+":"+parts[1]+"',")
+		
+		Addmuseum.conditionslist[-1]=Addmuseum.conditionslist[-1].replace("',","'")
+		Addmuseum.conditionslist.append("],")
+		    
+	Addmuseum.conditionslist[-1]=Addmuseum.conditionslist[-1].replace("],","]")
+	Addmuseum.conditionslist.append("	}; ")
+
+	return Addmuseum.conditionslist
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+## Purpose:Initialise widgets from datatype implementations
+    def initWidgets(self):
+
+	## Basic types
+	Addmuseum.widgets+=" var widgets= { \n"
+	Addmuseum.widgetcodes+=" var widgetcode= { \n"
+	
+	## Ontologytypes
+	for dkey, dval in definitions.DATATYPEDICT.iteritems():
+	    # We have a class
+	    # FIXTHIS check against list,range etc defined types as well
+	    if (apputils.isDataClass(definitions.DATATYPEDICT[dkey])):
+		instance=apputils.getDataClassInstance(definitions.DATATYPEDICT[dkey])
+		widget=instance.getWidget()
+		Addmuseum.widgets+="'"+dkey+"':'"+widget+"',\n"
+		code=instance.getWidgetCode().replace("\n",'#')
+		Addmuseum.widgetcodes+='"'+dkey+'":"'+code+'",\n'
+		
+	Addmuseum.widgets+="};"
+	Addmuseum.widgets=Addmuseum.widgets.replace(",\n};","};").encode('ascii','ignore')
+	Addmuseum.widgetcodes+="};"
+	Addmuseum.widgetcodes=Addmuseum.widgetcodes.replace(",\n};","};").encode('ascii','ignore')
+
+	return
+
+    def addmuseumView(self):
+	
+	##print "attributes"
+	##print definitions.DEFAULT_SEARCH_FILTER_COLUMNS
+	##print "attrtypes"
+	##print definitions.ATTRITYPES
+	##print"datagroups" 
+	##print definitions.DATAGROUPS
+	##print "datadict"
+	##print definitions.DATATYPEDICT
+	##print "conditiontypes"
+	##print self.getConditionTypes()
+	##print "widgets"
+	##print Addmuseum.widgets
+	##print "widgetcodes"
+	##print Addmuseum.widgetcodes
+	
+	if (Addmuseum.conditionslist is None):
+	    Addmuseum.conditionslist = self.getConditionTypesList()
+	    self.initWidgets()
+	    Addmuseum.view_attributes=self.getViewAttributes(definitions.DEFAULT_SEARCH_FILTER_COLUMNS)
+
+        if (request.method == 'GET'):
+            return render_template('addmuseum.html',
+				   attributes=zip(definitions.DEFAULT_SEARCH_FILTER_COLUMNS,Addmuseum.view_attributes),
+				   attritypes=definitions.ATTRITYPES,
+				   datagroups=definitions.DATAGROUPS,
+				   datadict=definitions.DATATYPEDICT,
+				   conditiontypes=self.getConditionTypes(),
+				   widgets=Addmuseum.widgets,
+				   widgetcodes=Addmuseum.widgetcodes,
+				   gotpost='flase')
+	print request.form;
+	return render_template('addmuseum.html',
+				   attributes=zip(definitions.DEFAULT_SEARCH_FILTER_COLUMNS,Addmuseum.view_attributes),
+				   attritypes=definitions.ATTRITYPES,
+				   datagroups=definitions.DATAGROUPS,
+				   datadict=definitions.DATATYPEDICT,
+				   conditiontypes=self.getConditionTypes(),
+				   widgets=Addmuseum.widgets,
+				   widgetcodes=Addmuseum.widgetcodes,
+				   gotpost='true')
+				   
+

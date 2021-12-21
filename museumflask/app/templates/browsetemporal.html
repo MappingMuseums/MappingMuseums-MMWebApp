@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+{% block title %}Dir{% endblock %}
+
+{% block page_content %}
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+
+<style>
+
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#left {	
+width: 380px; /* LC width */ 
+padding: 0 19px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+margin-left: -100%;	
+}
+
+.expand{width: inherit;height: 100%; position: fixed; right: -18%; top: 183px; padding: 0 19px; }
+</style>
+
+
+    <form class="form-inline well" method="POST" action="/browseproperties">
+
+	  <div class="form-group">
+            <label class="control-label">Select property to browse</label>
+	    <select id="example-single" name="property">
+	      <option value="hasAccreditation">Accreditation</option>
+	      <option value="hasCounty">County</option>
+	      <option value="hasCollTypeDomus">Domus collection type</option>
+	      <option value="hasPostcode">Postcode</option>
+	      <option value="hasType">Type</option>
+	    </select>
+	  </div>
+
+
+      <div class="form-group">
+	<div >
+	  <button type="submit" class="btn btn-mini">Submit</button>
+	</div>
+      </div>
+    </form>
+
+
+
+
+{% if results %}
+
+
+<div id="center" class="column">
+            <div class="col-sm-10">
+	  <iframe class="expand" frameborder="0" name="right" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';" >
+	  </iframe>
+
+</div>
+</div>
+<div id="left" class="column">
+  <h2>List of museums</h2>
+	    <div class="well">
+	  <div class="css-treeview">
+	    <ul>
+	      <li><input id="item-0" type="checkbox" /><label for="item-0">Museums</label>
+	    {% for result in results  %}
+	    {{ result|safe}}
+	    {% endfor %}
+	  </ul>
+	  </div>
+	    </div>
+
+</div>
+
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+
+<script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/leaflet.markercluster.js') }}"></script>
+<script src="{{ url_for('static', filename='js/leaflet-color-markers.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/MarkerCluster.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/MarkerCluster.Default.css') }}" />
+
+{% endblock %}
+
+
+
+
+{% block title %}Map{% endblock %}
+
+{% block page_content %}
+
+<style>
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left {	
+width: 380px; /* LC width */ 
+padding: 0 19px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+
+</style>
+
+    <div class="aform" id="left">
+
+
+      <div id="left" class="column">
+      <p/>
+	<div class="css-treeview well">
+
+           {% if trees  %}
+  	     {% for tree in trees  %}
+	         {{ tree|safe}}
+	     {% endfor %}
+          {% endif %}
+	</div>
+
+      </div>
+    </div>
+
+    <div class="container">
+
+{% if alert  %}
+<div class="alert-{{alert_type}}">
+<a href="#"  data-dismiss="alert">&times;</a>
+{{alert}}
+</div>
+{% endif %}
+
+<div id="main">
+<div class="second-row">
+  <iframe name="restable" id="restable" >
+
+   </iframe>
+</div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+  </div>
+  </div>

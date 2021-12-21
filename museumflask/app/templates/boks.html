@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+<!-- VIZ.HTML---->
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-basic.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows-dark.css') }}" />
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+
+<script src="{{ url_for('static', filename='js/wNumb.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nouislider.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.css') }}" />
+
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.14.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.14.min.css"
+    rel="stylesheet" type="text/css">
+
+
+
+<style>
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left {	
+width: 380px; /* LC width */ 
+padding: 0 29px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+}
+#nakedtab-content{ visibility:hidden; }
+
+#museumtable{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;  
+}
+#table-heading {
+    font-weight: bold;
+}
+a.blackanchor{color:black;text-decoration:  none;}
+a.blackanchor:link{color:black;text-decoration:  none;}
+a.blackanchor:visited{color:black;text-decoration:  none;}
+a.blackanchor:hover{color:black;text-decoration:  none;}
+a.blackanchor:active{color:black;text-decoration:  none;}
+
+#detail-results{ width: 100%;position: relative; float: left; }
+
+.expand{width: inherit;height: 100%; position: fixed; right: -18%; top: 183px; padding: 0 19px; }
+
+body.modal-open div.modal-backdrop { 
+    z-index: 0; 
+}
+</style>
+
+{% endblock %}
+
+{% block title %}Visualisations{% endblock %}
+<style>
+#nakedtab-content{ visibility:hidden; }
+
+
+table { 
+    border-spacing: 5;
+    border-collapse: collapse;
+    border:none
+}
+td,th { 
+    padding: 10px;
+    border:none
+
+}
+
+input {
+    margin: 2px;
+    width: 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+imgplay-button {
+      color: #AAA;
+      cursor: pointer;
+      display: inline-block;
+      height: 24px;
+      margin: 4px;
+      width: 24px; }
+imgplay-button.active {
+        color: #8BF; }
+imgplay-button:hover, .imgplay .imgplay-controls .imgplay-button:focus {
+        background: rgba(100, 100, 100, 0.5);
+        color: #FFF; }
+
+</style>
+
+</head>
+{% block page_content %}
+
+<div id="left" class="row">
+	<div class="css-treeview well">
+
+           {% if trees  %}
+  	     {% for tree in trees  %}
+	         {{ tree|safe}}
+	     {% endfor %}
+          {% endif %}
+	</div>
+
+</div>
+
+<div id="main">
+<div class="second-row-fixed-white">
+<script>
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+function ShowPlot(event,id,name)
+{
+  console.log("ShowPlot ---");  
+  console.log(event);  
+  console.log(id);  
+  console.log(name);
+  var href="/visualisations"+name.replaceAll(' ','_').replaceAll(',','').replaceAll('-','')
+  console.log(href);
+  $( "#plotarea" ).load( href );
+
+}
+function ShowPlotGeo(event,path,id,name)
+{
+  console.log("ShowPlotGeo ---");  
+  console.log(event);  
+  console.log(path);  
+  console.log(id);  
+  console.log(name);
+var lpar=name.indexOf("[");
+if (lpar < 0)
+  {
+	console.log("No paren in this name:"+name);  
+  }
+else
+  {
+   lpar=lpar-1;
+   var newname=name.substr(0,lpar).replaceAll(' ','_');
+   var href="/visualisations"+path.replaceAll(' ','_').replaceAll(',','').replaceAll('-','')+"/"+id+"/"+newname;
+   console.log(href);
+   $( "#plotarea" ).load( href );
+
+  }
+}
+
+function ShowMuseums(event,id,name)
+{
+console.log("ShowMusems ---");  
+console.log(event);  
+console.log(id);  
+console.log(name);  
+}
+</script>
+
+
+<div id="plotarea">
+
+  {{ div|safe }}
+  <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.14.min.js"></script>
+  <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.14.min.js"></script>
+  {{ script|safe }}
+
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+</body>
+</html>

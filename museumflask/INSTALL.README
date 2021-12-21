@@ -1,0 +1,8 @@
+The document MappingMuseumsWebAppDocumentation.pdf contains the software installation requirements. 
+The software installs as a Flask framework and follows the framework rules.  
+Please remember that this is a research prototype intended to deliver specific functionalities to meet the 
+Mapping Museums project's research questions within a limited time frame. It may or may not be useful beyond 
+its stated scope and no guarantees of accuracy are given or implied.
+
+Prior to installation please download the file located at http://museweb.dcs.bbk.ac.uk/static/pdf/NSPL_AUG_2017_UK.csv
+and move it to the museumflask/json directory.

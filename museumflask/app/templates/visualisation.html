@@ -1,0 +1,891 @@
+{% extends "base.html" %}
+<!-- VIZ.HTML---->
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-basic.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tether-theme-arrows-dark.css') }}" />
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+
+<script src="{{ url_for('static', filename='js/wNumb.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nouislider.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.css') }}" />
+
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.14.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.14.min.css"
+    rel="stylesheet" type="text/css">
+
+
+
+<style>
+label.blackanchor{
+    background-color: var(--Primary);
+}
+label.nocheck.blackanchor{
+    background-color: var(--Primary);
+}
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left,#heat {	
+width: 380px; /* LC width */ 
+padding: 0 29px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+}
+.greeting{margin: 8px;}
+#nakedtab-content{ visibility:hidden; }
+
+#museumtable{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;  
+}
+#table-heading {
+    font-weight: bold;
+}
+a.blackanchor{color:black;text-decoration:  none;}
+a.blackanchor:link{color:black;text-decoration:  none;}
+a.blackanchor:visited{color:black;text-decoration:  none;}
+a.blackanchor:hover{color:black;text-decoration:  none;}
+a.blackanchor:active{color:black;text-decoration:  none;}
+
+#detail-results{ width: 100%;position: relative; float: left; }
+
+.expand{width: inherit;height: 100%; position: fixed; right: -18%; top: 183px; padding: 0 19px; }
+
+body.modal-open div.modal-backdrop { 
+    z-index: 0; 
+}
+</style>
+
+{% endblock %}
+
+{% block title %}Visualisations{% endblock %}
+<style>
+#nakedtab-content{ visibility:hidden; }
+
+
+table { 
+    border-spacing: 5;
+    border-collapse: collapse;
+    border:none
+}
+td,th { 
+    padding: 10px;
+    border:none
+
+}
+
+input {
+    margin: 2px;
+    width: 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+imgplay-button {
+      color: #AAA;
+      cursor: pointer;
+      display: inline-block;
+      height: 24px;
+      margin: 4px;
+      width: 24px; }
+imgplay-button.active {
+        color: #8BF; }
+imgplay-button:hover, .imgplay .imgplay-controls .imgplay-button:focus {
+        background: rgba(100, 100, 100, 0.5);
+        color: #FFF; }
+
+
+</style>
+
+</head>
+{% block page_content %}
+
+<div id="left" class="row">
+<div class=pgtitle>Visualisations</div>
+        <div class="css-treeview well">
+           {% if trees  %}
+  	     {% for tree in trees  %}
+	         {{ tree|safe}}
+	     {% endfor %}
+          {% endif %}
+	</div>
+
+
+  {% if coltrees  %}
+	<p> Selected colour :</p>
+	<div class="well">
+  	     {% for ctree in coltrees  %}
+	         {{ ctree|safe}}
+	     {% endfor %}
+	</div>
+  {% endif %}
+</div>
+
+
+ 	<form class="form-horizontal" >
+	      <input type="hidden" name="colorscheme" id="colorscheme-label" value="#219264" />
+
+	      <input type="hidden" name="input-x" id="input-x" value="Null" dict="Null" />
+	      <input type="hidden" name="input-y" id="input-y" value="Null" dict="Null" />
+	      <input type="hidden" name="input-loc" id="input-loc" value="UK" dict="Null" />
+
+	      <input type="hidden" name="xaxisselect" id="xaxisselect-label" value="Null" />
+	      <input type="hidden" name="yaxisselect" id="yaxisselect-label" value="Null" />
+	      <input type="hidden" name="xaxisselect-dict" id="xaxisselect-dict" value="Null" />
+	      <input type="hidden" name="yaxisselect-dict" id="yaxisselect-dict" value="Null" />
+
+	      <input type="hidden" name="lastclicked" id="lastclicked" value="Null" />
+	      <input type="hidden" name="lastexecuted" id="lastexecuted" value="Null" />
+	      <input type="hidden" name="lastexecuted-path" id="lastexecuted-path" value="Null" />
+
+	</form>
+
+</div>
+
+<div id="main">
+<div id="sshot" class="second-row-fixed-white">
+
+<script>
+
+document.getElementById("menuviz-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1").setAttribute("checked", true);
+document.getElementById("menuviz-1-1").setAttribute("checked", true);
+document.getElementById("menuviz-1-2").setAttribute("checked", true);
+document.getElementById("menuviz-1-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-7L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-2L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-2-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-1L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-2L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-3L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-4L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-5L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-6L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-7L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-1-3-2-8L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-4L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-5L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-5-3L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-9L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-10L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-11L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-12L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-13L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-14L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-15L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-2-6-4-16L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-7L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-8L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-8-5L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-17L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-18L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-19L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-20L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-21L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-22L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-23L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-3-9-6-24L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-10L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-11L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-11-7L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-25L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-26L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-27L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-28L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-29L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-30L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-31L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-4-12-8-32L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-13L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-14L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-14-9L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-33L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-34L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-35L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-36L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-37L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-38L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-39L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-5-15-10-40L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-16L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-17L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-17-11L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-41L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-42L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-43L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-44L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-45L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-46L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-47L").classList.remove("nocheck");
+document.getElementById("menuviz-1-1-6-18-12-48L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-19L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-20L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-20-13L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-49L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-50L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-51L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-52L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-53L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-54L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-55L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-8-21-14-56L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-9L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-9-22L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-9-23L").classList.remove("nocheck");
+document.getElementById("menuviz-1-2-9-23-15L").classList.remove("nocheck");
+var oldid = "";
+var oldid1 = "";
+//- - - - - - - - - - - - - - - - - 
+// New replaceall function
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+//- - - - - - - - - - - - - - - - - 
+
+$('.colorcheckbox').on('click', function () {
+  // Needs to remove all others and check/uncheck this.
+  var checked="";
+  if($(this)[0].checked)
+    checked="t"
+  else
+    checked="f"
+  clearChecks('colorcheckbox');
+  if(checked == "t")
+    $(this).prop("checked", true);
+});
+
+//- - - - - - - - - - - - - - - - - 
+// Post a call to the server to render a plot. Add a dictionary in the body with info on menu clicked
+function postPlot(pdict)
+{
+      var checkedValue=getAttributeByNameOnID("colorscheme-label","value");
+      
+      var xval=getAttributeByNameOnID("input-x","value");
+      var yval=getAttributeByNameOnID("input-y","value");
+      var xvaldict=getAttributeByNameOnID("input-x","dict");
+      var yvaldict=getAttributeByNameOnID("input-y","dict");
+      if (xval == "Null")
+      {
+       alert("Please select X axis property to show");
+       return false;
+      }
+      if (yval == "Null")
+     {
+     alert("Please select Y axis property to show");
+     return false;
+     }
+
+
+      var href="/visualisations";
+
+       $.post( href , {
+                        "colorscheme-label" : checkedValue,
+                        "xaxisselect-label" : xval,
+                        "yaxisselect-label" : yval,
+                        "xaxisselect-dict"  : xvaldict,
+                        "yaxisselect-dict"  : yvaldict,
+			"contextdict"       : getQueryString(pdict)
+
+                      }, 
+            function( data ) 
+            {
+             setHTMLContent("plotarea","");
+
+             $('#plotarea').append(data);
+			 document.getElementById("btnSave").style.visibility="visible";
+            }
+       );
+
+  setAttributeByNameOnID("lastexecuted","value","postPlot")
+
+}
+//- - - - - - - - - - - - - - - - - 
+
+$('#plot-button').on('click', function(e)
+{
+      e.preventDefault();
+      pdict={};
+
+      var locval=getAttributeByNameOnID("input-loc","value");
+      var locarr=locval.split("/");
+      var thisloc=locarr[locarr.length-1];
+      pdict["location"]=thisloc;
+
+
+      postPlot(pdict);
+
+
+});
+
+//- - - - - - - - - - - - - - - - - 
+// Chek box code in case the colours need to change on the heatmap
+
+function clearChecks(classname)
+{
+  var inputElements = document.getElementsByClassName(classname);
+  for(var i=0; inputElements[i]; ++i)
+    {
+      if(inputElements[i].checked)
+          {
+           inputElements[i].checked=false;
+          }
+    }
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getFirstCheckedBox(classname)
+{
+  var checkedValue = "null"; 
+  var inputElements = document.getElementsByClassName(classname);
+  for(var i=0; inputElements[i]; ++i)
+    {
+      if (checkedValue == "null")
+         {
+	   // First is default
+           checkedValue = inputElements[i].value;
+         }
+      if(inputElements[i].checked)
+          {
+           checkedValue = inputElements[i].value;
+           break;
+          }
+    }
+return checkedValue;
+}
+
+//- - - - - - - - - - - - - - - - - 
+//Adds content to a tag
+
+function setHTMLContent(id,value)
+{
+  var field = document.getElementById(id);
+  field.innerHTML = value ;
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getHTMLContent(id)
+{
+  var field = document.getElementById(id);
+  return field.innerHTML;
+}
+
+//- - - - - - - - - - - - - - - - - 
+// The function that loads a plot into the browser
+function ShowPlot(event,pdict)
+{
+  var locval=getAttributeByNameOnID("input-loc","value");
+  var locarr=locval.split("/");
+  var thisloc=locarr[locarr.length-1];
+  pdict["location"]=thisloc;
+  var path=pdict["path"];
+  var method=pdict["method"];
+  var query=path.replaceAll(' ','_').replaceAll(',','').replaceAll('-','')+getQueryString(pdict);
+  var href="/visualisations"+query;
+  //alert(href);
+  $( "#plotarea" ).load( href );
+  document.getElementById("btnSave").style.visibility="visible";
+  setAttributeByNameOnID("lastexecuted","value","showPlot")
+  setAttributeByNameOnID("lastexecuted-path","value",path)
+
+// Wipe history for Plot when non-plot menu is selected
+
+setAttributeByNameOnID("input-x","value","Null")
+setAttributeByNameOnID("input-y","value","Null")
+
+}
+
+//- - - - - - - - - - - - - - - - - 
+// A number of select methods that save history around what was
+// clicked to make the heatmap work
+
+function selectLoc(event,pdict)
+{
+  var newval=pdict["path"];
+  var locarr=newval.split("/");
+  var thisloc=locarr[locarr.length-1];
+  pdict["location"]=thisloc;
+
+
+  var locval=getAttributeByNameOnID("input-loc","value");
+  
+  setAttributeByNameOnID("input-loc","value",pdict["path"])
+  setAttributeByNameOnID("input-loc","dict",getQueryString(pdict))
+
+  var yval=getAttributeByNameOnID("input-y","value");
+  var xval=getAttributeByNameOnID("input-x","value");
+  
+  var lastexecuted=getAttributeByNameOnID("lastexecuted","value");
+  var lastexecutedpath=getAttributeByNameOnID("lastexecuted-path","value");
+
+  if (lastexecuted != "Null")
+    {
+    if (yval != "Null" && xval != "Null")
+      {
+	if (lastexecuted == "postPlot")
+	  {
+	    var str = JSON.stringify(pdict, null, 4); // (Optional) beautiful indented output.
+	    postPlot(pdict);
+	  }
+      }  
+    else if (lastexecuted == "showPlot")
+      {
+	pdict["path"]=lastexecutedpath;
+	var dummy="";
+
+	var str = JSON.stringify(pdict, null, 4); // (Optional) beautiful indented output.
+	ShowPlot(dummy,pdict);
+      }
+    }
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+
+function selectX(event,pdict)
+{
+  var yval=getAttributeByNameOnID("input-y","value");
+  var localpath=pdict["path"]
+  var yarr=yval.split("/");
+  var xarr=pdict["path"].split("/");
+  var lastx=xarr[4];
+  var lasty=yarr[4];
+  
+
+if (xarr[4] == "Location" &&  xarr.length == 5)
+   {
+    localpath=localpath+"/UK";
+   }
+       
+  var locval=getAttributeByNameOnID("input-loc","value");
+  var locarr=locval.split("/");
+  var thisloc=locarr[locarr.length-1];
+  pdict["location"]=thisloc;
+
+//  setHTMLContent("input-x",pdict["name"]);
+  setAttributeByNameOnID("input-x","value",localpath)
+  setAttributeByNameOnID("input-x","dict",getQueryString(pdict))
+  var check=getAttributeByNameOnID("input-x","value");
+  var yval=getAttributeByNameOnID("input-y","value");
+  if (yval != "Null")
+     {
+       if (lastx == lasty)
+	 {
+           alert("X and Y must be different catergories.");
+	 }
+       else
+	 {
+	   postPlot(pdict);
+	 }
+     }
+  
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function selectY(event,pdict)
+{
+  var xval=getAttributeByNameOnID("input-x","value");
+  var xarr=xval.split("/");
+  var yarr=pdict["path"].split("/");
+  var locval=getAttributeByNameOnID("input-loc","value");
+  var locarr=locval.split("/");
+  var thisloc=locarr[locarr.length-1];
+  pdict["location"]=thisloc;
+  var lastx=xarr[4];
+  var lasty=yarr[4];
+  
+  setAttributeByNameOnID("input-y","value",pdict["path"])
+  setAttributeByNameOnID("input-y","dict",getQueryString(pdict))
+
+  if (xval != "Null")
+     {
+       if (lastx == lasty)
+	 {
+           alert("X and Y must be different categories");
+	 }
+       else
+	 {
+	   postPlot(pdict);
+	 }
+     }
+
+
+}
+
+//- - - - - - - - - - - - - - - - - 
+// Routing to call different methods for clicks on different areas of the tree.
+
+function exec(event,pdict)
+{
+
+var idstring = event.id.split("-",5);
+
+var idstringt = idstring[3].split(":",1);
+
+if(oldid!="")
+  {
+  
+   if(idstringt[0]!="9"&&idstringt[0]!="9L"&&idstringt[0]!="9:SizeL"){
+   
+  //var oldlabelid = oldid;
+  
+  
+  if(document.getElementById(oldid)!=null){
+ 
+  document.getElementById(oldid).classList.add("anchor");
+  if(document.getElementById(oldid).classList.contains("blackanchor")){
+   //alert("hi");
+  document.getElementById(oldid).classList.remove("blackanchor");
+  }
+  }
+  }
+ }
+  
+  if(oldid1!="")
+  {
+
+   if(idstringt[0]!="8"&&idstringt[0]!="8L"&idstringt[0]!="8:SizeL"){
+   
+ // var oldlabelid = oldid1;
+  
+  
+  if(document.getElementById(oldid1)!=null){
+ 
+  document.getElementById(oldid1).classList.add("anchor");
+  if(document.getElementById(oldid1).classList.contains("blackanchor")){
+   //alert("hi");
+  document.getElementById(oldid1).classList.remove("blackanchor");
+  }
+  
+  }
+  }
+ }
+  
+  
+  if(idstringt[0]=="9"||idstringt[0]=="9L"||idstringt[0]=="9:SizeL"){
+   oldid1=event.id;
+  }
+  else{
+  oldid=event.id;
+  }
+ 
+  var labelid = event.id;
+  //alert(labelid);
+  //alert(document.getElementById(labelid));
+  document.getElementById(labelid).classList.add("blackanchor");
+ //alert(document.getElementById(labelid).classList);
+ //alert(document.getElementById(labelid).classList.contains("anchor"));
+   if(document.getElementById(labelid).classList.contains("anchor")){
+   //alert("hi");
+  document.getElementById(labelid).classList.remove("anchor");
+  }
+
+
+
+ var parnode=event.parentNode;
+ parnode.className += "active";
+ var str = JSON.stringify(pdict, null, 4); // (Optional) beautiful indented output.
+ var method=pdict["method"];
+ 
+ if (method == "ShowPlot")
+    {
+	
+     ShowPlot(event,pdict);
+    }
+ else if (method == "ShowMuseums")
+    {
+	
+     ShowMuseums(event,pdict);
+    }
+ else if (method == "selectX")
+    {
+	
+     selectX(event,pdict);
+    }
+ else if (method == "selectY")
+    {
+	
+     selectY(event,pdict);
+    }
+ else if (method == "selectLoc")
+    {
+	
+     selectLoc(event,pdict);
+    }
+ else if (method == "donothing")
+    {
+    }
+ else 
+    {
+     alert("Unknow method:"+method+" sent to exec. Check if implemented or simply not in exec");
+    }
+ var previd=getAttributeByNameOnID("lastclicked","value");
+ if (previd != "Null")
+      {
+        document.getElementById(previd).classList.remove("active");
+      }
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getQueryStringToDict(qis)
+{
+  var qs =decodeURIComponent(qis);
+  var str='{"' + decodeURI(qs.substring(0, qs.length - 1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}';
+  return JSON.parse(str)
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getQueryString(dict)
+{
+if (dict.hasOwnProperty("path"))
+   if (isNaN(parseInt("path")) || !(dict instanceof Array))
+      delete dict["path"];
+   else
+      dict.splice("path", 1);
+if (dict.hasOwnProperty("method"))
+   if (isNaN(parseInt("method")) || !(dict instanceof Array))
+      delete dict["method"];
+   else
+      dict.splice("path", 1);
+var qs="?";
+for (var key in dict) 
+   {
+    // check if the property/key is defined in the object itself, not in parent
+    if (dict.hasOwnProperty(key)) 
+        {           
+         qs=qs+key+"="+"'"+dict[key]+"'&";
+        }
+   }
+
+return encodeURIComponent(qs.substring(0, qs.length - 1));
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function ShowMuseums(event,id,name)
+{
+// Wipe history for Plot when non-plot menu is selected
+setAttributeByNameOnID("input-x","value","Null")
+setAttributeByNameOnID("input-y","value","Null")
+
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getAttributeByName(element,name)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      if (element.attributes[i].name == name)
+	{
+	      return element.attributes[i].value;
+	}
+    }
+  return undefined;
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function getAttributeByNameOnID(id,name)
+{
+  var element = document.getElementById(id);
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      if (element.attributes[i].name == name)
+	{
+	      return element.attributes[i].value;
+	}
+    }
+  return undefined;
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function setAttributeByNameOnID(id,name,value)
+{
+  var element = document.getElementById(id);
+ 
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      if (element.attributes[i].name == name)
+	{
+	  element.attributes[i].value=value;
+	}
+    }
+}
+
+//- - - - - - - - - - - - - - - - - 
+
+function setAttributeByName(element,name,value)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      if (element.attributes[i].name == name)
+	{
+	  element.attributes[i].value=value;
+	}
+    }
+}
+
+function tabResSelected(id,href)
+{
+//alert(document.getElementById("tab5"));
+ // var tabcontent = document.getElementById("tab-content");
+ // var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+ // var $link = $('li.active a[data-toggle="tab"]');
+ //$('.nav li.active').removeClass('active');
+ //$('#nav li.a[href="' + tabLink + '"]').addClass('active');
+
+  //var tabLink = $link.attr('href');
+  if (id == 2)
+   {
+	// Now leaflet
+    //  alert("id is 2");
+	   document.getElementById("tab5").style.display = "none";
+	  // document.getElementById("tab6").style.display = "none";
+	//alert(document.getElementById("tab5").style);
+     //  L.Util.requestAnimFrame(Window.mymap.invalidateSize,Window.mymap,!1,Window.mymap._container);
+        document.getElementById("plotarea").style.display = "block"; 
+   }
+  
+  else if (id == 5)
+  {
+        document.getElementById("plotarea").style.display = "none";        
+		//document.getElementById("tab6").style.display = "none";
+        document.getElementById("tab5").style.display = "block";
+	
+  }  
+  else if (id == 6)
+  {
+        document.getElementById("plotarea").style.display = "none";        
+		document.getElementById("tab5").style.display = "none";
+        //document.getElementById("tab6").style.display = "block";
+	
+  }  
+}
+
+
+
+</script>
+<ul class="nav nav-tabs" id="nav" >
+         
+        <li id="maintab"><a href="tab2" role="tab" data-toggle="tab" onclick="tabResSelected(2);" >Visualise</a>
+        </li>
+
+       
+		<li><a href="tab5" role="tab" data-toggle="tab" onclick="tabResSelected(5);">Visualise Terms</a>
+        </li>
+		
+		
+        
+   <input type="button" id="btnSave" class="btn btn-primary pull-right" value="Download PNG"/>
+   <button  target="popup" onClick="window.open('/visualisehelp','browse help','width=800,height=600')"class="link-button pull-right" style="color:#337ab7; padding-right:8px; padding-top:4px">Help</button>
+    </ul>
+	
+<div id="plotarea">
+<div  class="greeting" id="tab2" >
+{% if greeting  %}
+  {{ greeting|safe }}
+{% endif %}
+
+  {{ div|safe }}
+  <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.14.min.js"></script>
+  <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.14.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+  {{ script|safe }}
+
+
+
+
+</div>
+
+</div>
+       <div  id="tab5">
+<style>
+#detail-results{ width: 100%;position: relative; float: left; }
+</style>
+See <a href="/glossary">Glossary</a> for more detailed information about these terms.
+<p><div id=par2><b>Governance: </b>Governance is the system by which museums are directed and managed at the highest level.</div>
+<p><div id=par4><b>Subject Matter: </b>The overarching topic addressed by the museum.</div>
+<p><div id=par3><b>Size: </b>Size is calculated on the basis of visitor numbers. Huge (1million+), Large (100,000 –1million), Medium (10,000-100,000), Small (0-10,000).</div>
+<p><div id=par4><b>Location: </b>Location is organised according to the administrative areas of each country.</div>
+<p><div id=par4><b>Geodemographic Group: </b>A classification system that describes small areas in the UK based on the characteristics of the population they contain.</div>
+<p><div id=par4><b>Geodemographic Subgroup: </b>A more detailed version of geodemographic group.</div>
+<p><div id=par4><b>Deprivation Index: </b>A measures for the relative deprivation of geographic areas in the UK, with 1 being the most deprived and 10 being the least deprived</div>
+
+	   </div> 
+	   
+	   
+	      
+</div>
+</div>
+<script type="text/javascript">
+
+document.getElementById("btnSave").style.visibility="hidden";
+document.getElementById("maintab").classList.add('active');
+document.getElementById("tab5").style.display = "none";
+///document.getElementById("tab6").style.display = "none";
+$(function() { 
+    $("#btnSave").click(function() {
+var r = confirm("The Mapping Museums data is open access and free to use under the terms of the Creative Commons (BY) license. This allows users to copy, distribute, remix and build upon it, so long the Mapping Museums team is credited with its original creation. Please use the following citation if you do download a graph or chart from this website: Image downloaded from the Mapping Museums website at www.mappingmuseums.org Accessed on (date). If you do use our data, we would be very grateful if you could contact us, using Get in Touch, under the Contact us Tab, to let us know how you are using it, any insights or results you might obtain, and any other feedback you might have for us.");
+if (r==true){    
+       html2canvas(document.getElementById('sshot')).then(function(canvas) {
+     window.open(canvas.toDataURL("image/png"), '_blank');
+    
+});
+//alert("This functionality will become available when the website becomes public (January 2020)");
+    }
+    });
+}); 
+
+</script>
+{% endblock %}
+
+</body>
+</html>

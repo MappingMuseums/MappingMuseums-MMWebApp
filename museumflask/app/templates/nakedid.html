@@ -1,0 +1,64 @@
+<html>
+<head>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+<style>
+#nakedtab-content{ visibility:hidden; }
+body{
+font-size:14px;
+}
+</style>
+
+</head>
+<body>
+	    
+	    
+	   
+		 
+	      
+	      
+	      <h3 >All Properties</h3>
+              <table class="table table-striped table-bordered" border="2" width="80%">
+			  
+             {% for item  in allprops  %}
+		<tr>
+		  <td bgcolor="lightgrey" width="25%">   {{ item[0] }}</td>
+		  <td width="75%" id="{{ item[0]}}">    {{ item[1]|safe }}</td>
+                </tr>
+             {% endfor %}
+			 <tr>
+		  <td bgcolor="lightgrey" width="25%">   Street View</td>
+		  <td width="75%" id="Streetview"> <button id="btn-see" type="button" class="btn btn-primary pull-left" onclick="getlink();">Get link</button> </td>
+                </tr>
+	      </table>
+	      <p/>
+	    
+	   
+
+	<script type="text/javascript">
+
+	//
+
+ 
+	function seeAll()
+        {
+
+	  var el =document.getElementById("nakedtab-content");
+	  if (el.style.visibility == 'visible')
+            {
+	      el.style.visibility = 'hidden';
+            }
+          else
+            {
+   	      el.style.display = 'block';
+	      el.style.visibility = 'visible';
+            }
+			
+	}
+
+	</script >
+
+</body>
+</html>

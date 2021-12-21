@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Data{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+   
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/databanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>The Cold War Operations Room, photograph with kind permission of the RAF Air Defence Radar Museum</figcaption>
+</figure>
+    <div class="row">
+<h1>Data</h1>
+     <p>The project’s research team has gathered, cleansed, and codified data relating to over 4000 UK museums - almost double the number of museums covered in any previous survey. It covers the period from 1960 to date.
+	 The challenges we faced and the processes we adopted to collect, integrate, and cleanse the data are described in our publications</p>
+	 <p>The following files are available for download, which capture the status of the Mapping Museums database at the formal end of the project in September 2021: </p>
+     <p><ul>
+     <li><a href='../static/pdf/MappingMuseumsData2021_09_30.csv' target="_blank" onclick="return confirm('The Mapping Museums data is open access and free to use under the terms of the Creative Commons (BY) license. This allows users to copy, distribute, remix and build upon it, so long the Mapping Museums team is credited with its original creation. Please use the following citation if you do download data from this website: Data downloaded from the Mapping Museums website at www.mappingmuseums.org Accessed on (date). If you do use our data, we would be very grateful if you could contact us, using Get in Touch, under the Contact us Tab, to let us know how you are using it, any insights or results you might obtain, and any other feedback you might have for us.')" >CSV data file</a></li>
+     <li><a href='../static/pdf/MappingMuseumsLinkedData2021_09_30.rdf' target="_blank" onclick="return confirm('The Mapping Museums data is open access and free to use under the terms of the Creative Commons (BY) license. This allows users to copy, distribute, remix and build upon it, so long the Mapping Museums team is credited with its original creation. Please use the following citation if you do download data from this website: Data downloaded from the Mapping Museums website at www.mappingmuseums.org Accessed on (date). If you do use our data, we would be very grateful if you could contact us, using Get in Touch, under the Contact us Tab, to let us know how you are using it, any insights or results you might obtain, and any other feedback you might have for us.')">RDF/XML data file</a></li>
+     <li><a href='../static/pdf/MetadataForMappingMuseumsLinkedData2021_09_30.rdf' target="_blank" >Metadata relating to the RDF/XML file </a></li>
+     <li><a href='../static/pdf/MMSchemaDiagrams2020_09_28.zip' target="_blank" >Schema diagrams relating to the RDF/XML file </a></li>
+     </ul></p>
+     <p>A Glossary explaining the terms used within these files can be accessed <a href='/glossary'>here</a>.</p>
+     <p><b>License:</b> The above data is free to use under the terms of the Creative Commons (BY) license. 
+	 This allows users to copy, distribute, remix, and build upon the research, so long the Mapping Museums team is credited with its original creation.</p>
+	 <p> Please use the following citation if you do download the data: Data downloaded from the Mapping Museums website at www.mappingmuseums.org, Accessed on (date).</p>
+	 <p>Also, we would be very interested to know how you are using, or planning to use, this data. Please use the <a href="/contact">Get in Touch</a> link to tell us about your work.</p>
+     
+     
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>
+
+
+

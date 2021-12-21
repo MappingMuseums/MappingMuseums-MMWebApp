@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+
+</head>
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{title}}</h1>
+</div>
+<div class="results"  >
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+            </p>
+        </div>
+    </div>
+</div>
+{{message}}    
+</div>
+{% endblock %}
+

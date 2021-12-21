@@ -1,0 +1,102 @@
+.css-treeview ul, .css-treeview li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.css-treeview input {
+    position: absolute;
+    opacity: 0;
+}
+
+.css-treeview {
+    font: normal 11px "Roboto", sans-serif;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.css-treeview a {
+    color: #ADD8E6;
+
+}
+
+.css-treeview a:hover {
+    text-decoration: underline;
+}
+
+.css-treeview input + label + ul {
+    margin: 0 0 0 22px;
+}
+
+.css-treeview input ~ ul {
+    display: none;
+}
+
+.css-treeview label, .css-treeview label::before {
+    cursor: pointer;
+
+}
+.css-treeview label, .css-treeview label::before {
+    background: url("../square_folder_icons.png") no-repeat;
+}
+.css-treeview label.nocheck, .css-treeview label.nocheck::before {
+    background: url("../grey_folder_icons.png") no-repeat;
+}
+
+
+.css-treeview input:disabled + label {
+    cursor: default;
+    opacity: .6;
+}
+
+.css-treeview input:checked:not(:disabled) ~ ul {
+    display: block;
+}
+
+.css-treeview label, .css-treeview a, .css-treeview label::before {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;,
+    vertical-align: middle;
+}
+
+.css-treeview label {
+    background-position: 0px 0;
+/**     text-decoration: underline;**/
+}
+
+.css-treeview label:active {
+            background-color:#ADD8E6;
+}
+.css-treeview label:visited {
+            background-color:#ADD8E6;
+}
+
+.css-treeview label::before {
+    content: "";
+    width: 16px;
+    margin: 0 0px 0 0;
+    vertical-align: middle;
+    background-position: 0 -32px;
+}
+
+.css-treeview input:checked + label::before {
+    background-position: 0 -16px;
+}
+
+/* webkit adjacent element selector bugfix */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .css-treeview {
+	-webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
+    }
+    
+    @-webkit-keyframes webkit-adjacent-element-selector-bugfix {
+	from { 
+	    padding: 0;
+	} 
+	to {
+	    padding: 0;
+	}
+    }
+}

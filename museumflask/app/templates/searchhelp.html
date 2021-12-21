@@ -1,0 +1,324 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+{% block page_content %}
+
+<div class="container">
+
+<style>
+div.row {
+	font-family: "Roboto", sans-serif;
+    font-size: 20px;
+}
+</style>
+    <div class="row">
+<div class="page-header">
+    <h1>Database Search Help</h1>
+</div>
+ 
+
+<p>Search allows you to set up your own search queries over the museums data. Use the Select attribute drop-down list on the left hand side to choose the category that you wish to search with; a description of each category can be found in Search Terms. After selecting the search attribute, enter your required search Value, and then select the Comparison criterion from the drop-down list. Finally, press the Submit button to see the results of your search.</p>
+<p><b>Changing the display to a map:</b> To see the museums returned by your search displayed on a map, select the Map tab at the top of the Results page. You can manipulate this Map view in the same way as in Browse.</p>
+<p><b>Seeing the full data held about each museum:</b> Select the Details tab at the top of the Results page to see the full set of data held for each museum. This allows you to scroll through the museums using the Prev and Next buttons and to examine their full details.</p>
+<p><b>Changing the output attributes in the List view:</b> If you are viewing the results as a list, and you wish to change the attributes displayed for each museum, click on the box labelled Select output attributes to see the possible options. Ticking the option All attributes will return the most significant attributes of the museums. Press the Submit button to reload the results and show your selected attributes.</p>
+<p><b>Narrowing your search by adding more filters:</b>  Use the Add Filter button to narrow your search by adding filters on more categories. You can create up to 10 filters. To remove a filter, press on the x shown next to it (however, you cannot delete Filter 1). </p>
+<p><b>Starting a new search:</b> To start again with a new search query, press the Clear All button. </p>
+<p><b>Downloading the search results:</b> The results of any search can be downloaded by pressing on the Download CSV button at the top of the page. </p>
+<p><b>Examples of searches:</b> Examples of setting up filters on each category are given below - we recommend that you work through all of these. Examples of searches with <a href="#mfil">multiple filters</a> are given after that, followed by some <a href="#addl">additional search tips</a>.</p>
+<p><b>Searching with Name</b></p>
+<p>Choose Name from the Select attribute drop-down list, leave the Comparison criterion as ‘Matches’, and type </p>
+<p>Folk</p>
+<p>into the Value field. Press the Submit button to see the results of your search. You will see that these are the museums whose name contains the sequence of characters ‘Folk’, e.g. Castle Farm Folk Museum. Note that the search is not case-sensitive so, for example, museums whose name contains ‘folk’ will also be returned, e.g. Suffolk Regiment Museum.</p>
+<p>Click on the box labelled Select output attributes if you would like to see different attributes of museums from the default set of attributes shown in the results.  Use the Details or Map tab at the top of the results to change the display from List, which is the default. </p>
+<p>To see the museums whose name does not contain the sequence of characters ‘Folk’, change the Comparison criterion to ‘Not Matching’.</p>
+<p><b>Searching with Village, Town or City</b></p>
+<p>Use this to search for museums within a particular village, town or city. For example, typing</p>
+<p>Hull</p>
+<p>into the Value field will retrieve all museums located in a village, town or city whose name contains the sequence of characters ‘Hull’.  The search is not case sensitive, so names that contain ‘hull’ will also be matched e.g. Solihull. Press the Submit button to see the results of your search.</p>
+<p>To see the museums whose location does not contain the sequence of characters ‘Hull’, change the Comparison criterion to ‘Not Matching’.</p>
+<p><b>Searching with Postcode</b></p>
+<p>This is similar to Searching with Name and Searching with Village, Town or City. Type the postcode, or partial postcode, that you are interested in into the Value field, and press the Submit button to see the results of your search.</p>
+<p>Change the Comparison criterion to ‘Not Matching’ to find museums whose postcode does not match this value.</p>
+<p><b>Searching with Admin area</b></p>
+<p>This allows you to search for museums by their administrative area, e.g. a country, English region, unitary authority, or county council. </p>
+<p>For example, to retrieve all the museums in Scotland, start to type the word Scotland into the Value field, and select ‘Scotland’ from the list of suggestions given by the system. Press the Submit button to see the results of your search.</p>
+<p>As another example, to retrieve all museums in Cardiff, start to type the word Cardiff into the Value Field, and select ‘Cardiff (Welsh UA)’ from the list of suggestions given by the system. </p>
+<p><b>Searching with Accreditation</b></p>
+<p>You can search for museums that are accredited or unaccredited by selecting ‘Accredited’ or ‘Unaccredited’ from the drop-down list in the Value field. Press the Submit button to see the results of your search. </p>
+<p>Please see the Glossary for more information about professional benchmarks and the accreditation process. </p>
+<p><b>Searching with Governance</b></p>
+<p>This allows you to search for museums according to their organisational structure by selecting the desired type of governance from options listed in the Value field. Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search. </p>
+<p>Please see the Glossary for more information about museums’ governance.</p>
+<p><b>Searching with Size</b></p>
+<p>This allows you to search for museums on the basis of their annual visitor numbers. Click on the box next to ‘Value’ to open up the list of options: huge (1million+), large (100,000-1million), medium (10,000-100,000), small (0-10,000) and unknown.</p>
+<p>Please see the Glossary for more information about how museums’ size is calculated.</p>
+<p><b>Searching with Subject Matter</b></p>
+<p>Search for museums according to their overarching topic by selecting the desired topic from the options listed in the Value field. Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search. </p>
+<p>Please see the  Glossary for more information about the classification of museums’ subject matter.</p>
+
+
+<p><b>Searching with Visitor numbers data</b></p>
+
+<p>This allows you to search for museums according to data that we have about their numbers of annual visitors.  For some museums we do not have any data about their visitor numbers, so these museums will not appear in the list of results.  For some museums we hold multiple historical records about their visitor numbers, in which case each record will be returned as a separate result, i.e. the same museum may appear several times in the list of search results. 
+</p>
+<p>For example, to find museums that have visitor number records showing annual visitors larger than and including 5000, click on the box next to ‘Comparison criterion’ and select ‘Larger than and including’ from the list of options. Type 5000 in the Value field, and press Submit to see the results of your search. 
+</p>
+<p>The full list of Comparison criteria for Visitor numbers data are as follows:
+</p>
+ <p>
+ <table border="1">
+<tr><td>Smaller than</td></tr>
+<tr><td>Larger than</td></tr>
+<tr><td>Smaller than and including</td></tr>
+<tr><td>Larger than and including</td></tr>
+<tr><td>Specific number only</td></tr>
+</table>
+</p>
+
+<p><b>Searching with Year opened </b></p>
+
+<p>This allows you to search for museums that opened in, after or before a particular year. For some museums we know their precise year of opening e.g. Three Rivers Museum opened in 1987. For others, we only know that they opened some time between a range of years, e.g. Beeston Castle in 1980-1989, The Archaeology Centre in 1988-1993.
+</p>
+<p>Click on the box next to Comparison criterion to see the full list of comparison criteria that are available to search on Year opened:  
+</p>
+<p>
+<table border="1">
+<tr><td>Before</td><td>
+Use this if you want to know which museums definitely opened before a given year. For example, if you type 1990 into the Value field, then Three Rivers Museum and Beeston Castle will be returned, but not The Archaeology Centre.
+</td></tr>
+<tr><td>After</td><td>
+Use this if you want to know which museums definitely opened after a given year. For example, if you type 1988 into the Value field, then The Archaeology Centre will be returned, but not Three Rivers Museum or Beeston Castle. 
+</td></tr>
+<tr><td>Between </td><td>
+Use this if you want to know which museums definitely opened between a pair of years. For example, if you type 1980:1990 into the Value field, the Three Rivers Museum and Beeston Castle will be returned, but not The Archaeology Centre. 
+</td></tr>
+<tr><td>Before and including</td><td>
+Use this if you want to know which museums definitely opened before or in a given year. It works similarly to Before. 
+</td></tr>
+<tr><td>After and including</td><td>
+Use this if you want to know which museums definitely opened after or in a given year. It works similarly to After. 
+</td></tr>
+<tr><td>Specific year only</td><td>
+Use this if you want to know which museums definitely opened in a given year. For example, if you type 1987 into the Value field, only museums that are known to have definitely opened on that date will be returned, e.g. Three Rivers Museum.  
+</td></tr>
+<tr><td>Apart from </td><td>
+Use this if you want to know which museums definitely did not open in a given year. For example, if you type 1988 into the Value field, the results will include Three Rivers Museum, but not Beeston Castle or The Archaeology Centre.
+</td></tr>
+<tr><td>Possibly Before</td><td>
+Use this if you want to know which museums possibly opened before a given year. For example, if you type 1990 into the Value field, then Three Rivers Museum, Beeston Castle and The Archaeology Centre will all be returned. 
+</td></tr>
+<tr><td>Possibly After</td><td>
+Use this if you want to know which museums possibly opened after a given year. For example, if you type 1988 into the Value field, then The Archaeology Centre and Beeston Castle will be returned, but not Three Rivers Museum.
+</td></tr>
+<tr><td>Possibly Between </td><td>
+Use this if you want to know which museums possibly opened between a pair of years. For example, if you type 1980:1990 into the Value field, the Three Rivers Museum, Beeston Castle and The Archaeology Centre will all be returned.
+</td></tr>
+<tr><td>Possibly Before and including</td><td>
+Use this if you want to know which museums possibly opened before or in a given year. It works similarly to Possibly Before.
+</td></tr>
+<tr><td>Possibly After and including</td><td>
+Use this if you want to know which museums possibly opened after or in a given year. It works similarly to Possibly After.
+</td></tr>
+<tr><td>Possibly Specific year only</td><td>
+Use this if you want to know which museums possibly opened in a given year. For example, if you type 1987 into the Value field, then museums that are known to have possibly opened on that date will be returned, including Three Rivers Museum and Beeston Castle, but not The Archaeology Centre. 
+</td></tr>
+<tr><td>Possibly Apart from </td><td>
+Use this if you want to know which museums possibly did not open in a given year. For example, if you type 1987 into the Value field, the results will include Beeston Castle, The Archaeology Centre but not Three Rivers Museum. 
+</td></tr>
+</table>
+</p>
+<p>Please see the Glossary for more information on opening dates and date ranges.
+</p>
+<p><b>Searching with Year closed </b></p>
+
+<p>This allows you to search for museums that closed in, after or before a particular year. For some museums that have closed we know their precise year of closing. For others, we only know that they closed some time between a range of years. 
+</p>
+<p>Searching with Year closed works in the same way as searching with Year open, described above. 
+</p>
+<p>Please see the Glossary for more information on closing dates and date ranges.
+</p>
+<p><b>Searching with Year exists</b></p>
+
+<p>Use this to search for museums that were open in, after or before a particular year.  For example, </p><ul>
+<li>Beswick Museum opened in 1986 and closed in 2000; so that museum definitely existed all the years between 1986 and 2000</li>
+<li>Nursing History Museum opened in 1984 and closed some time between 2002-2009; so it definitely existed all years between 1984 and 2002, and possibly existed all years between 1984 and 2009</li>
+<li>London Fire Brigade Museum opened some time between 1960 and 1969 and closed in 2015; so it definitely existed all years between 1969 and 2015, and possibly existed all years between 1960 and 2015</li>
+</ul>
+<p>The full list of Comparison criteria for Year exists are described below: 
+</p>
+<p>
+<table border="1">
+<tr><td>Before</td><td>
+Use this if you want to know which museums definitely existed before a given year (they may or may not have closed by that year). For example, if you type 1970 into the Value field, the London Fire Brigade Museum will be returned; if you type 1965, none of the above three museums will be returned; if you type 2001, all three will be returned. 
+</td></tr>
+<tr><td>After</td><td>
+Use this if you want to know which museums definitely existed after a given year but not earlier. For example, if you type 1985 into the Value field, Beswick Museum will be returned. 
+</td></tr>
+<tr><td>Between </td><td>
+Use this if you want to know which museums definitely existed during some part of the period between a pair of years. For example, if you type 1970:1985 into the Value field, Nursing History Museum and London Fire Brigade Museum will be returned.
+</td></tr>
+<tr><td>Before and including</td><td>
+Use this if you want to know which museums definitely existed before or in a given year. It works similarly to Before.
+</td></tr>
+<tr><td>After and including</td><td>
+Use this if you want to know which museums definitely existed after or in a given year but not earlier. It works similarly to After.
+</td></tr>
+<tr><td>In</td><td>
+Use this if you want to know which museums definitely existed in a given year. For example, if you type 2008 into the Value field, London Fire Brigade Museum will be returned.
+</td></tr>
+<tr><td>Apart from </td><td>
+Use this if you want to know which museums definitely did not exist in the specified year, either because they definitely closed before that year, or definitely opened after that year. For example, with a Value of 1985, Beswick Museum will be returned. 
+</td></tr>
+<tr><td>Possibly Before</td><td>
+Use this if you want to know which museums possibly existed before a given year (they may or may not have closed by that year). For example, if you type 1965 into the Value field, the London Fire Brigade Museum will be returned. 
+</td></tr>
+<tr><td>Possibly After</td><td>
+Use this if you want to know which museums possibly existed after a given year but not earlier. For example, if you type 1965 into the Value field, Beswick Museum, Nursing History Museum and London Fire Brigade Museum will be returned. 
+</td></tr>
+<tr><td>Possibly Between </td><td>
+Use this if you want to know which museums possibly existed during some part of the period between a pair of years. For example, if you type 1960:1980 into the Value field, London Fire Brigade Museum will be returned.
+</td></tr>
+<tr><td>Possibly Before and including</td><td>
+Use this if you want to know which museums possibly existed before or in a given year. It works similarly to Possibly Before.
+</td></tr>
+<tr><td>Possibly After and including</td><td>
+Use this if you want to know which museums possibly existed after or in a given year but not earlier. It works similarly to Possibly After.
+</td></tr>
+<tr><td>Possibly In </td><td>
+Use this if you want to know which museums possibly existed in a given year. For example, if you type 2008 into the Value field, Nursing History Museum  and London Fire Brigade Museum will be returned.
+</td></tr>
+<tr><td>Possibly Apart from </td><td>
+Use this if you want to know which museums possibly did not exist in the specified year, either because they possibly closed before that year, or possibly opened after that year. For example, with a Value of 1965, Beswick Museum , Nursing History Museum  and London Fire Brigade Museum will be returned.
+</td></tr>
+
+</table>
+</p>
+
+<p><a name = "note" style="color:black; text-decoration: none"><b>Searching with Notes</b></a></p>
+
+<p>Additional information about individual museums has been logged by the research team within the Notes for each museum. Enter a search key into the Value field to find museums whose Notes contain your search key. 
+</p>
+<p>Keyword conventions that we have used within Notes are as follows: 
+</p>
+<p>
+<table border="1">
+<tr><td>Hybrid </td><td>
+We have used this keyword to record asset transfer museums i.e. museums that have outsourced the management of their collections to other bodies.
+</td></tr>
+<tr><td>Governance change </td><td>
+We have used this to record museums that have changed their governance (NB this is not a complete list of such museums) 
+</td></tr>
+</table>
+</p>
+<p><b>Searching with Primary provenance of data</b></p>
+
+<p>This allows you to search for museums according to the original source of the data that we hold about them. Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search.  
+</p>
+<p>Please see the Glossary for more information about the provenance of the museums data. 
+</p>
+<p><a name = "depin" style="color:black; text-decoration: none"><b>Searching with Deprivation index</b></a></p>
+
+<p>This allows you to search for museums according to the relative deprivation of their location, with 1 being the most deprived and 10 being the least deprived. 
+</p>
+<p>For example, to find museums located in areas with deprivation index less than or equal to 3, click on the box next to ‘Comparison criterion’ and select ‘Smaller than and including’ from the list of options. Type 3 in the Value field, and press Submit to see the results of your search. 
+</p>
+<p>To find museums located in areas with deprivation index 4, select ‘Specific number only’ from the list of Comparison criteria and type 4 into the Value field. Press Submit to see the results of your search. 
+</p>
+<p>To find museums located in areas with deprivation index 2, 3 or 4, then additional filters are required: add a second filter on Deprivation index, with ‘Specific number only’ as the comparison criterion and 3 as the value; and then a third filter on Deprivation index, with ‘Specific number only’ as the comparison criterion and 2 as the value. Press Submit to see the results of your search. 
+</p>
+<p>This last search is an example of Searching with <a href="#mfil">multiple filters</a>, specifically with the search attribute being the same for all of the filters.  In such a case, the results of each filter are combined (rather than being intersected, which is what happens with the results of filters on different search attributes). 
+</p>
+<p>Please see the Glossary for more information about the Deprivation index. 
+</p>
+<p>The full list of Comparison criteria for Deprivation index are as follows: 
+</p>
+<p>
+<table border="1">
+<tr><td>Smaller than</td></tr>
+<tr><td>Larger than</td></tr>
+<tr><td>Smaller than and including </td></tr>
+<tr><td>Larger than and including</td></tr>
+<tr><td>Specific number only</td></tr>
+<tr><td>Apart from this number</td></tr>
+</table>
+</p>
+
+<p><b>Searching with Geodemographic group / subgroup</b></p>
+
+<p>This allows you to search for museums according to the geodemographic classification of their location.  
+</p>
+<p>Selecting the attribute Geodemographic group and clicking on the box next to ‘Value’ opens up the classification options for that attribute.  Select one of these options and press Submit to see the results of the search. 
+</p>
+<p>Similarly, selecting the attribute Geodemographic subgroup and clicking on the box next to ‘Value’ opens up the classification options for that attribute (‘subgroup’ is a finer-grained characterisation than ‘group’).  Select one of these options and press Submit to see the results of the search. 
+</p>
+<p>Please see the Glossary for more information about the Geodemographic groups and subgroups. 
+</p>
+<p><b>Searching with ACE Size designation</b></p>
+
+<p>This allows you to search for museums according to the Arts Council England categories for museum size. Only museums for which ACE held this information are included in the search.  
+</p>
+<p>Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search.  
+</p>
+<p><b>Searching with AIM Size designation</b></p>
+
+<p>This allows you to search for museums according to the Association of Independent Museums categories for museum size. Only museums for which AIM held this information are included in the search.  
+</p>
+<p>Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search.  
+</p>
+<p><b>Searching with DOMUS Subject Matter</b></p>
+
+<p>You can search for museums according to the Digest of Museum Statistics (DOMUS) categories for museum subject matter, for those museums that DOMUS held this information. 
+</p>
+<p>Click on the box next to ‘Value’ to open up the list of options. Press the Submit button to see the results of your search.  
+</p>
+<p><b>Searching with multiple filters</b></p>
+
+<p>Suppose you want to find museums satisfying the following three conditions:</p>
+<ul>
+<li>the name of the museum contains the sequence of characters ‘Folk’</li>
+<li>the name of the Village, Town or City the museum is based in contains the sequence of characters ‘Nor’</li>
+<li>the museum is unaccredited</li>
+</ul>
+<p>Set up a filter specifying the first condition. Click on Add Filter to set up a second filter specifying the second condition. Click again on Add Filter to set up a third filter specifying the third condition.  Then press Submit to see the results of the search. 
+</p>
+<p>If you want to remove the second filter, say, press on the x shown next to it (note, however, you cannot remove Filter 1).  If you want to add another filter, say to capture the condition that</p>
+<ul><li>the subject matter classification is Rural Industry:Watermills</li></ul>
+<p>use Add Filter again to create a new filter specifying this condition. 
+</p>
+<p><a name = "mfil" style="color:black; text-decoration: none"><b>Multiple filters on the same attribute:</b></a> Notice that, so far, the search results are returning museums that satisfy all of the filters.  This is generally how Searching works when each of the filters refers to a different attribute. However, when two or more filters refer to the same attribute, then their results are combined before then being intersected with the results of the filters on different attributes. To illustrate this, suppose we want to find the museums such that</p>
+<ul><li>the museum opened before 1980, and</li>
+<li>the subject matter classification is Rural Industry:Watermills or the subject matter classification is Rural Industry:Windmills</li></ul>
+<p>To find these museums, we need three filters: one for museum opened before 1980, one for subject matter classification is Rural Industry:Watermills, and one for subject matter classification is Rural Industry:Windmills. The results of the second and third filters will first be combined. Then that set of museums will be intersected with the results of the first filter. 
+</p>
+<p><a name = "addl" style="color:black; text-decoration: none"><b>Additional Tips for Search</b></a></p>
+
+<p>(i) Searching is case-insensitive throughout the Search facility; so, for example, the words ‘hybrid’, ‘Hybrid’ and ‘HYBRID’ are regarded as being the same. 
+</p>
+<p>(ii) When you use two or more filters that are searching on different attributes, then the results of each filter are intersected. When you use two or more filters that are searching on the same attribute, then the results of these filters are combined before being intersected with the results of the filters on different attributes. For examples, please see Searching with <a href="#mfil">multiple filters</a> and Searching with <a href="#depin">Deprivation index</a>
+</p>
+<p>(iii) When you want to find asset transfer museums (i.e. museums that have outsourced the management of their collections to other bodies), search on Notes with the value ‘hybrid’, because this is how we have recorded this information in the database. Please see Searching with <a href="#note">Notes</a>
+</p>
+ <p>(iv) When searching with Year exists, if you are interested in a specific year don’t forget to change the Comparison criterion to ‘In’ rather than the default of ‘Before’. 
+</p>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

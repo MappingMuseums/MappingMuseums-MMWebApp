@@ -1,0 +1,209 @@
+<script>
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+  document.getElementById("myBtn").style.display = "block";
+  } else {
+  document.getElementById("myBtn").style.display = "none";
+  }
+  }
+
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  }
+
+  function backFunction()
+  {
+  window.location.href = "./meetings.html";
+  }
+
+</script>
+
+<style>
+  #myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  }
+  #myBackBtn {
+  display: block;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  }
+
+  #myBtn:hover {
+  background-color: #555;
+  }
+  @page {  }
+  table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+  td, th { vertical-align:top; font-size:12pt;}
+  h1, h2, h3, h4, h5, h6 { clear:both }
+  ol, ul { margin:0; padding:0;}
+  li { list-style: none; margin:0; padding:0;}
+  <!-- "li span.odfLiEnd" - IE 7 issue-->
+  li span. { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+  span.footnodeNumber { padding-right:1em; }
+  span.annotation_style_by_filter { font-size:95%; font-family:Arial; background-color:#fff000;  margin:0; border:0; padding:0;  }
+  * { margin:0;}
+  .P1 { font-size:11pt; margin-bottom:0.353cm; margin-top:0cm; text-align:left ! important; font-family:Calibri; writing-mode:lr-tb; text-decoration:underline; }
+  .P2 { font-size:11pt; margin-bottom:0.353cm; margin-top:0cm; text-align:left ! important; font-family:Calibri; writing-mode:lr-tb; font-weight:bold; }
+  .P3 { font-size:11pt; margin-bottom:0.353cm; margin-top:0cm; text-align:left ! important; font-family:Calibri; writing-mode:lr-tb; margin-left:0cm; margin-right:0cm; text-indent:1.27cm; }
+  .P4 { font-size:11pt; margin-bottom:0.353cm; margin-top:0cm; text-align:left ! important; font-family:Calibri; writing-mode:lr-tb; }
+  .Standard { font-size:11pt; font-family:Calibri; writing-mode:lr-tb; margin-top:0cm; margin-bottom:0.353cm; text-align:left ! important; }
+  .T1 { font-weight:bold; }
+  .T2 { text-decoration:underline; }
+</style>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="backFunction()" id="myBackBtn" title="Go to index">Back</button>
+
+<div class="page-header">
+  <h1>Minutes May 23 2017</h1>
+</div>
+
+    <p/>
+      
+    <p class="Standard">
+      <span class="T1">Decisions / discussions
+      </span>
+    </p>
+    <p class="Standard">
+      <span class="T2">Years open and years closed data
+      </span>
+    </p>
+    <p class="Standard">The two columns covering from and to will be amalgamated into a single column.
+    </p>
+    <p class="Standard">On individual museums page:  When we have a precise year for opening to the public, then that should be used, if not then a date range (from  to) will be shown next to the museum name. 
+    </p>
+    <p class="Standard">In browse:  When we have a precise year for opening to the public, then that should be shown next to the museum name, if not then a date range (from  to) 
+    </p>
+    <p class="Standard">
+      <span class="T1">Question:
+      </span> In browse - if a museum opens sometime between 1973 and 1978 would it be shown under the folder that reads 70s or the folder that reads 1973? 
+    </p>
+    <p class="Standard">In search: There will be a facility for deciding whether users search by the precise date or a fuzzy date. If the former, the search will only pick up entries where we know the exact year, if the later then it will include museums where the date selected falls within the range of possible years open. 
+    </p>
+    <p class="Standard">Also, to have an additional option where the user provides a date range eg. 1978-1991 (rather than using two filters)
+    </p>
+    <p class="Standard">There is an additional column which lists -Fdate known to be open which is when we have no information. For now, this will not be factored into the database. Instead the focus should remain on dates of opening as that allows us to track emergence rather than presence. 
+    </p>
+    <p class="P1"> 
+    </p>
+    <p class="Standard">
+      <span class="T2">Governance data 
+      </span>
+    </p>
+    <p class="Standard">We do not need two columns where one reads independent and one reads english heritage or National trust. Rather the database should understand that EH and NT are independent and arrange them accordingly.
+    </p>
+    <p class="Standard">Nick / Alex to discuss
+    </p>
+    <p class="P2"> 
+    </p>
+    <p class="Standard">
+      <span class="T1">Actions: 
+      </span>
+    </p>
+    <p class="Standard">
+      <span class="T1">Nick
+      </span> - 
+      <span> Produce spreadsheets of columns generated from database that FC and JL can alter / re-order (use revised database outline for first version)
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Add in an additional option on date of opening / closing searches which is where the user provides a date range eg. 1978-1991
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Consider approach to handling hierarchies that work for browsing and visualisation
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Look at appropriate visualisations
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Capitalise first letters of words in names of museums 
+      </span>
+    </p>
+    <p class="Standard">
+      <span class="T1">Nick and Jamie 
+      </span>- The year opening pair of columns (start / end) to be amalgamated into a single column.
+    </p>
+    <p class="P3">The year closing pair of columns (start / end)  to be amalgamated into a single column.
+    </p>
+    <p class="Standard">
+      <span class="T1">Nick and Alex
+      </span>  look at governance being a single column rather than two (ie where database understand English heritage is independent and doesnt need additional column that reads independent)
+    </p>
+    <p class="Standard">Think about a blog entry about the challenges / pleasures of building a database for the project (NB were still covering set up in the blog  so maybe not the stuff were doing now?) Needs to be done in 5-6)
+      <a id="_GoBack"/> weeks.
+    </p>
+    <p class="Standard">
+      <span class="T1">Jamie
+      </span>  - Start / end terms to be replaced by from and to. 
+    </p>
+    <p class="Standard">
+      <span> Translate ACE small / medium large etc. into visitor number ranges and add in  but only where were missing actual visitor numbers
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Ditto for AIM small / medium large 
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Send Nick spreadsheet of numbers
+      </span>
+    </p>
+    <p class="P3">Blog entry on practically collating information (needs to be done in 3-4 weeks)
+    </p>
+    <p class="Standard">
+      <span class="T1">Fiona
+      </span>  look for data that links local authority to postcodes
+    </p>
+    <p class="Standard">
+      <span> Look for info on historic and current counties
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Work out where grey area organisations sits in browse and search
+      </span>
+    </p>
+    <p class="Standard">
+      <span> Work out where organisational type column sits in browse and search
+      </span>
+    </p>
+    <p class="Standard">
+      <span class="T1">Fiona and Jamie
+      </span>  consider use of terms for search page and for date search terms eg. before not less than.
+    </p>
+    <p class="Standard"> 
+      <h3>Attachments </h3>
+    <ul>
+      <li><a href="23_MayQUESTIONS-2.html">QUESTIONS-2 </a></li>
+      <li><a href="rev_database_230517_2_2.html">rev_database_230517_2_2 </a></li>
+    </ul>
+    </p>
+  
+  </body>
+</html>

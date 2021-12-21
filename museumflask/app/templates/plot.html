@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+ <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://vega.github.io/vega/releases/v2.6.5/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/1.3.1/vega-lite.js"></script>
+
+  <script src="https://vega.github.io/vega-editor/vendor/vega-embed.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+{% block title %}Plots{% endblock %}
+
+{% block page_content %}
+
+<style>
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left {	
+}
+#view {height: 400px; 
+width: auto;}
+</style>
+
+    <div class="aform" id="left">
+
+
+      <div id="left" class="column">
+      </p>
+      </hr>
+      </p>
+	<div class="css-treeview well">
+
+           {% if trees  %}
+  	     {% for tree in trees  %}
+	         {{ tree|safe}}
+	     {% endfor %}
+          {% endif %}
+	</div>
+	<form class="form-inline" method="POST" action="/plot">
+
+	  <div class="form-group">
+            <label class="control-label">Select chart type</label>
+	    <select id="example-single" name="charttype" >
+		"{{charttype|safe}}"
+	    </select>
+	  </div>
+
+
+      </div>
+    </div>
+
+    <div class="container">
+
+{% if alert  %}
+<div class="alert-{{alert_type}}">
+<a href="#"  data-dismiss="alert">&times;</a>
+{{alert}}
+</div>
+{% endif %}
+
+{% if document %}
+
+<div id="view"></div>
+
+<script>
+
+
+ var vlSpec = {{document|safe}};
+
+  var embedSpec = {
+    mode: "vega-lite",  
+    spec: vlSpec
+  };
+
+  vg.embed("#view", embedSpec);
+
+
+</script>
+
+
+
+
+{% endif %}
+{% endblock %}
+  </div>
+  </div>
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="geometry" content="line">
+  <link rel="stylesheet" href="/static/g2/assets/common.css">
+  <title>Line Plot</title>
+   <style type="text/css">
+    #canvas .g2-tooltip {
+      background: none!important;
+      padding: 0!important;
+    }
+  </style>
+</head>
+
+<body>
+<div id="mountNode"></div>
+
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+
+  <script src="/static/g2/g2.js"></script>
+  <script src="/static/g2/assets/data-set.min.js"></script>
+  <script>
+
+ 
+///-- DATA ------------------------------------------------
+{% if plotdata  %}
+  {% for data in plotdata%}
+    {{data|safe }}
+  {% endfor %}
+{% endif %}
+
+
+  const ds = new DataSet();
+  const dv = ds.createView()
+    .source(data)
+    .transform({
+      type: 'percent',
+      field: 'value',      
+      dimension: 'country', 
+      groupBy: [ 'year' ], 
+      as: 'percent'
+    });
+
+  const chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: window.innerHeight
+  });
+  chart.source(dv, {
+    percent: {
+      min: 0,
+      formatter(val) {
+        return (val * 100).toFixed(2) + '%';
+      }
+    }
+  });
+  chart.intervalStack()
+    .position('year*percent')
+    .color('country');
+  chart.render();
+
+
+
+
+</script>
+</body>
+
+</html>

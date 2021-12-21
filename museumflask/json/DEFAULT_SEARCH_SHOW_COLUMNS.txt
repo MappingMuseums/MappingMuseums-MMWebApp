@@ -1,0 +1,11 @@
+Name_of_museum
+Town_or_City
+Postcode
+Accreditation
+Governance
+Size
+Subject_Matter
+Year_opened
+Year_closed
+Notes
+Admin_hierarchy

@@ -1,0 +1,14 @@
+1. apputils def getdatagroups(attributetypes):
+   			datatypeforsearch=instance.getSearchType()
+   returns  the type for the search gui
+   we could also return all labels gt, eq etc and then the filter function
+   for query writing
+
+2 apputils def getQueryForCol(incol,rcount,optional=True,museumuri='?museum '):
+  getQuery returns query
+
+3.2 apputils def getFilterClause
+
+
+ 
+

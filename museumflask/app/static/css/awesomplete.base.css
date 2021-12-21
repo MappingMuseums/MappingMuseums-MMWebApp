@@ -1,0 +1,44 @@
+/*#  More details.
+#   $$Author$:Nick Larsson, Researcher, Dep. of Computer Science and Information Systems at Birkbeck University, London, England, email:nick@dcs.bbk.ac.uk, License:GNU GPLv3
+#we acknowledge the use of the following software under the terms of the specified licences:
+#
+#Openstreetmap © OpenStreetMap contributors - https://www.openstreetmap.org/copyright
+#
+#Bootstrap - https://getbootstrap.com/docs/4.0/about/license/
+#
+#Awesomplete - https://github.com/LeaVerou/awesomplete/blob/gh-pages/LICENSE
+*/
+
+.awesomplete [hidden] {
+    display: none;
+}
+
+.awesomplete .visually-hidden {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+.awesomplete {
+    display: inline-block;
+    position: relative;
+}
+
+.awesomplete > input {
+    display: block;
+}
+
+.awesomplete > ul {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    min-width: 100%;
+    box-sizing: border-box;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+}
+
+.awesomplete > ul:empty {
+    display: none;
+}

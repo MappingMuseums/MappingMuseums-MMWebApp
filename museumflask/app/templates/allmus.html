@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}All Museums{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+    <h1>All Museums</h1>
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+    <div class="row">
+
+     
+     <datalist id="languages">
+
+  {% for museum in muslist %}
+			   <option value="{{museum}}">
+			  {% endfor %}
+
+</datalist>
+
+    </div>
+	<div id = "thankyou" style="text-align: center; background-color:lightgreen">{{message}}</div>
+	
+	  <table class="table table-striped table-bordered" border="2" width="80%">
+              <tr>
+               <td bgcolor="lightgrey" width="25%" class="form1entry" ><b>Name of Museum</b></td>
+               <td><b>Project ID</b></td>
+               </tr>
+              {% for museum, musid in muslist %}
+			   <tr>
+               <td bgcolor="lightgrey" width="25%" class="form1entry" >{{museum}}</td>
+               <td><a href='/Museum/{{musid}}'>{{musid}}</a></td>
+               </tr>
+			  {% endfor %}    
+		
+		  
+	      </table>
+
+
+	   
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+	<script type="text/javascript">
+	
+
+var i=0;
+var j=0;
+var k=0;
+ 
+
+       
+
+    
+if("{{gotpost}}"=='false'){
+//alert(document.getElementById('thankyou'));
+document.getElementById('thankyou').style.display = "none";
+}
+//alert("{{gotpost}}");
+var primitivevaluetypes={};
+{% for result in attritypes %}
+primitivevaluetypes["{{result[0]|safe }}"]="{{result[1]|safe }}"
+ 
+{% endfor %}
+var datagroups={};
+{% for result in datagroups %}
+datagroups["{{result[0]|safe }}"]=datagroups["{{result[0]|safe }}"]+"{{result[1]|safe }}";
+{% endfor %}
+
+var datadict={};
+{% for key, value in datadict.iteritems() %}
+    datadict["{{key}}"]="{{ value}}";
+{% endfor %}
+$('.formentry').each(function(){
+    i++;
+    var newID='formentry-'+i;
+	
+    $(this).attr('id',newID);
+	$(this).attr('name',newID);
+	
+   
+});
+
+$('.col-sm').each(function(){
+    k++;
+    var newID='col-sm-'+k;
+    $(this).attr('id',newID);
+   
+});
+
+
+
+$('.input-medium').each(function(){
+    j++;
+    var newID='example-singlecriteria-'+j;
+    $(this).attr('id',newID);
+    
+	  var e = document.getElementById('formentry-'+j);
+	 // alert(e);
+	//  alert(e.value);
+	  var f = e.innerHTML;
+	   var thisdtype=primitivevaluetypes[f];
+  
+	  
+	  setupCriteriaGroup(thisdtype,j);
+});
+function myFunction() {
+     var e = document.getElementById('formentry-'+8);
+	  alert(primitivevaluetypes[e.innerHTML]);
+}
+String.replaceAll = function(search, replacement) {
+alert("hello");
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+function setupCriteriaGroup(datatype,tabid)
+{
+  //console.log("dt"+datatype);
+  //console.log("options:"+datagroups[datatype]);
+  //console.log("tabid"+tabid);
+  //console.log("");
+  var div = document.getElementById("col-sm-"+tabid);
+  
+  //console.log(div);
+var xmldatatypes=['string','integer','positiveInteger','date','boolean','decimal'];
+
+  //-- Supplied by implemented datatypes
+{{widgets|safe}}
+
+{{widgetcodes|safe }}
+
+
+var truename = document.getElementById("formentry-"+tabid).innerHTML;
+
+
+  while (div.firstChild) 
+    {	
+      div.removeChild(div.firstChild);
+    }
+
+
+  if (xmldatatypes.includes(datatype))
+    {
+	
+      div.innerHTML=
+	'<input type="text" style="width:70%" name="'+truename+'" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-' + tabid + '"/>';
+	  
+    }
+
+  else if (datatype in widgets)
+     { 
+	  
+      htmlid='example-singlecriteria-' + tabid ;
+	  
+      console.log('in widgets');
+	  
+      if (widgetcode[datatype].length > 0)
+        {
+		
+	  console.log('2in widgets');
+	  
+          var script = document.createElement("script");
+		  
+          script.type = "text/javascript";
+		  //alert(widgetcode[datatype]);
+		  var newStr = widgetcode[datatype].replace("${ID}",htmlid);
+		  var newStr2 = newStr.replace(/#/g,"\n");
+		  //alert(newStr2);
+          script.text=newStr2;
+		  
+         }
+
+      div.innerHTML= widgets[datatype].replace("${ID}",htmlid);
+      console.log(div);
+
+      if (widgetcode[datatype].length > 0)
+        {
+           div.appendChild(script);
+          console.log('script added');
+        }
+    }
+  else
+    {
+	//alert(datagroups[datatype]);
+	//alert(div)
+      div.innerHTML=
+	'<select id="example-singlecriteria-' + tabid + '"  style="width:70%" name="'+truename+'">'+
+	datagroups[datatype] +'<option selected value=" ">Please Select</option>'+
+	'</select>';
+    }
+}
+
+
+function ValidateEmail(form)
+{
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+var poformat = /^[a-zA-Z0-9]*\s[a-zA-Z0-9]*$/;
+var yearformat=/^[0-9]{4}$|^[0-9]{4}:[0-9]{4}$/;
+if(form.email.value.match(mailformat))
+{
+
+}
+else
+{
+alert("Error: Please enter a valid email address");
+
+return false;
+}
+if(form.email.value.indexOf('$')>-1||form.Name.value.indexOf('‘')>-1||form.Name.value.indexOf('’')>-1)
+{
+alert("Error: Please do not use the $ symbol or single quotation marks in the email field.");
+
+return false;
+}
+
+if(form.email.value.indexOf("'")>-1||form.Name.value.indexOf('"')>-1)
+{
+alert("Error: Please do not use double quotation marks or single quotation marks in the email field.");
+
+return false;
+}
+if(form.Name.value.indexOf('$')>-1||form.Name.value.indexOf('‘')>-1||form.Name.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Your Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name.value.indexOf('/')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Your Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name.value.indexOf(',')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Your Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Your Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Your Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name_of_museum.value.indexOf('$')>-1||form.Name_of_museum.value.indexOf('‘')>-1||form.Name_of_museum.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Museum Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name_of_museum.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Museum Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Name_of_museum.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Museum Name field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_1.value.indexOf('$')>-1||form.Address_line_1.value.indexOf('‘')>-1||form.Address_line_1.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 1 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_1.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 1 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_1.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 1 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_2.value.indexOf('$')>-1||form.Address_line_2.value.indexOf('‘')>-1||form.Address_line_2.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 2 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_2.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 2 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_2.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 2 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_3.value.indexOf('$')>-1||form.Address_line_3.value.indexOf('‘')>-1||form.Address_line_3.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 3 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_3.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 3 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Address_line_3.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Address line 3 field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Town_or_City.value.indexOf('$')>-1||form.Town_or_City.value.indexOf('‘')>-1||form.Town_or_City.value.indexOf('’')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Town or City field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Town_or_City.value.indexOf('£')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Town or City field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+if(form.Town_or_City.value.indexOf('"')>-1)
+{
+alert("Error: Please enter an alphanumeric string in the Town or City field. Do not use commas or other punctuation.");
+
+return false;
+}
+
+
+if(form.Postcode.value.length>0){
+if(form.Postcode.value.match(poformat))
+{
+
+}
+else
+{
+alert("Error: Please enter two alphanumeric strings separated by a space in the postcode field. Do not use commas or other punctuation.");
+
+return false;
+}
+}
+
+if(form.Postcode.value.length>10)
+{
+alert("Error: Please enter two alphanumeric strings separated by a space in the postcode field of total length no more than 10 characters. Do not use commas or other punctuation.");
+
+return false;
+}
+if(form.Year_opened.value.length>0){
+if(form.Year_opened.value.match(yearformat))
+{
+
+}
+else
+{
+alert("Error: Please enter one four-digit number in the Year Opened field. Or two four-digit numbers separated by :");
+
+return false;
+}
+}
+if(form.Year_closed.value.length>0){
+if(form.Year_closed.value.match(yearformat))
+{
+
+}
+else
+{
+alert("Error: Please enter one four-digit number in the Year Closed field. Or two four-digit numbers separated by :");
+
+return false;
+}
+}
+
+if(form.extra.value.indexOf('$')>-1||form.extra.value.indexOf('‘')>-1||form.extra.value.indexOf('’')>-1)
+{
+alert("Error: Please do not include $, £ or \" in the Extra text field.");
+
+return false;
+}
+
+if(form.extra.value.indexOf('£')>-1)
+{
+alert("Error: Please do not include $, £ or \" in the Extra text field.");
+
+return false;
+}
+
+if(form.extra.value.indexOf('"')>-1)
+{
+alert("Error: Please do not include $, £ or \" in the Extra text field.");
+
+return false;
+}
+if(form.extra.value.match(/[^a-z0-9\s\n:,.)(@\\\/!?-]/))
+{
+alert("Error: Please do not include Special Characters in the Extra text field.");
+
+return false;
+}
+
+
+return true;
+
+}
+
+
+
+		</script>
+	{% endblock %}
+</div>

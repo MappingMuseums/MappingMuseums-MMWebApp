@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/treecss.css') }}" />
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery_min_1_11_1.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dual-list-box.js') }}"></script>
+{% endblock %}
+
+
+
+{% block title %}Configure{% endblock %}
+
+{% block page_content %}
+
+<style>
+.column { position: relative; float: left; }
+#center { padding: 0 20px; width: 100%; }
+#fixeddiv { position:fixed; }
+#left {	
+width: 380px; /* LC width */ 
+padding: 0 19px;  /* LC padding */	
+right: 10px;  /* LC fullwidth + CC padding */	
+}
+  html { position: relative; min-height: 100%; }
+        body { margin-bottom: 60px; }
+        .container { width: auto; max-width: 800px; padding: 0 15px; }
+        .container .text-muted { margin: 20px 0; }
+</style>
+
+    <div class="page-header">
+      <h1>Configuration</h1>
+    </div>
+    <div class="aform" id="left">
+
+      <div id="left" class="column">
+      </p>
+      </hr>
+      </p>
+	<div class="css-treeview well">
+	  {% for tree in trees  %}
+	  {{ tree|safe}}
+	  {% endfor %}
+	</div>
+
+      </div>
+    </div>
+
+    <div class="container">
+
+{% if alert  %}
+<div class="alert-{{alert_type}}">
+<a href="#"  data-dismiss="alert">&times;</a>
+{{alert}}
+</div>
+{% endif %}
+
+{% if results %}
+
+    <h2>Configuration of {{prop}}</h2>
+
+
+      <form class="form-horizontal" method="POST" action="/configuration" >
+      <div class="form-group">
+	<div id="dual-list-box" class="form-group row">
+	  <select multiple="multiple" name="multiselect[]" >
+	    {% for res in results  %}
+	      {{ res|safe}}
+	      {% endfor %}
+
+	  </select>
+	</div>
+      </div>
+      <input type="hidden" name="property" value="{{prop}}">
+      <input type="hidden" name="operation" value="save">
+      <div class="form-group">
+	<div class=" col-lg-12">
+	  <button type="submit" class="btn btn-default" >Save selection</button>
+	</div>
+      </div>
+    </form>
+
+    <form class="form-horizontal" id="reset" name="reset" method="POST" action="/configuration" >
+      <div class="form-group" id="reset-div" name="reset-div">
+	<div class=" col-lg-12" id="reset-div2" name="reset-div2">
+	  <button type="submit" class="btn btn-default" id="reset-btn" name="reset-btn">Reset selection</button>
+	</div>
+      </div>
+      <input type="hidden" name="property" value="{{prop}}">
+      <input type="hidden" name="operation" value="reset">
+    </form>
+
+
+
+    </div>
+
+    <script type="text/javascript">
+      $('select').DualListBox({json:false});
+    </script>
+{% endif %}
+{% endblock %}
+  </div>
+  </div>
+

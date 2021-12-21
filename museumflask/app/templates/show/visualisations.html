@@ -1,0 +1,136 @@
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function backFunction()
+{
+window.location.href = "./Resources.html";
+}
+
+</script>
+
+<style>
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+#myBackBtn {
+  display: block;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+</style>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="backFunction()" id="myBackBtn" title="Go to index">Back</button>
+
+<div class="page-header">
+    <h1>Visualisation resources</h1>
+</div>
+
+	      <h2 >Visualisation examples</h2>
+	<table border="1">
+        <tr>
+         <td> Name </td>         <td>Example </td>
+        </tr>
+
+        <tr>
+         <td>Histogram</td>         <td><a href="https://bl.ocks.org/mbostock/b2fee5dae98555cf78c9e4c5074b87c3">Link</a></td>
+        </tr>
+        <tr>
+         <td>Bar chart</td>         <td><a href="https://bl.ocks.org/mbostock/3886394">Link</a></td>
+        </tr>
+
+        <tr>
+         <td>Categories</td>         <td><a href="https://bl.ocks.org/mbostock/3cba6ac2fac09e5483bf6c1fade733be">Link</a></td>
+        </tr>
+        <tr>
+         <td>2</td>         <td><a href="https://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab">Link</a></td>
+        </tr>
+        <tr>
+         <td>3</td>         <td><a href="https://bl.ocks.org/mbostock/7607999">Link</a></td>
+        </tr>
+        <tr>
+         <td>4</td>         <td><a href="https://bl.ocks.org/mbostock/4348373">Link</a></td>
+        </tr>
+        <tr>
+         <td>5</td>         <td><a href="https://bl.ocks.org/mbostock/4347473">Link</a></td>
+        </tr>
+
+        <tr>
+         <td>Pie chart</td>         <td><a href="https://bl.ocks.org/mbostock/8878e7fd82034f1d63cf">Link</a></td>
+        </tr>
+        <tr>
+         <td>2</td>         <td><a href="https://bl.ocks.org/mbostock/8878e7fd82034f1d63cf">Link</a></td>
+        </tr>
+        <tr>
+         <td>Chloropleth</td>         <td><a href="https://bl.ocks.org/mbostock/8ca036b3505121279daf">Link</a></td>
+        </tr>
+        <tr>
+         <td>Size</td>         <td><a href="https://bl.ocks.org/mbostock/9943478">Link</a></td>
+        </tr>
+        <tr>
+         <td>Tree</td>         <td><a href="https://bl.ocks.org/mbostock/4347473">Link</a></td>
+        </tr>
+        <tr>
+         <td>Treemap</td>         <td><a href="https://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80">Link</a></td>
+        </tr>
+        <tr>
+         <td>Time</td>         <td><a href="https://bl.ocks.org/mbostock/4061961">Link</a></td>
+        </tr>
+        <tr>
+         <td>2</td>         <td><a href="https://bl.ocks.org/mbostock/3886394">Link</a></td>
+        </tr>
+        <tr>
+         <td>ShowOff</td>         <td><a href="https://bl.ocks.org/mbostock/1256572">Link</a></td>
+        </tr>
+        <tr>
+         <td>Types</td>         <td><a href="https://bl.ocks.org/">Link</a></td>
+        </tr>
+        <tr>
+         <td>D3 Gallery</td>         <td><a href="https://github.com/d3/d3/wiki/Gallery">Link</a></td>
+        </tr>
+        <tr>
+         <td>GeoViz</td>         <td><a href="http://weber.itn.liu.se/~vanan11/TNK115/geoviz.pdf">Link</a></td>
+        </tr>
+        <tr>
+         <td>Exploratory viz</td>         <td><a href="https://www.researchgate.net/publication/222544758_Exploratory_Spatio-Temporal_Visualization_An_Analytical_Review">Link</a></td>
+        </tr>
+
+	</table>

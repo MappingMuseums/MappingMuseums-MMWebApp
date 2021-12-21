@@ -1,0 +1,270 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Mapping Museums{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}" />
+
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/tether.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-multiselect.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-multiselect-collapsible-groups.js') }}"></script>
+
+<style>
+span.highlight {
+    background-color: LightCyan;
+}
+
+<!-- search form style -->
+body,html {
+  height:100%;
+}
+
+
+#sidebar {
+  width: inherit;
+  min-width: 420px;
+  max-width: 420px;
+  background-color:#f5f5f5;
+  float: left;
+  height:700px;
+  position:relative;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+#main {
+  height:100%;
+  overflow:auto;
+}
+
+.second-row-fixed {position: fixed; top: 73px; left: 350px; right: 0; bottom: 0; background-color:#ffffff }
+.second-row-fixed iframe {display: block; width: 100%; height: 100%; border: none;}
+
+.second-row-fixed-white {position: fixed; top: 73px; left: 350px; right: 0; bottom: 0;  overflow-y:scroll; }
+.second-row-fixed-white iframe {display: block; width: 100%; height: 100%; border: none;overflow-y:scroll;}
+
+.second-row {position: absolute; top: 180px; left: 430px; right: 0; bottom: 0; background-color:#ffffff }
+.second-row iframe {display: block; width: 100%; height: 100%; border: none;}
+
+.row iframe { width: 100%;  border: none;  height: 100%; overflow-y:auto;}
+
+.col-sm-2 {  min-width: 60px;padding-right:20px;}
+
+.fa {
+
+    font-size: 10px;
+
+}
+
+
+</style>
+
+{% endblock %}
+
+{% block body_attrs %}  {% endblock %}
+
+{% block navbar %} 
+
+<!--<div class="site-branding">
+<li> </li>
+							<h1 class="site-title" ><a href="/home" rel="home" style="color:black; text-decoration: none;">M<img src="static/titlepin.png" />pping Museums</a></h1>
+				<h2 class="site-description">The history and geography of the UK independent sector 1960-2020</h2>
+				<li> </li>
+					</div>-->
+
+<div class="navbar navbar-inverse" role="navigation">
+
+
+    <div class="container2">
+    <div class="site-title">
+<label><a class="stitle" id="sitetitle" href="/home" rel="home" style="text-decoration: none; float:left;padding-right:20px;">Mapping Museums</a></label>
+</div>
+	
+        <div class="navbar-header">
+		
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav" id="nav">
+			<li class="menu-item menu-item2"> <a  href="/home">Home</a></li>
+				<li class="menu-item dropdown menudrop5">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">About   <b class="caret"></b></a> 
+				  
+					<ul class="dropdown-menu menudrop6">
+						<li>      <a href="/about">Project</a></li>
+						<li>      <a href="/people">Research Team</a></li>
+						<li>      <a href="/acknowledgements">Acknowledgements</a></li>							
+						<li>      <a href="/glossary">Glossary</a></li>
+						<li>      <a href="/sources">Data Collection</a></li>
+						<li><a href="/technical">Tech. Development</a></li>
+						<li>      <a href="/copyright">Copyright & Access</a></li>
+												
+					</ul>
+				</li>
+				<li class="menu-item dropdown menudrop2">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Database <b class="caret"></b></a> 
+				  
+					<ul class="dropdown-menu menudrop4">
+						<li>      <a href="/aboutapp">About</a></li>
+						<li>      <a href="/browseproperties">Browse</a></li>
+						<li>      <a href="/search">Search</a></li>
+						<li>      <a href="/visualisations">Visualise</a></li>	
+                        <li><a href='/allmus'>All Museums</a></li>
+						
+					</ul>
+				</li>
+				<li class="menu-item dropdown menudrop1">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a> 
+				  
+					<ul class="dropdown-menu menudrop3">
+						<li>      <a href="/findings">Key Findings</a></li>
+                        <li>      <a href="/report">2020 Report</a></li>
+						<li>      <a href="/interviews">Interviews</a></li>	
+						<li>      <a href="/publications">Publications</a></li>
+						<li>      <a href="/software">Software</a></li>
+						<li>      <a href="/data">Data</a></li>
+						<li>      <a href="/films">Films and Podcasts</a></li>
+						<li>		<a href="/archive">Archive</a></li>
+						
+												
+					</ul>
+				</li>
+				<li class="menu-item menu-item1">      <a href="http://blogs.bbk.ac.uk/mapping-museums/" target="_blank">Blog</a></li>
+				
+				 
+                
+				<li class="menu-item menu-item4">      <a href="/faq">FAQ</a></li>
+				
+				<li class="menu-item dropdown menudrop7">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Contact Us <b class="caret"></b></a> 
+				  
+					<ul class="dropdown-menu menudrop8">
+						<li>      <a href="/contact">Get In Touch</a></li>
+						<li>      <a href="/editmuseumdata">Edit Museum Data</a></li>
+						<li>      <a href="/addmuseum">Add Museum</a></li>
+						
+						
+												
+					</ul>
+				</li>
+				
+            </ul>
+           
+        </div>
+    </div>
+	
+</div>
+ <script>
+
+
+
+ function setHTMLContent(id,value)
+{
+  var field = document.getElementById(id);
+  field.innerHTML = value ;
+}
+
+function doOnLoadNavBar()
+{
+  var li=window.location.href.lastIndexOf("/");
+  var ll=window.location.href.length;
+  var page=window.location.href.substring(li,ll);
+  // Find element #nav
+  var ul=document.getElementById("nav");
+  var items = ul.getElementsByTagName("li");
+  var count=1
+    for (var i = 0; i < items.length; ++i) 
+      { 
+        var atag=items[i].getElementsByTagName("a");
+	var thispage=atag[0].href;
+        var lindex=thispage.lastIndexOf("/");
+	var ll=thispage.length;
+	var newpage=thispage.substring(li,ll);
+	if (newpage == page)
+	{
+	  items[i].classList.add("active");
+	}
+	else
+	{
+	  items[i].classList.remove("active");
+	}
+      }
+
+      $.ajax({
+      url: '/api/datasetversion/get',
+	     type: 'GET',
+	     dataType: 'json',
+	     success:function(data) 
+	{
+	  setHTMLContent("datasetversion",data);
+	}
+      
+      });
+    
+}
+window.onload = doOnLoadNavBar();
+
+
+  </script>
+{% endblock %}
+
+{% block sidebar %}
+
+<div id="sidebar">
+    <div class="col-md-12">
+      <h3>Sidebar (fixed)</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+        <li><a href="#">Section</a></li>
+      </ul>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+    {% block page_content %}{% endblock %}
+{% endblock %}
+  
+
+{% block scripts %}
+{{ super()  }}
+
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/annotator-2.0/annotator.min.js') }}"></script> -->
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/annotator-2.0/annotator.document.min.js') }}"></script> -->
+<script>
+<!-- var app = new annotator.App(); -->
+<!-- app.include(annotator.ui.main, {element: document.body, -->
+<!--     editorExtensions: [annotator.ui.tags.editorExtension], -->
+<!--     viewerExtensions: [ -->
+<!--         annotator.ui.tags.viewerExtension -->
+<!--     ] -->
+<!-- }); -->
+<!-- app.include(annotator.storage.http, {prefix: 'http://localhost:5000'}); -->
+<!-- app.start().then(function () { -->
+<!--      app.annotations.load(); -->
+<!-- }); -->
+</script>
+<!-- {{ moment.include_moment() }} -->
+{% endblock %}

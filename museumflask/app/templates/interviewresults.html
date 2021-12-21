@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}About the Project{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+    <h1>{{musname}}</h1>
+</div>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.mySlides {display:none; image-orientation: from-image; max-width: 100%; }
+
+div.row {
+    font-size: 20px;
+}
+
+</style>
+    <div class="row">
+
+     
+	 <p><div id="Summary"> <b>Summary of museum:</b></p>
+	 {% for item  in summary  %}
+		
+		  <div bgcolor="lightgrey" width="25%" >   {{ item }}</div>
+		  
+                
+		  {% endfor %}
+	 
+	 
+	 </div> </p>
+	 <p><div id="Location"> 	 <b>Description of museum building and location:</b></p>
+	 {% for item  in location  %}
+		
+		  <div bgcolor="lightgrey" width="25%" >   {{ item }}</div>
+		  
+                
+		  {% endfor %}
+		   </div> </p>
+	 <p><div id="Display"> 	<b>Description of the display:</b></p>
+	 {% for item  in display  %}
+		
+		  <div bgcolor="lightgrey" width="25%" >   {{ item }}</div>
+		  
+                
+		  {% endfor %}
+		   </div> </p>
+	 <p><div id="Interview"> 	 <b>Summary of interview:</b></p>
+	 {% for item  in interview  %}
+		
+		  <div bgcolor="lightgrey" width="25%" >   {{ item }}</div>
+		  
+                
+		  {% endfor %}
+		   </div> </p>
+	 <p><div id="Fee"> 	<b>Entrance fee:</b></p> 
+	
+		
+		  <div bgcolor="lightgrey" width="25%" > {{ fee[1] }}</div>
+		  
+             
+		  
+		   </div> </p>
+		   <p><div>You can download the public transcript of the interview  <a href="{{transcript}}" style="color:#337ab7" download>here</a>  </div></p>
+           <p><div id="trans2">You can download the public transcript of the follow-up interview  <a href="{{transcript2}}" style="color:#337ab7" download>here</a>  </div></p>
+		   <p><div class="w3-content w3-display-container" >
+		    {% for item  in piccount  %}  
+			 <img class="mySlides" src="{{picdir}}/{{item}}.JPG" alt="{{item}}.jpg" > 
+			   {% endfor %}
+			    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+				<button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+			   </div>
+			   </p>
+		   
+		   
+     
+
+    </div>
+
+</div>
+<script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+if({{transcript2exists}}==false){
+var x = document.getElementById("trans2");
+x.style.display = "none";
+}
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+</script>
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

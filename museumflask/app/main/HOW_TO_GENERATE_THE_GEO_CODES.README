@@ -1,0 +1,9 @@
+ 135	10:24	python prova_england.py | g \*\? > geocodes.txt
+   136	10:24	python prova_location.py | g \*\? >> geocodes.txt
+   137	10:26	cat geocodes.txt | wc -l
+   138	10:26	soffice geocodes.txt
+   139	10:26	mv geocodes.txt geocodes.csv
+   140	10:26	soffice geocodes.csv
+
+Make sure it reades the latest version of the GRAPH
+

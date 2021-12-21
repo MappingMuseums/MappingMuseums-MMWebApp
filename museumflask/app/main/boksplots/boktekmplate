@@ -1,0 +1,45 @@
+from bokeh.io import show, output_file
+from bokeh.models import ColumnDataSource
+from bokeh.palettes import brewer
+from bokeh.plotting import figure
+from bokeh.transform import factor_cmap
+from bokeh.layouts import row
+from bokeh.models import HoverTool, ColumnDataSource
+from bokeh.palettes import Spectral10
+from bokeh.palettes import Category20_20
+from bokeh import palettes
+from random import shuffle
+from numpy import pi 
+import numpy as np 
+import pandas as pd
+import colorsys
+from bokeh.layouts import layout 
+from bokeh.models import ( 
+  HoverTool, ColumnDataSource, Legend, LegendItem 
+) 
+from bokeh.plotting import figure 
+from bokeh.palettes import brewer 
+import datetime
+from bokeh.models import DatetimeTickFormatter
+from bokeh.models.glyphs import Rect as rect
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+class BokehTimeAndCategory():
+
+
+    @staticmethod
+    def normalize_sizes(sizes, dx, dy):
+        total_size = sum(sizes)
+        total_area = dx * dy
+        sizes = list(map(float, sizes))
+        sizes = list(map(lambda size: size * total_area / total_size, sizes))
+        return sizes
+       
+#- - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    def createPlot(self):
+       
+        return p
+    

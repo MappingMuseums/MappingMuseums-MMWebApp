@@ -1,0 +1,5 @@
+URLREWRITEPATTERN=193.61.36.71/
+SPARQLENDPOINT=http://193.61.36.21:8890/sparql
+DEFAULTGRAPH=http://bbk.ac.uk/MuseumMapProject/graph/v9
+GEOADMINGRAPH=http://bbk.ac.uk/MuseumMapProject/graph/ukadmin
+DEV_MODE=T

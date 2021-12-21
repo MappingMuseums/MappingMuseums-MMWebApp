@@ -1,0 +1,68 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+{% block page_content %}
+
+<div class="container">
+
+<style>
+div.row {
+font-family: "Roboto", sans-serif;
+    font-size: 20px;
+}
+</style>
+    <div class="row">
+<div class="page-header">
+    <h1>Database Browse Help</h1>
+</div>
+ 
+<p>The Browse option allows you to explore the museums data in a structured way. The data is organised according to a number of categories, listed on the left-hand-side of the screen:</p>
+<ul><li>Accreditation</li>
+<li>Governance</li>
+<li>Size</li>
+<li>Subject Matter</li>
+<li>Location</li>
+<li>Year opened</li>
+<li>Year closed</li>
+<li>Geodemographic group</li>
+<li>Geodemographic subgroup</li>
+<li>Deprivation index</li></ul>
+<p>Please see Browse Terms for a description of each of these terms. </p>
+<p>Clicking on one of these terms opens up its list of sub-terms. For example, clicking on Governance, we see the list</p>
+<ul><li>Government</li>
+<li>Independent</li>
+<li>University </li>
+<li>Unknown</li></ul>
+<p>Clicking now on one of these sub-terms, say University, changes the display on the map to show the subset of all museums whose governance is University. The display on the map shows clusters of such museums, with the number of museums in each cluster; isolated individual museums are also indicated with a pin. Clicking on a cluster zooms in the display to show smaller clusters and pins. Hovering the cursor over a pin shows the name of that museum. Clicking on a pin allows you to click through to detailed data about the museum: scroll down to see the full list of details. For full explanations of the terms used in this detailed view, please see our Glossary.</p>
+<p>You can use the Map, List, and Details tabs appearing at the top of the page to view the current set of museums on a map (the default); as a list; or to scroll through the museums and see full details about each one.  For example, having clicked on Governance and then University, the current set is all museums whose governance is University. </p>
+<p>In the Map view, you can click on + to zoom in, - to zoom out, and the circular arrow to reset the size of the map. You can press the Show Points button to change the display to show individual dots for each museum. You can press the Open Museums Only button to show just the museums that are currently open.
+</p>
+<p>In the List view, you can click on a museum’s name to see the detailed data about the museum. Once you are in the Details view, you can scroll backwards and forwards through the current set of museums using the Prev and Next buttons.</p>
+</br>
+<p><b>Examples of using Browse</b></p>
+	  <p><b>Example 1</b></p>
+<p>To see all the museums in Powys, click on Location in the left-hand-side list of terms, then on Wales, and then on Powys. You will see displayed on the map the clusters of museums in that part of the country. Click on one of the clusters to zoom in on individual museums. Click on the pin representing a museum to see its full details. Click on the Prev and Next arrows at the top of the details page to scroll through the full set of museums located in Powys.</p>
+<p><b>Example 2</b></p>
+<p>To see the museums whose year of opening was 2000, click on Year opened in the left-hand-side list of terms, then on post-1960, then on 2000 (to select the decade of years 2000-2009 inclusive), and then on 2000 to select the year of opening. You will see displayed on the map the museums whose year of opening was 2000. Click on the List tab at the top of the page to see those museums as a list, in alphabetical order of their names. Click on one of those museums to see its full details. Click on the Prev and Next arrows at the top of the details page to scroll through the full set of museums that opened in the year 2000. </p>
+<p>Please note that for many museums we know their precise year of opening, e.g. Catton Hall opened in 2000. However, for some, we only know that they opened some time between a range of years, e.g. Boys Brigade Heritage Museum opened some time during 1990-2010. When browsing by Year opened, the mid-point of the date range is taken to be their year of opening for those museums that do not have a precise year specified. So, for example, both Catton Hall and Boys Brigade Heritage Museum appear in the set of museums that opened in the year 2000. </p>
+<p>Browsing by Year closed works similarly.</p>
+<p><b>Example 3</b></p>
+<p>To see the museums located in regions of the country whose Deprivation index is 4, click on Deprivation index in the left-hand-side list of terms, and then on 4 to see displayed on the map clusters of those museums. Explore and drill down into this set of museums in the same way as in Examples 1 and 2. </p>
+<p>Browsing on Geodemographic group and Geodemographic subgroup works similarly to browsing on Deprivation index: you can select museums located in regions of the country that are classified into a particular Geodemographic group/subgroup.</p>
+	   
+     
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

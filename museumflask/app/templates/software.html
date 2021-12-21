@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Software{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+   
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/softwarebanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>The Hamilton Toy Museum, Perthshire</figcaption>
+</figure>
+    <div class="row">
+ <h1>Software</h1>
+     <p>
+     A major part of the Mapping Museums project has involved the design of a new RDF/S Knowledge Base to store data and metadata relating to the UK’s museums, as well as a Web Application allowing users to Browse, Search and Visualise the data in order to investigate their research questions. 
+	 The Knowledge Base and Web Application can be accessed from this website at this <a href="/aboutapp">link</a>.
+     </p>
+     <p>
+	 A description of our development approach and sofware architecture can be found <a href="/technical">here</a>. 
+     The challenges we faced in developing the Knowledge Base and Web Application, our development methodology, and our methods are described in the article <i>Creating a Knowledge Base to research the history of UK Museums through Rapid Application Development</i>, in the ACM Journal on Computing and Cultural Heritage.
+     <p/>
+     <p>
+    The source data for the Knowledge Base is downloadable from the <a href="/data">Data</a> section of this website.
+     <p/>
+	 <p>The Web Application source code is downloadable  <a href="https://github.com/MappingMuseums/MMWebApp" target="_blank">here</a> and is available for free use under the GNU General Public License (GPL).  This allows users to run, examine, share and modify the software so long as any modifications acknowledge the original authors and are distributed also under the GPL license. 
+     The statistical computations that underpin the numbers of museums shown in each of the graphs under the Visualise tab are described  <a href='../static/pdf/MMVisSpecV1.0.pdf' target="_blank">here.</a></p>
+     <p>Please Note: The Web Application is a research prototype that was developed under tight time and resource constraints to deliver the necessary functionalities for the Mapping Museums project's research. No guarantees of accuracy are given 
+or implied.
+</p>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>
+
+
+

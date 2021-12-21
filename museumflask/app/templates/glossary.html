@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Glossary{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+    
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+</style>
+<figure>
+<img src="/static/img/glossarybanner.png" alt="about banner" style="max-width: 100%" >
+<figcaption>Display of archaeological finds, London Mithraeum</figcaption>
+</figure>
+    <div class="row">
+	<h1>Glossary</h1>
+	<p>
+	<a href="#Accreditation">Accreditation</a><br>
+	<a href="#ACE">ACE</a><br>
+	<a href="#admin">Admin Area</a><br>
+	<a href="#AIM">AIM</a><br>
+	<a href="#AMOT">AMOT</a><br>
+    <a href="#astran">Asset Transfer</a><br>
+	<a href="#DateRange">Date Range</a><br>
+	<a href="#Deprivationindex">Deprivation index</a><br>
+	<a href="#DOMUS">DOMUS</a><br>
+	<a href="#Geodemographic">Geodemographic group/subgroup</a><br>
+	<a href="#Governance">Governance</a><br>
+	<a href="#Governancechange">Governance change</a><br>
+	<a href="#Location">Location</a><br>
+	<a href="#MALD">MALD</a><br>
+	<a href="#Museum">Museum</a><br>
+	<a href="#NIMC">NIMC</a><br>
+    <a href="#Notes">Notes</a><br>
+	<a href="#provenance">Primary provenance of data</a><br>
+	<a href="#Size">Size</a><br>
+	<a href="#SubjectMatter">Subject Matter</a><br>
+	<a href="#SubjectMatterArts">Subject Matter / Arts / Fine and decorative</a><br>
+	<a href="#SubjectMatterBuildings">Subject Matter / Buildings</a><br>
+	<a href="#SubjectMatterIndustry">Subject Matter / Industry and manufacture / Industrial life</a><br>
+	<a href="#SubjectMatterBygones">Subject Matter / Mixed / Bygones</a><br>
+	<a href="#SubjectMatterMixed">Subject Matter / Mixed / Encyclopaedic</a><br>
+	<a href="#SubjectMatterOther">Subject Matter / Mixed / Other</a><br>
+	<a href="#SubjectMatterRural">Subject Matter / Rural industry / Rural life</a><br>
+	<a href="#Yearopened">Year Opened</a><br>
+	<a href="#Yearclosed">Year Closed</a>
+	</p>
+	</br>
+     <a name = "Accreditation" style="color:black; text-decoration: none"><p>
+     <b>Accreditation</b> is the professional benchmarking scheme for the UK. It is run as a UK partnership between Arts Council England, the Welsh Government, Museums Galleries Scotland and the Northern Ireland Museums Council.
+     </p>
+	 <p>
+	 To gain accreditation museums must reach and maintain agreed standards of governance and organisation, collections care and management, 
+     public access and engagement with users. Museums must also meet the terms set by the Museum Association definition of 1998, which states:
+	 </p>
+	 <p>
+	 'Museums enable people to explore collections for inspiration, learning and enjoyment. 
+	 They are institutions that collect, safeguard and make accessible artefacts and specimens, which they hold in trust for society’.
+	 </p>
+	 <p>
+	 The accreditation scheme was previously known as the Museums Registration Scheme and was re-named in 2004. </p>
+	 <p>Further reading: <a href="https://www.artscouncil.org.uk/supporting-arts-museums-and-libraries/uk-museum-accreditation-scheme" target="_blank">Museums Accreditation Scheme website</a>.
+	 </p></br></a>
+	 <a name = "ACE" style="color:black; text-decoration: none"><p><b>ACE</b> Arts Council England</p></br></a>
+	  <a name = "admin" style="color:black; text-decoration: none"><p><b>Admin Area</b> This is the administrative organisation of the United Kingdom. In the Search facility, the term ‘Admin Area’ will return museums from the selected nation, region, or local authority area. See <a href="#Location">Location</a> below for more information. </p></br></a>
+	 <a name = "AIM" style="color:black; text-decoration: none"><p><b>AIM</b> The Association of Independent Museums</p></br></a>
+	<a name = "AMOT" style="color:black; text-decoration: none"> <p><b>AMOT</b> The Army Museums Ogilby Trust, a charity that represents regimental and corps museums</p></br></a>
+     <a name = "astran" style="color:black; text-decoration: none"> <p><b>Asset Transfer</b> Please see <a href="#Governancechange">Governance change</a>.</p></br></a>
+     <a name = "DateRange" style="color:black; text-decoration: none"><p><b>Date Range</b> In some instances it has been impossible to establish an exact opening or closing date for a museum (See Year Opening below). However, we do often have partial information: we may know that a museum was opened in ‘the late 1980s’ or closed ‘around the millennium’. In these instances we have used a date range, for instance a museum can be logged as having opened between 1985 and 1989.</p>
+     <p>Date ranges are handled differently across the database. In the Browse facility, museums’ opening and closing dates are taken to be the mid point of the specified range. The Search facility provides users with the option of searching by definite dates, so that the results exclude all museums where date range does not fully lie within the specified period; or by possible dates, in which case the results include museums where the date range intersects with the specified period.</p>
+     <p>In the Visualisation facility, we use a ‘smearing’ operation where the count of one museum is spread over the period of the date range. In these cases the logic depends on whether the visualisation concerns opening (as a single event) or being open over time. We estimate the probability of a museum ‘opening’ (or closing) in a given year as 1 divided by length of the range. By contrast, we estimate the likelihood of a museum ‘being open’ at a given date from 0 to 1, incrementing the probability over time. For example, if a museum is known to have opened between 1991 and 2000 (an interval of 10 years), then its probability of its ‘opening’ having happened in any of the 10 years is 0.1 (1/10). By contrast, the probability of this museum ‘being open’ increases over time. It starts at 0 in 1990 (certainly not open yet), and then 0.1 in 1991, 0.2 in 1992, 0.5 in 1995, and 0.9 in 1999. In 2000, the museum certainly open, therefore the value is 1.</p></br></a>
+     <a name = "Deprivationindex" style="color:black; text-decoration: none"><p><b>Deprivation index</b> The Index of Multiple Deprivation (IMD) measures the relative deprivation of geographic areas in the UK, aggregating different dimensions 
+	 (income, employment, education, health, crime, housing, and living environment). The index ranges from 1 (most deprived) to 10 (least deprived), and refers to a geographic area including on average 1,500 people (Lower Layer Super Output Areas). 
+	 Each UK country has a different index, so the areas can be compared meaningfully only within a country (e.g. 3 in Wales and England might mean widely different levels of deprivation). 
+	 Most of the data refers to the UK in 2011, and this should be taken into account for museums that opened and closed in earlier decades.</p>
+	 <p>Further reading: </p>
+
+	<p><a href="https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015" target="_blank">https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015</a></p>
+
+	<p><a href="http://simd.scot" target="_blank">http://simd.scot </a></p>
+
+	<p><a href="https://www.nisra.gov.uk/statistics/deprivation/northern-ireland-multiple-deprivation-measure-2017-nimdm2017" target="_blank">https://www.nisra.gov.uk/statistics/deprivation/northern-ireland-multiple-deprivation-measure-2017-nimdm2017 </a></p>
+
+	<p><a href="https://gov.wales/statistics-and-research/welsh-index-multiple-deprivation/?lang=en" target="_blank">https://gov.wales/statistics-and-research/welsh-index-multiple-deprivation/?lang=en </a></p></br></a>
+
+	<a name = "DOMUS" style="color:black; text-decoration: none"><p><b>DOMUS</b> The Digest of Museum Statistics, an annual survey of all the accredited museums in the UK, which was conducted between 1994 and 1999 by the Museums and Galleries Commission. Records are available in the National Archives. </p></br></a>
+
+	<a name = "Geodemographic" style="color:black; text-decoration: none"><p><b>Geodemographic group/subgroup</b> The Output Area Classification (OAC) is a geodemographic classification that describes small areas in the UK based on the characteristics of the population they contain. 
+	Different groups identify places hosting residents with similar age, ethnicity, education, and other attributes. For example, “Urban Elites” areas tend to be younger and more educated than average, while “Multi-Ethnic Suburbs” areas host more non-white minorities and social housing than average 
+	(see Pen Portraits for a full description). Subgroups are sub-categories of the groups that identify more specific traits within a group. The classification refers to geographic areas including on average 1,500 people (Lower Layer Super Output Areas). 
+	The data refers to the UK population as of 2011, and this information is of limited use when considering museums that opened and closed in earlier decades. </p>
+	<p>Further reading: </p>
+
+	<p><a href="https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications" target="_blank">https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications </a></p>
+
+	
+	<p><a href="https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/penportraitsandradialplots" target="_blank">Pen Portraits and radial plots </a></p></br></a>
+    
+	<a name = "Governance" style="color:black; text-decoration: none"><p><b>Governance</b> We divided museums into four categories of governance, two of which have sub-categories. </p></br>
+<p> Government museums <ul><li>Cadw (Historic environment service for the Welsh government)</li>
+<li>Local authority</li>
+<li>National</li>
+<li>Other </li></ul></p>
+<p>Independent museums  <ul><li>English Heritage 
+
+<li>Historic Environment Scotland</li>
+<li>National Trust</li>
+<li>National Trust for Scotland</li>
+<li>Not-for-profit (charities, community interest companies, unincorporated associations) </li>
+<li>Private (owned by individuals or non-charitable organisations)</li>
+<li>Unknown</li></ul></p>
+<p>University museums</p>
+<p>Unknown</p></br></a>
+	
+	<a name = "Governancechange" style="color:black; text-decoration: none"><p><b>Governance change</b> Local authority museums where responsibility has been delegated to a charity (often termed ‘devolved’ status) have been logged as local authority. They can be identified in the database by using the keyword ‘hybrid’ in a search of the ‘Notes’ attribute. 
+</p><p>We have not modeled temporal change in governance. As a result, the most recent governance status of a museum is taken to be the status of the museum throughout the period under study. Museums where there has been a complete transfer of responsibility have the keywords ‘governance change’ in Notes. </p>
+<p>Users should note that English Heritage and Historic Environment Scotland both appear in the category of independent museums in the figures, although prior to 2015 they operated under government auspices. The numbers concerned are relatively small. English Heritage (and its predecessor bodies) operated 27 museums in 1960 and 46 in 2014, while Historic Environment Scotland operated 8 museums in 1960 and 18 in 2014.     </p></br>
+	</a>
+	<a name = "Location" style="color:black; text-decoration: none"><p><b>Location</b> is organised according to the administrative units of each country. Northern Ireland is divided into eleven districts, Scotland into 32 unitary authorities known as councils, and Wales into 22 single tier principal areas. 
+	England has by far the most complicated administrative system being divided into nine regions. The regions are subdivided into a mixture of single-tier authorities – unitary authorities, metropolitan boroughs, London boroughs, the Common Council of the City of London, 
+	and the Council of the Isles of Scilly – and into upper and lower tier authorities. The upper tier comprises of non-metropolitan counties, which are sub-divided into lower-tier non-metropolitan districts.   </p>
+	<p>There are several advantages to using the conventional administrative units in the Mapping Museums database (rather than, say historical counties): The Offices for National Statistics use Local Authority units (LAUs) as the basis for analysis, so by adopting the same structure, we were able to correlate our 
+	data to national data on demography and deprivation, which enables a far richer analysis than otherwise would be possible.  </p>
+	<p>However, it is important to bear in mind that there is a considerable disparity between the geographical size and the population of each administrative area, even within a single country. Thus direct comparisons between areas should be treated with a certain degree of caution.</p>
+	<p>Further reading: </p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2019/03/16/difficulties-of-location/" target="_blank">Mapping Museums blog: ‘An Arts Scholar Learns About Administrative Geography and Datasets</a></p></br></a>
+	<a name = "MALD" style="color:black; text-decoration: none"><p><b>MALD</b> The Museums, Archives, Libraries Division, a department in the Welsh government. Previously known as CyMAL.</p></br></a>
+	<a name="Museum" style="color:black; text-decoration: none" ><p><b>Museum</b> For the purposes of this research we generally expected museums to have a permanent collection, to have artefacts from the collection on display, to be regularly open to the public, and to have a threshold. 
+	This later condition was intended to distinguish museums from displays in the hallways or reception rooms of public buildings or corporate headquarters.</p>
+	<p>Further reading / viewing:</p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2017/10/30/defining-museums/" target="_blank">Mapping Museums blog: Defining Museums</a></p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2017/11/13/surveying-museums-whats-whats/" target="_blank">Mapping Museums blog: Surveying Museums: what’s in and what’s out?</a></p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2018/01/08/galleries-without-collection-surveys/" target="_blank">Mapping Museums blog: Galleries without collection: in or out of the surveys </a></p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2018/07/04/historic-buildings-surveys/" target="_blank">Mapping Museums blog: Historic buildings: In or out of the surveys?</a></p>
+	<p><a href="/films">Fiona Candlin, ‘What is a Museum? (And how would we know?)’ </a></p>
+	
+	</br></a>
+	<a name = "NIMC" style="color:black; text-decoration: none"><p><b>NIMC</b> Northern Ireland Museums Council, a department in the government of Northern Ireland. </p></br></a>
+<a name = "Notes" style="color:black; text-decoration: none"><p><b>Notes</b> Information about any changes to a museum’s location or status is recorded in Notes. 
+Museums that have devolved responsibilities to an independent charity or business have the keyword ‘Hybrid’ in the Notes section. The few museums where there has been a complete transfer of responsibility have the keyword ‘Change in status’ in Notes. 
+To view lists and records of either group go to Search, choose ‘Notes’ from the drop down menu and enter the relevant keyword or phrase.</p></br></a>
+	<a name = "provenance" style="color:black; text-decoration: none"><p><b>Primary provenance of data</b> refers to the place where we first found a record of the museum. The primary provenance of data for each museum can be identified by looking at its Project ID, 
+	which is listed on the individual details page of each museum. The abbreviation after the code ’mm’ (for Mapping Museums) relates to the original source. For example, ‘mm.domus.01’ indicates that the primary provenance of information for that museum was domus. 
+	The primary sources and the abbreviations used in the project ID to indicate provenance are listed below. </p>
+	<p><ul>
+	<li>Arts Council England list of accredited museum <b>(ace )</b> </li>
+
+    <li>Association of Independent Museums members list <b>(aim)</b> </li>
+
+    <li>Association of Independent Museums members list, 1982 <b>(aim82M)</b> </li>
+
+    <li>Association of Independent Museums non-members list, 1982 <b>(aim82NM)</b> </li>
+
+   
+
+    <li>Digest of Museum Statistics, 1998 <b>(domus) </b></li>
+
+    <li>List of unaccredited museums assembled by Fiona Candlin during preliminary research for project, 2017 <b>(fcm) </b></li>
+
+    <li>Historic Houses Association 2016 Friends Pocket Guide <b>(hha) </b></li>
+
+    
+
+    <li>Kenneth Hudson and Ann Nicholls, The Directory of Museums and Living Displays, London: Macmillan 1985 <b>(hud) </b></li>
+
+    <li>Museum and Libraries Division, Wales. Raw data from Spotlight reports, 2002, and published data 2007, 2013, 2015 <b>(mald) </b></li>
+
+    <li>Museums Development Network (meetings held during 2018) <b>(mdn) </b></li>
+
+    <li>Museums and Galleries Scotland museums list, 2017 <b>(mgs) </b></li>
+
+    <li>Miscellaneous data source, Data derived from any other sources (e.g. museum leaflets or websites other than Wikipedia) <b>(misc) </b></li>
+
+    <li>Northern Ireland Museums Council, museum list, 2012, 2016 <b>(nimc) </b></li>
+
+    <li>Museum Association ‘Find a Museum’ website <b>(musassoc) </b></li>
+
+    <li>Museums Association’s Museums Calendar, 1970 <b>(musCal) </b></li>
+
+    <li>Wikipedia lists of museum by country/county <b>(wiki)</b></li></ul></p>
+	
+	<p>The main phase of data collection finished in 2018. Any museums that we discovered after that date or that opened subsequently are marked as ‘new’. </p>
+	
+	<p>See <a href="/sources">Data Collection</a> for more information</p></br></a>
+	
+	<a name = "Size" style="color:black; text-decoration: none"><p><b>Size</b> is calculated on the basis of the number of visits. Huge (1 million+), Large (50,001-1 million), Medium (10,001-50,000), Small (0-10,000). </p>
+	<p>The data on numbers of visits does not show any clear clusters that could be used as the basis for attributing size. We therefore used a classification system that is familiar to museums professionals. The categories of small, medium and large are the same as those used by the Association of Independent Museums and Arts Council England. We have created the additional category of huge in order to distinguish museums that attract millions rather than hundreds of thousands of visitors.</p>
+	<p>Each museum’s size is calculated according to the most recent number of visits that are recorded in the Mapping Museums database. When numbers are not available we have used predictive testing.</p>
+	<p>Further reading:</p>
+<p>	<a href="http://blogs.bbk.ac.uk/mapping-museums/2018/11/06/museum-visitor-numbers/" target="_blank">Mapping Museums blog: ‘How Big is that museum?’</a></p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2018/10/22/missing-massaged-and-just-wrong-problems-with-visitor-numbers/ " target="_blank">Mapping Museums blog: ‘Missing, massaged and just wrong: Problems with visitor numbers’,</a></p></br></a>
+	
+	<a name = "SubjectMatter" style="color:black; text-decoration: none"><p><b>Subject Matter</b> relates to the overarching topic addressed by the museum and not to the individual collections within a museum. The taxonomy was developed as part of the Mapping Museums research.</p>
+	<p>The most recent taxonomy for classifying the overall subject of a museum (as opposed to the artefacts or collections within it) was devised for 
+    the DOMUS project. This taxonomy did not substantially encompass popular or non-academic subject areas, and it did not provide sufficient detail for 
+    research purposes. More recent taxonomies have been designed to categorise museum collections, but these have specific emphases that were not 
+    relevant to our needs. For instance, the Cornucopia database had subject headings and sub-categories. One such heading was ‘Coins and Medals’, 
+    which is a common type of collection in UK museums, but is not a common theme for a museum, so would be less useful for our purposes. Conversely, 
+    subject areas that we judged to be important for our research, such as transport, only appeared at the level of sub-categories. </p>
+    <p>While taking careful note of historic and existing taxonomies, the Mapping Museums team developed a new classification system. We grouped the museums in our database into recognisable categories such as ‘arts’ and ‘transport’. If a number of similar museums did not easily fit into the existing classes we devised new classes, and we introduced sub-categories when a single group was large and unwieldy (the exception was local history, where it was difficult to see what the sub- categories might be). The number of sub-categories varies by subject type. Large categories such as ‘transport’ have several sub-categories, while the relatively small category ‘food and drink’ has none. We used more inclusive terminology than was previously the case and renamed categories that privileged particular groups or approaches (e.g. we replaced ‘military’ with ‘war and conflict’). </p>
+	<p>Successive versions of the taxonomy were reviewed with domain experts and stakeholders, including members of all nine Museums Development network groups and staff at the national offices for Northern Ireland, Scotland and Wales. This iterative design process continued from month 6 to month 18 of the project.  </p>
+	<p>Most of the classifications should be self-explanatory. The areas that may need some clarification are listed below:  </p></br></a>
+	
+	<a name = "SubjectMatterArts" style="color:black; text-decoration: none"><p><b>Subject Matter / Arts / Fine and decorative</b> Ceramics, glass, and some types of design can also be considered instances of ‘decorative art’. Here we used the category of ‘Fine and decorative’ art to cover those museums that combine collections of both. Where a museum’s main focus is on ceramics, glass, or design, we categorise it as such.</p></br>
+	</a>
+	<a name = "SubjectMatterBuildings" style="color:black; text-decoration: none"><p><b>Subject Matter / Buildings</b> This category covers museums that primarily focus on the building. It does not contain museums housed in remarkable buildings if their exhibition covers another subject. Please note that buildings also appear in several other categories – Religious buildings are listed under Belief and identity; Potteries in Industry and Manufacture; Forges, Windmills and Watermills in Rural industry; Lighthouses in Sea and Seafaring; Bunkers, and Castles and Forts in War and Conflict. </p></br>
+	</a>
+	<a name = "SubjectMatterIndustry" style="color:black; text-decoration: none"><p><b>Subject Matter / Industry and manufacture / Industrial life</b> For the purposes of this classification, museums of industrial life present a holistic view of living in an industrial context. For example, their exhibitions might include material from homes, schoolrooms, or shops as well as the objects or sites of industrial workplaces.  </p></br>
+	</a>
+	<a name = "SubjectMatterBygones" style="color:black; text-decoration: none"><p><b>Subject Matter / Mixed / Bygones</b> Museums of bygones house a range of artefacts, usually from the recent past that relate to aspects of ordinary life. </p></br>
+	</a>
+	<a name = "SubjectMatterMixed" style="color:black; text-decoration: none"><p><b>Subject Matter / Mixed / Encyclopaedic</b> Sometimes called universal survey museums, encyclopaedic museums house a wide variety of collections that cover a range of time-periods, geographical areas, and type of artefacts.</p></br>
+	</a>
+	
+	<a name = "SubjectMatterOther" style="color:black; text-decoration: none"><p><b>Subject Matter / Mixed / Other</b> This category covers museums that combine several distinct themes but that do not attempt to provide encyclopaedic coverage.
+    For instance, that comprise of a local history collection and a fashion gallery, or a permanent exhibition of European botanical specimens and one relating to Arctic exploration.  </p></br>
+	</a>
+	<a name = "SubjectMatterRural" style="color:black; text-decoration: none"><p><b>Subject Matter / Rural industry / Rural life</b> For the purposes of this classification, museums of rural life present a holistic view of living in a rural setting. For example, their exhibitions might include materials from homes, schoolrooms, or shops as well as the objects or sites of agricultural labour. </p></br>
+	</a>
+	
+	<a name = "Yearopened" style="color:black; text-decoration: none"><p><b>Year Opened</b> refers to the date when the museum was first accessible to the public on a regular basis. 
+	Small museums often open by degrees: there may be a series of annual open days or events, and they have very limited opening hours. 
+	Sometimes the official launch may be scheduled several years after the venue is actually made open to visitors. For the purposes of this study year, opening refers to the year when opening days or hours were regularised, even if they are occasional.  </p>
+	<p>It can be difficult to establish the year a museum opened. In these cases we have drawn on the available information to create a date range (see Date Range above).  </p></br></a>
+	
+	<a name = "Yearclosed" style="color:black; text-decoration: none"><p><b>Year Closed</b> refers to the date when the museum stopped being accessible to the public on a regular basis. Small museums often close by degrees: the days and hours that a museum is open are reduced or a booking system may be introduced. For the purposes of this study, we count a museum as closed when there are no regular opening days or hours.</p>
+	<p>It can be difficult to establish the year a museum closed. In these cases we have drawn on the available information to create a date range (see Date Range above).  </p>
+	<p>Further Reading / Viewing: </p>
+	<p><a href="http://blogs.bbk.ac.uk/mapping-museums/2018/02/23/museum-closure-pre-findings/" target="_blank">Mapping Museums blog: ‘Preliminary Results on Closure’</a></p>
+	<p>The Bakelite Museum Closes Down: A short film made by the Derek Jarman Lab in collaboration with Fiona Candlin. [To come]</p>
+	</br></a>
+	
+	
+	
+	
+	</div>
+</div>
+
+<p><div class = "t"></div></p>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>
+
+
+

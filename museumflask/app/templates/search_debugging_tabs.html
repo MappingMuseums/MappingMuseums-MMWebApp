@@ -1,0 +1,834 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+
+<script src="{{ url_for('static', filename='js/awesomplete.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/awesomplete.css') }}" />
+
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+<style>
+
+#btn-add-tab{ padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;  }
+
+
+</style>
+
+      {% block title %}MuseumMap{% endblock %}
+
+
+
+
+      {% block content %}
+      {% block page_content %}
+      <div id="sidebar">
+	<div class="col-md-12">
+
+	  <div class="selectattrs"  >
+
+	    <form class="form-horizontal" method="POST" action="/search" onsubmit="return validateForm()" target="restable">
+
+
+	    <div class="col-md-12" style="padding-top: 10px;">
+	      <p>
+	      <button id="btn-add-tab" type="button" class="btn btn-default pull-right" >Add Filter</button>
+            </p>
+	      <!-- Nav tabs -->
+	      <ul id="tab-list" class="nav nav-tabs" role="tablist" style="padding-top: 30px;">
+                <li class="active"><a href="#tab1" role="tab" data-toggle="tab" onclick="tabSelected(event);">Filter 1</a></li>
+	      </ul>
+
+	      <!-- Tab panes -->
+	      <div id="tab-content" class="tab-content">
+                <div class="tab-pane fade in active" id="tab1">
+
+		  <!-- ++++++++++++++++++++++++++ -->
+               <div class="form-group">
+		    <label class="col-sm-4 control-label">Select attribute:</label>
+		    <div class="col-sm-6" style="padding-top: 10px;">
+		      <select id="example-singlecolumn-1" name="coltomatch" class="coltomatch" onchange='columnchanged("example-singlecolumn-1",1);' >
+			{% for result,result_view in attributes %}
+			<option value="{{result|safe }}">{{result_view|safe }}</option>
+		      {% endfor %}
+		    </select>	    
+
+		    </div>
+		  </div>
+		  <!-- ++++++++++++++++++++++++++ -->
+
+		  <div class="form-group">
+		    <label class="col-sm-4 control-label">Comparison criterion: </label>
+		    <div class="col-sm-6">
+		      <select id="example-singlecondition-1" name="condition">
+			<option value="match">Matches</option>
+			<option value="notmatch">NotMatches</option>
+		      </select>
+		    </div>
+		  </div>
+
+		  <!-- ++++++++++++++++++++++++++ -->
+
+		  <div class="form-group">
+		    <label class="col-sm-4 control-label">Value:</label>
+		    <div class="col-sm-6" id="input-group-1" >
+		      <input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-1" />
+		    </div>
+		  </div>
+
+		</div>
+	      </div>
+	    </div>
+
+	    <!-- ++++++++++++++++++++++++++ -->
+
+            <div class="form-group">
+	      <label class="col-sm-4 control-label">Select output attributes:</label>
+	      <div class="col-sm-6">
+                <select id="example-post" name="multiselect[]" multiple="multiple">
+		  <option value="All attributes">All attributes</option>
+		  <option value="Default" selected="true">Default output attributes</option>
+		{% for result,view_result in attributes %}
+		<option value="{{result|safe }}">{{view_result|safe }}</option>
+		{% endfor %}
+	      </select>
+	      </div>
+	    </div>
+
+	    <!-- ++++++++++++++++++++++++++ -->
+
+            <div class="form-group">
+	      <label class="col-sm-4 control-label">Select ordering column:</label>
+	      <div class="col-sm-6">
+                <select id="example-ordering" name="multiselect[]" multiple="multiple">
+		  <option value="Default" selected="true">Default</option>
+	      </select>
+	      </div>
+	    </div>
+
+	    <!-- ++++++++++++++++++++++++++ -->
+
+	    <div class="col-md-12">
+	      <!-- Filter list show -->
+	      <ul id="display-filter-list" class="showfilter">
+	      </ul>
+	    </div>
+
+	    <div class="form-group">
+	      <div class="col-sm-offset-1 col-sm-10" style="padding-right: 30px;">
+                <button type="submit" class="btn btn-primary pull-left"  onclick="tabSelected(event);" style="padding-right: 28px;">Submit</button>
+	      </div>
+	    </div>
+	  </form>
+
+
+	  </div>
+	  </div>
+</div>
+<div id="main">
+<div class="second-row">
+  <iframe name="restable" id="restable"></iframe>
+</div>
+</div>
+	      
+
+
+	{% endblock %}
+	{% endblock %}
+
+	{% block scripts %}
+	<script type="text/javascript">
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function resetForm(){
+	  $('#example-reset-form').on('reset', function() {
+	    $('#example-reset option:selected').each(function() {
+	      $(this).prop('selected', false);
+	    })
+
+	    $('#example-reset').multiselect('refresh');
+	  });
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+function validateFieldInput(field,inputtext,tab) 
+{
+
+  var thisfield=field.replace(/ /g,'_');
+  var thisdtype=primitivevaluetypes[thisfield];
+
+
+  if (thisdtype == 'integer' || thisdtype == 'positiveInteger' || thisdtype == 'decimal' )
+      {
+	// If x is Not a Number or less than one or greater than 10
+	if (isNaN(inputtext) ) 
+	{
+	  alert(inputtext +" is not a number. \n"+"Please put a number as filter criteria in textfield in Filter:"+tab+" before submitting.");
+	  return false;
+	}
+	else 
+	{
+	  return true
+	}
+      }
+    else if (thisdtype == 'date')
+      {
+      }
+  return true;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function validateForm() 
+{
+  // Loop over tabs and check textfield for input
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+      var info=getTabInfo(i,true);
+      var infoarr=info.split(":");
+      var criteria=infoarr[3];
+      
+      if (criteria.length < 1)
+	{
+	  alert("Required field missing.\n"+"Please put a filter criteria in textfield in Filter:"+infoarr[0]+" before submitting.");
+	  return false;
+	}
+      else
+	{
+	  return validateFieldInput(infoarr[1].trim(),criteria,infoarr[0]);
+	}
+    }
+    return true;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+var button='<button class="close" type="button" title="Remove this tab">×</button>';
+
+function resetTab(id)
+{
+    var displayedchildren = document.getElementById("display-filter-list").childElementCount;
+    var len=getTabLen();
+    if (id <= len && displayedchildren >= id)
+      {
+	//console.log("Calling delfilter"+id);
+	delFilterInfo(id);
+      }
+
+    var ul = document.getElementById("tab-list");
+    var items = ul.getElementsByTagName("li");
+    for (var i = 0; i < items.length; ++i) 
+      {
+	console.log( "?#?#? search.html at line: 234 Dbg-out variable items "+i+" ["+items[i]+"] "+items.length );
+	var anch=items[i].getElementsByTagName("a");
+	anch[0].innerHTML='Filter ' + (i+1) +button;
+	//$('#tab-content').append($('<div class="tab-pane fade" id="tab' + tabID + '">'+ conditiondiv +'</div>'));
+
+	console.log( "?#?#? search.html at line: 235 Dbg-out variable anch ["+anch[0]+"]" );
+      }
+
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+$(document).ready(function() {
+  $('#example-dataprovider').multiselect();
+  $('#example1-dataprovider').multiselect();
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+$(document).ready(function() {
+  $('#example-single').multiselect();
+  $('#example-ordering').multiselect(
+				 { 
+				   numberDisplayed: 2,
+						      enableFiltering: false,
+						      onChange: function(option, checked, select) 
+                                  {
+				     console.log("ordering onchange orddopt"+orderingoptions);
+
+				     $('#example1-dataprovider').multiselect('dataprovider', orderingoptions);
+				     $('#example1-dataprovider').multiselect('rebuild');
+
+				   },
+				});
+
+
+  $('#example-post').multiselect(
+				 { 
+				   numberDisplayed: 5,
+						      enableFiltering: false,
+						      onChange: function(option, checked, select) {
+				     if (checked === true)
+				       {
+					 console.log('checked');
+					 if (option.val() == 'All attributes')
+					   {
+					     // Deselect all others
+					     $('#example-post').multiselect('deselectAll');
+					     $('#example-post').multiselect('select', ['All attributes']);
+					     $('#example-post').multiselect('refresh');
+					     conditionoptions = [];
+					     conditionoptions.push(
+								   {label:'All attributes', title: 'All attributes', value: 'allcolumns', selected: true}
+								   );
+					 console.log('deselct all');
+	
+					   }
+					 else if (option.val() == 'Default')
+					   {
+					     // Deselect all others
+					     $('#example-post').multiselect('deselectAll');
+					     $('#example-post').multiselect('select', ['Default']);
+					     $('#example-post').multiselect('refresh');
+					     conditionoptions = [];
+					     conditionoptions.push(
+								   {label:'Default', title: 'Default', value: 'default', selected: true}
+								   );
+
+					     console.log('sel default');
+					   }
+					 else
+					   {
+					     conditionoptions.push(
+								   {label:$(option).val(), title: $(option).val(), value: $(option).val(), selected: false}
+								   );
+					     $('#example-post').multiselect('deselect', ['All attributes','Default']);
+					     $('#example-post').multiselect('refresh');
+
+					     orderingoptions.push(
+								   {label:$(option).val(), title: $(option).val(), value: $(option).val(), selected: false}
+								   );
+					     $('#example-ordering').multiselect('deselect', ['Default']);
+					     $('#example-ordering').multiselect('refresh');
+					     console.log('sel '+$(option).val());
+
+					   }
+
+				       }
+				     else
+				       {
+					 var tag;
+					 for (var i = 0; i < conditionoptions.length; i++) 
+					   {
+					     tag=conditionoptions[i];
+					     //     console.log(conditionoptions[i]);
+					     //console.log(tag['label']);
+					     if (tag['label'] === $(option).val())
+					       {
+						 conditionoptions.splice(i,1);
+ 					         console.log('DEsel '+$(option).val());
+
+
+						 break;
+					       }
+					   }
+				       }
+
+					 for (var i = 0; i < conditionoptions.length; i++) 
+					   {
+					     console.log("condopt"+i+":"+conditionoptions[i]);
+                                           }
+				     
+				     $('#example-dataprovider').multiselect('dataprovider', conditionoptions);
+				     $('#example-dataprovider').multiselect('rebuild');
+
+				     $('#example1-dataprovider').multiselect('dataprovider', orderingoptions);
+				     $('#example1-dataprovider').multiselect('rebuild');
+
+					 for (var i = 0; i < orderingoptions.length; i++) 
+					   {
+					     console.log("ordopt"+i+":"+orderingoptions[i]);
+                                           }
+
+
+				   },
+				});
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+  $('#example-reset-form').on('reset', function() {
+    $('#example-reset option:selected').each(function() {
+      $(this).prop('selected', false);
+    })
+	  
+      $('#example-reset').multiselect();
+  });
+
+  $('#example-reset-button').on('click', function() {
+    resetForm();
+  });
+});
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+var conditionoptions = [];
+var orderingoptions = [];
+
+var primitivevaluetypes={};
+{% for result in attritypes %}
+primitivevaluetypes["{{result[0]|safe }}"]="{{result[1]|safe }}"
+{% endfor %}
+
+var datagroups={};
+{% for result in datagroups %}
+datagroups["{{result[0]|safe }}"]=datagroups["{{result[0]|safe }}"]+"{{result[1]|safe }}";
+{% endfor %}
+
+var datadict={};
+{% for key, value in datadict.iteritems() %}
+    datadict["{{key}}"]="{{ value}}";
+{% endfor %}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getAttributeByName(element,name)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      if (element.attributes[i].name == name)
+	{
+	      return element.attributes[i].value;
+	}
+    }
+  return undefined;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function tabSelected(event)
+{
+  var base="http://193.61.44.11:3033/search#tab";
+  var href=event.target.href;
+  console.log( "?#?#? search.html at line: 417 Dbg-out variable href ["+href+"]" );
+  var id=href.substring(base.length,(href.length));    
+  console.log( "?#?#? search.html at line: 419 Dbg-out variable filterid ["+id+"]" );
+  tabSelectedID(id);
+
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function tabSelectedID(id)
+{
+  
+  logtabs("Tab clicked:",id);
+  // Remove all displays
+  var ul = document.getElementById("display-filter-list");
+  while (ul.firstChild) 
+    {
+      ul.removeChild(ul.firstChild);
+    }
+
+
+  // Loop over tabs and add info to display
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+      var info=getTabInfo(i);
+      addFilterInfo(id,info)
+    }
+
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getAttribute(element,name,value)
+{
+  var i;
+  for (i = 0; i < element.attributes.length; i++) 
+    {
+      //console.log ("comparing:"+element.attributes[i].name + "="+ name);
+      if (element.attributes[i].name == name)
+	{
+	  //console.log ("comparing:"+element.attributes[i].value + "="+ value);
+	  if (element.attributes[i].value == value)
+	    {
+	      //console.log("true");
+	      return element.attributes[i].value;
+	    }
+	}
+    }
+  return undefined;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getElementByNameHelper(srcnode,name,value)
+{
+  if (srcnode)
+    {
+      if(!srcnode.nodeName || !(/#text/i.test(srcnode.nodeName)))
+	{
+	  //    console.log(srcnode.attributes);
+	  if (srcnode.attributes && srcnode.attributes.length> 0)
+	    {   
+	      if (getAttribute(srcnode,name,value))
+		{
+		  //console.log("Helper true");
+		  return srcnode;
+		}
+	    }
+	  
+	  if (srcnode.firstChild)
+	    {
+	      var result = getElementByNameHelper(srcnode.firstChild,name,value);
+	      if (result)
+		{
+		  return result;
+		}
+	    }
+	}
+      if (srcnode.nextSibling)
+	{
+	  var result = getElementByNameHelper(srcnode.nextSibling,name,value);
+	  if (result)
+	    {
+	      return result;
+	    }
+	}
+    }
+  return false;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// Tab info is the list of filters above the submit button
+function getTabInfo(tabno,raw)
+{
+  // Find id tab-content
+  // Loop over all children tab-pane
+  // Find name coltomatch
+  // Find name condition
+  // Find name matchstring
+
+
+
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+
+  for (var i = 0; i < tabpanes.length; ++i) 
+    {
+      //console.log(tabpanes[i]);
+
+      if (tabno == i)
+	{
+	  var coltomatchnode  = getElementByNameHelper(tabpanes[i],"name","coltomatch");
+	  var coltomatchstring=coltomatchnode.options[coltomatchnode.selectedIndex].text
+
+	    var conditionnode   = getElementByNameHelper(tabpanes[i],"name","condition");
+	  var conditionstring=conditionnode.options[conditionnode.selectedIndex].text
+
+	    var matchstringnode = getElementByNameHelper(tabpanes[i],"name","matchstring");
+	  var matchstring="";
+	  if (matchstringnode.tagName == "INPUT")
+	    {
+	      matchstring=matchstringnode.value;
+	    }
+	  else
+	    {
+	      matchstring=matchstringnode.options[matchstringnode.selectedIndex].text
+	    }
+	  if (raw)
+	    {
+	      return (i+1)+" : "+coltomatchstring.replaceAll("_"," ")+":"+conditionstring+":"+matchstring;
+	    }
+	  else
+	    {
+	      return "Filter "+(i+1)+" : "+coltomatchstring+" "+conditionstring+" "+matchstring;
+	    }
+	}
+    }
+  return false;
+	  
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function addFilterInfo(tabno,info)
+{
+  var ul = document.getElementById("display-filter-list");
+  var li = document.createElement("li");
+  var displayedchildren = ul.childElementCount;
+  var tabs=$("#tab-list li:not(:first)");
+  var len=1
+    $(tabs).each(function(k,v){
+      len++;
+    })
+    len++;
+    // Special case: we have one displayed item and tablist is one as well
+    // Adding a new filter should only reevaluate the existing filter, not add a second.
+    // We delete the existing and add a fresh
+    if (len == 2 && displayedchildren == 1)
+      {
+	ul.removeChild(ul.getElementsByTagName('li')[0]);
+      }
+    li.appendChild(document.createTextNode(info));
+    ul.appendChild(li);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function delFilterInfo(id)
+{
+  var ul = document.getElementById("display-filter-list");
+  var items = ul.getElementsByTagName("li");
+  var count=1
+    for (var i = 0; i < items.length; ++i) 
+      {
+	//console.log("li"+items[i])
+	if (count == id)
+	{
+	  items[i].parentNode.removeChild(items[i]);
+	  return
+	}
+	count+=1
+      }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function logtabs(message,id)
+{
+    console.log(message+" ------------------------------------------------------------");
+    console.log( "?#?#? search.html at line: 556 Dbg-out variable id ["+id+"]" );    
+    var tabcontent = document.getElementById("tab-content");
+    var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+    for (var i = 0; i < tabpanes.length; ++i) 
+      {
+	var info=getTabInfo(i,true);
+	console.log( "?#?#? search.html at line: 613 Dbg-out variable i ["+i+"]" );
+	console.log( "?#?#? search.html at line: 612 Dbg-out variable info ["+info+"]" );
+      }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+globalcount=1;
+staticform='{% for result,view_result in attributes %} <option value="{{result|safe }}">{{view_result|safe }}</option> {% endfor %}';
+
+function incc()
+{
+  globalcount+=1;
+  console.log( "?#?#? search.html at line: 593 Dbg-out variable globalcount ["+globalcount+"]" );
+  return globalcount;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getTabLen()
+{
+  var tabcontent = document.getElementById("tab-content");
+  var tabpanes=tabcontent.getElementsByClassName("tab-pane");
+  return tabpanes.length;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function getConditionDiv(tabID)
+{
+  /// Important to use localcount rather than tabid here as tabids change but localcount not
+    var localcount=incc();
+    console.log( "?#?#? search.html at line: 600 Dbg-out variable localcount ["+localcount+"]" );
+    
+    var cd='<div class="form-group"><label class="col-sm-4 control-label">Select attribute:'+localcount+
+      '</label><div class="col-sm-6" style="padding-top: 10px;"> <select id="example-singlecolumn-' + localcount + 
+      '" name="coltomatch" class="coltomatch" onchange=\'columnchanged("example-singlecolumn-' + localcount+
+      '",' + tabID+
+      ');\'>'+staticform+
+      ' </select>	</div></div> <div class="form-group"><label class="col-sm-4 control-label">Comparison criterion:</label> <div class="col-sm-6"> <select id="example-singlecondition-' + localcount + '" name="condition"><option value="match">Matches</option> </select> </div> </div>         <div class="form-group"> <label class="col-sm-4 control-label">Value:</label> <div class="col-sm-6" id="input-group-' + localcount + '"><input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-'
+      + localcount + '" /> </div> </div>' ;
+    console.log( "?#?#? search.html at line: 610 Dbg-out variable cd ["+cd+"]" );
+    return cd;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//COLUMN CHANGE METHOD NEEDS TO HAVE ITS PARAMETERS CHANGED WHEN TABID CHANGES DUE TO DELETE.
+//ALL OTHER Occurances of tabid in html for the tab needs to be set to correct tab by resettab
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+$(document).ready(function() {
+  $('#btn-add-tab').click(function() {
+    logtabs("Before add",getTabLen());
+    tabID=getTabLen()+1;
+    console.log( "?#?#? search.html at line: 630 Dbg-out variable tabID ["+tabID+"]" );
+    var conditiondiv=getConditionDiv(tabID);
+    $('#tab-list').append($('<li><a href="#tab' + tabID + '" role="tab" data-toggle="tab" onclick="tabSelected(event);">Filter ' + tabID + '<button class="close" type="button" title="Remove this tab">×</button></a></li>'));
+    $('#tab-content').append($('<div class="tab-pane fade" id="tab' + tabID + '">'+ conditiondiv +'</div>'));
+
+
+    tabSelectedID(tabID);
+    //show new tab
+    var ul = document.getElementById("tab-list");
+    var items = ul.getElementsByTagName("li");
+    var count=1
+    var thistab=tabID;
+    for (var i = 0; i < items.length; ++i) 
+      {
+	if (count == thistab)
+	  {
+	    items[i].firstChild.click();
+	    return
+	  }
+        count+=1
+      }
+  });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+  $('#tab-list').on('click', '.close', function() {
+    var tabID = $(this).parents('a').attr('href');
+    var tabhtmlID = $(this).parents('a').text();
+    var filterid=tabhtmlID.substring(7,(tabhtmlID.length-1));    
+    console.log( "?#?#? search.html at line: 663 Dbg-out variable filterid ["+filterid+"]" );
+
+    $(this).parents('li').remove();
+    $(tabID).remove();
+
+    //var ul = document.getElementById("tab-list");
+    //var items = ul.getElementsByTagName("li");
+    //console.log( "?#?#? search.html at line: 666 Dbg-out variable filterid ["+filterid+"]" );
+    //console.log( "?#?#? search.html at line: 666 Dbg-out variable items ["+items+"] "+items.length );
+    //items[(filterid - 1)].remove();
+    
+    //display first tab
+    var tabFirst = $('#tab-list a:first');
+    resetTab(filterid); 
+    tabFirst.tab('show');
+  });
+
+  var list = document.getElementById("tab-list");
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function setupCriteriaGroup(datatype,tabid)
+{
+  //console.log("dt"+datatype);
+  //console.log("options:"+datagroups[datatype]);
+  //console.log("tabid"+tabid);
+  //console.log("");
+  var div = document.getElementById("input-group-"+tabid);
+  //console.log(div);
+  var xmldatatypes=['string','integer','positiveInteger','date','boolean','decimal'];
+
+  //-- Supplied by implemented datatypes
+{{widgets|safe}}
+
+{{widgetcodes|safe }}
+
+
+
+  while (div.firstChild) 
+    {	
+      div.removeChild(div.firstChild);
+    }
+
+
+  if (xmldatatypes.includes(datatype))
+    {
+      div.innerHTML=
+	'<input type="text" name="matchstring" class="input-medium search-query" placeholder="Text Input" id="example-singlecriteria-' + tabID + '"/>';
+	  
+    }
+  else if (datatype in widgets)
+    { 
+      htmlid='example-singlecriteria-' + tabID ;
+      console.log('in widgets');
+      if (widgetcode[datatype].length > 0)
+        {
+	  console.log('2in widgets');
+          var script = document.createElement("script");
+          script.type = "text/javascript";
+          script.text=widgetcode[datatype].replaceAll("${ID}",htmlid).replaceAll("#","\n");
+         }
+
+      div.innerHTML= widgets[datatype].replaceAll("${ID}",htmlid);
+      console.log(div);
+
+      if (widgetcode[datatype].length > 0)
+        {
+           div.appendChild(script);
+          console.log('script added');
+        }
+    }
+  else
+    {
+      div.innerHTML=
+	'<select id="example-singlecriteria-' + tabID + '"  name="matchstring">'+
+	datagroups[datatype] +
+	'</select>';
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+function columnchanged(colid,tabid)
+{
+{% for result in conditiontypes %}
+   {{result|safe }}
+{% endfor %}
+
+
+
+  var e = document.getElementById(colid);
+  var f = e.options[e.selectedIndex].value;
+  var condid=colid.replace("singlecolumn","singlecondition");
+  var condition = document.getElementById(condid);
+  var thisdtype=primitivevaluetypes[f];
+  var rangetype="defRange"+f;
+  var showtype='other';
+
+
+  if (rangetype in datadict)
+     {
+       showtype=datadict[rangetype];
+     }
+  else if (f in conditiontypes)
+   {
+    showtype=f;
+   }
+  else if (thisdtype in conditiontypes)
+   {
+    showtype=thisdtype;
+   }
+
+   while (condition.options.length > 0)
+	{
+	  condition.remove(condition.options.length - 1);
+	}
+   var ctypes=conditiontypes[showtype];
+   for (var i = 0; i < ctypes.length; ++i) 
+          {
+            var carr=ctypes[i].split(":");
+	    condition.appendChild(new Option(carr[0], carr[1]));
+          }
+
+  // ** This is a List type so we want to set up the criteria field as well
+  setupCriteriaGroup(thisdtype,tabid);
+}
+
+	</script>
+	{% endblock %}
+
+
+      </div>
+
+
+

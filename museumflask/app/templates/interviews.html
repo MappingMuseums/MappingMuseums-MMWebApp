@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Interview-based Research{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<div class="page-header">
+ 
+</div>
+<style>
+div.row {
+    font-size: 20px;
+}
+
+</style>
+<figure>
+<img src="/static/img/interviewsbanner1.png" alt="about banner" style="max-width: 100%" >
+<figcaption>Tim Isaacs, curator, Cobbaton Combat Museum, Devon</figcaption>
+</figure>
+    <div class="row">
+	   <h1>Interview-based Research</h1>
+<p>Between 2018 and 2019, Toby Butler conducted interviews with staff and volunteers who were involved in founding over 40 museums. The interviews focus on the early development of the museums, but also cover many other topics. Fiona Candlin conducted follow-up interviews, and a series of new interviews at additional museums. 
+</p>
+
+ <p>
+ The museums where interviews were conducted are listed below. Each entry includes a description of the museum, description of the displays, interview summary, photographs, and a full interview transcript, all of which can be downloaded.</p>
+
+ <p>The interviews are linked to the broader aims and themes of the project. All the museums are independent and were established after 1960 and most of the interviews were held at museums that are devoted to the subject areas where there was significant growth – local history, war and conflict, and transport. 
+ </p>
+ <p>
+ We would like to know if our research is being used so please use the <a href="/contact">Get in Touch</a> link to tell us about your work.  
+ </p></br></br>
+	 <form method="post" action="interviewresults" class="inline">
+    	 
+		  <table border="1">
+		  <col width="30%">
+		  <col width="70%">
+		  {% for item  in interlist  %}
+		  <tr>
+		  <td>
+		  <div style="text-align:center"><button type="submit" name="foldername" value="{{ item[0] }},{{ item[1]|safe }}" class="link-button">    {{ item[1]|safe }}</button></div>
+		  </td>
+		  <td>
+		  <div style="margin-top: 1%; margin-bottom: 1%; margin-left: 1%; margin-right: 1%">{{ item[2]|safe }}</div>
+		  </td>
+		  </tr>
+		  {% endfor %}
+		  </table>
+	
+		
+		  
+                
+		
+		
+		  </form>
+     
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+
+</div>

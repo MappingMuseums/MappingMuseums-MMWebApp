@@ -1,0 +1,156 @@
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function backFunction()
+{
+window.location.href = "./meetings.html";
+}
+
+</script>
+
+<style>
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+#myBackBtn {
+  display: block;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+</style>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="backFunction()" id="myBackBtn" title="Go to index">Back</button>
+
+<div class="page-header">
+  <h1>Actions</h1>
+</div>
+
+    <p/>
+    <h2>Actions 16 May</h2>
+    <ul><li>Nick</li>
+    <ul>
+      <li>Retitle database Mapping Museums </li>
+    <ul>
+      <li>Browse function: </li>
+    <ul>
+      <li>     Remove domus number from museums name</li>
+      <li>Remove list on foundation year and similar headings</li>
+      <li>Remove use all data button show all data automatically</li>
+      <li>Make sure browse term stays visible throughout search and does not revert to accreditation</li>
+      <li>Reorder and add to list of browse terms</li>
+      <li>Add sub-categories to browse terms</li>
+      <li>Make sure that there is a folder that reads pre-1960 under date of foundation</li>
+      <li>Update individual museum pages to format advised</li>
+    </ul>
+    <li>Search function: </li>
+	 <ul>
+    <li>Filter should be above output</li>
+    <li>Filter columns need renaming  ( taking from dataset sheet)</li>
+    <li>Filter drop down for  type showing multiple entries</li>
+    <li>Change default search output columns</li>
+  </ul>
+    <li>Closed start  / end dates unclear. </li>
+  </ul>
+  </ul>
+
+    <h2>Actions 23 May</h2>
+<pre>
+  Actions: 
+  Nick - 	Produce spreadsheets of columns generated from database that FC and JL can alter / re-order (use revised database outline for first version)
+                Add in an additional option on date of opening / closing searches which is where the user provides a date range eg. 1978-1991
+	        Consider approach to handling hierarchies that work for browsing and visualisation
+	        Look at appropriate visualisations
+	        Capitalise first letters of words in names of museums 
+
+  Nick and Jamie - The year opening pair of columns (start / end) to be amalgamated into a single column.
+  The closing pair of columns (start / end)  to be amalgamated into a single column.
+
+  Nick and Alex look at governance being a single column rather than two (ie where database understand English heritage is independent and doesnt need additional column that reads independent)
+  Think about a blog entry about the challenges / pleasures of building a database for the project (NB we-Fre still covering set up in the blog %G–%@ so maybe not the stuff were doing now?) Needs to be done in 5-6) weeks.
+
+  Jamie  - Start / end terms to be replaced by from and to. 
+	Translate ACE small / medium large etc. into visitor number ranges and add in  but only where were missing actual visitor numbers
+	Ditto for AIM small / medium large 
+	Send Nick spreadsheet of numbers
+
+  Blog entry on practically collating information (needs to be done in 3-4 weeks)
+
+  Fiona  look for data that links local authority to postcodes
+	Look for info on historic and current counties
+	Work out where grey area organisations sits in browse and search
+	Work out where organisational type column sits in browse and search
+
+  Fiona and Jamie  consider use of terms for search page and for date search terms eg. before not less than.
+</pre>
+
+      <h2>Actions 7th June</h2>
+      <p class="Standard">AP to advise on new museum figures vs total museums figures (see above)
+      </p>
+      <p class="Standard">FC: send info to Lucy for flyers
+      </p>
+      <p class="Standard">FC needs to prioritise information / database development with respect to questions
+      </p>
+      <p class="Standard">FC to think about exactly which regional breakdowns are required. 
+	<a id="_GoBack"/>
+      </p>
+      <p class="Standard">FC and NL to find information relating to county borders, local authorities etc. 
+      </p>
+      <p class="Standard">NL: feasibility studies for visualisations relating  to questions 1a and 1 b. 
+      </p>
+      <p class="Standard">NL &amp; JL: Merge the two paired columns relating to ‘from’ and ‘to’ dates. Should be merged into one column where date ranges are marked by a dash. Ditto closure dates. 
+      </p>
+      <p class="Standard"> 
+
+      <h2>Actions 12th Sep </h2>
+
+
+<pre>
+Columns to be merged:
+1. Year of foundation and year of opening.
+Where there is no year in ~year open~ column the date for foundation year should 
+be copied over and an ~f~ put in the~ year open source~ column. 
+2. The subject matter and collections tags column so that it reads 
+Main subject / sub category e.g. Transport / planes
+3. Governance. So it reads Independent / English heritage etc. 
+Nick to consolidate columns, and pass back to Jamie prior to major upload of new data. 
+
+</pre>

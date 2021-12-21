@@ -1,0 +1,17 @@
+Name_of_museum
+Address_line_1
+Town_or_City
+Postcode
+Accreditation
+Governance
+Size
+Subject_Matter
+Year_opened
+Year_closed
+Primary_provenance_of_data
+Notes
+Deprivation_index
+Geodemographic_group
+Geodemographic_subgroup
+Admin_hierarchy
+Visitor_Numbers_Data
